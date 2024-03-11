@@ -1,0 +1,9 @@
+@font-face {
+  font-family: Nunito;
+  font-style: normal;
+  font-weight: 200 1000;
+  src:
+    url('../fonts/Nunito-Variable.woff2') format('woff2 supports variations'),
+    url('../fonts/Nunito-Variable.woff2') format('woff2-variations');
+  font-display: swap;
+}
