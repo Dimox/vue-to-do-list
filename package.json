@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "generate-icon-types": "node ./scripts/generate-icon-types.js"
   },
   "dependencies": {
     "vue": "^3.4.21"
@@ -28,6 +29,7 @@
     "stylelint-order": "^6.0.4",
     "typescript": "^5.4.2",
     "vite": "^5.1.5",
+    "vite-plugin-run": "^0.5.1",
     "vue-tsc": "^2.0.6"
   }
 }
