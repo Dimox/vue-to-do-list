@@ -1,0 +1,69 @@
+<template>
+  <div class="textarea">
+    <label class="textarea__label" :class="{ 'visually-hidden': !hasLabel }" :for="id">{{ label }}</label>
+    <textarea
+      class="textarea__input"
+      :id="id"
+      :rows="rows"
+      :placeholder="placeholder"
+      v-model="model"
+      v-bind="$attrs"
+    />
+  </div>
+</template>
+
+<script setup lang="ts">
+import { computed } from 'vue'
+import { uniqueId } from '@/utils'
+
+const model = defineModel<string>()
+
+const props = defineProps({
+  label: {
+    type: String,
+    default: null,
+  },
+  placeholder: {
+    type: String,
+    default: null,
+  },
+  rows: {
+    type: [Number, String],
+    default: 1,
+  },
+})
+
+const id = uniqueId('textarea-')
+const hasLabel = computed(() => !!props.label)
+const label = computed(() => (props.label ? props.label : props.placeholder))
+</script>
+
+<style lang="scss">
+.textarea {
+  &__label {
+    display: block;
+    width: fit-content;
+    margin-bottom: 0.25rem;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  &__input {
+    display: block;
+    width: 100%;
+    padding: 0.6875rem 1.25rem;
+    font: inherit;
+    resize: none;
+    border: 0.0625rem solid var(--color-gray-300);
+    border-radius: 0.375rem;
+    transition: 0.25s;
+    transition-property: border-color, box-shadow, border-radius;
+
+    &:focus {
+      border-color: var(--color-indigo-500);
+      outline: none;
+      box-shadow: inset 0 0 0 0.0625rem var(--color-indigo-500);
+    }
+  }
+}
+</style>
