@@ -34,17 +34,15 @@ const onInput = () => {
 }
 
 const addToDo = () => {
-  if (!textarea.value) return
-  if (toDo.value) {
-    storage.value.items.push({
-      id: uniqueId(),
-      date: new Date(),
-      text: toDo.value,
-      checked: false,
-    })
-    toDo.value = ''
-    textarea.value.style.height = ''
-  }
+  if (!textarea.value || !toDo.value) return
+  storage.value.items.push({
+    id: uniqueId(),
+    date: new Date(),
+    text: toDo.value,
+    checked: false,
+  })
+  toDo.value = ''
+  textarea.value.style.height = ''
 }
 
 onMounted(() => {
