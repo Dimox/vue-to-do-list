@@ -41,6 +41,7 @@
     "rule-empty-line-before": ["always", {
       "except": ["first-nested", "after-single-line-comment"]
     }],
+    "unit-disallowed-list": "px",
     "order/order": [
       [
         "custom-properties",
