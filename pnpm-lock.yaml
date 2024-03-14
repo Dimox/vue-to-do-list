@@ -67,6 +67,9 @@ devDependencies:
   vite-plugin-run:
     specifier: ^0.5.1
     version: 0.5.1
+  vue-eslint-parser:
+    specifier: ^9.4.2
+    version: 9.4.2(eslint@8.57.0)
   vue-tsc:
     specifier: ^2.0.6
     version: 2.0.6(typescript@5.4.2)

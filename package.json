@@ -6,7 +6,8 @@
     "dev": "vite",
     "build": "vue-tsc && vite build",
     "preview": "vite preview",
-    "generate-icon-types": "node ./scripts/generate-icon-types.js"
+    "generate-icon-types": "node ./scripts/generate-icon-types.js",
+    "lint": "eslint --ext .js,.ts,.vue ."
   },
   "dependencies": {
     "@vueuse/core": "^10.9.0",
@@ -31,6 +32,7 @@
     "typescript": "^5.4.2",
     "vite": "^5.1.5",
     "vite-plugin-run": "^0.5.1",
+    "vue-eslint-parser": "^9.4.2",
     "vue-tsc": "^2.0.6"
   }
 }

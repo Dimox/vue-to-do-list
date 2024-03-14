@@ -18,7 +18,10 @@
   },
   "plugins": [
     "vue",
-    "@typescript-eslint",
-    "prettier"
-  ]
+    "import",
+    "@typescript-eslint"
+  ],
+  "rules": {
+    "import/order": "error"
+  }
 }
