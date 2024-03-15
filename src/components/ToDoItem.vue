@@ -70,9 +70,9 @@ const removeToDo = () => (storage.value.items = storage.value.items.filter(item 
 .to-do-item {
   display: flex;
   gap: 1rem;
+  align-items: flex-start;
 
   &__checkbox {
-    align-self: flex-start;
     margin-top: 0.1875rem;
   }
 
