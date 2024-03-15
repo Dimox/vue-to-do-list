@@ -2,12 +2,12 @@
   <form class="add-to-do" @submit.prevent="addToDo">
     <div class="add-to-do__wrapper">
       <Textarea
+        v-model="toDo"
         class="add-to-do__textarea"
         placeholder="Введите новую задачу..."
         @input="onInput"
         @keydown.enter.exact.prevent
         @keyup.enter.exact="addToDo"
-        v-model="toDo"
       />
       <p class="add-to-do__hint">
         <strong>Enter</strong> - добавить задачу, <strong>Shift + Enter</strong> - перенос строки
@@ -21,7 +21,7 @@
 import { onMounted, ref } from 'vue'
 import Textarea from '@/components/form/Textarea.vue'
 import Btn from '@/components/Btn.vue'
-import { textareaAutoHeight, uniqueId } from '@/utils'
+import { textareaAutoHeight, uniqueId, sortToDos } from '@/utils'
 import { useToDoStorage } from '@/composables/storage'
 
 const storage = useToDoStorage()
@@ -41,6 +41,7 @@ const addToDo = () => {
     text: toDo.value,
     checked: false,
   })
+  storage.value.items = sortToDos(storage.value.items)
   toDo.value = ''
   textarea.value.style.height = ''
 }
@@ -73,7 +74,7 @@ onMounted(() => {
     transition: opacity 0.25s;
   }
 
-  &__textarea:has(:focus) + &__hint {
+  &__textarea:has(:focus:not(:placeholder-shown)) + &__hint {
     opacity: 1;
   }
 }
