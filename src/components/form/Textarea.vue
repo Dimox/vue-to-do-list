@@ -2,11 +2,11 @@
   <div class="textarea">
     <label class="textarea__label" :class="{ 'visually-hidden': !hasLabel }" :for="id">{{ label }}</label>
     <textarea
-      class="textarea__input"
       :id="id"
+      v-model="model"
+      class="textarea__input"
       :rows="rows"
       :placeholder="placeholder"
-      v-model="model"
       v-bind="$attrs"
     />
   </div>
