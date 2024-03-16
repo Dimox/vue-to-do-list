@@ -27,7 +27,7 @@ const props = defineProps({
     default: null,
   },
   date: {
-    type: String,
+    type: Date,
     default: null,
   },
   text: {

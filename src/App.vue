@@ -4,7 +4,15 @@
       <h1 class="app__title">To-Do List</h1>
       <div class="app__body">
         <ul class="app__items">
-          <ToDoItem v-for="item in storage.items" :key="item.id" class="app__item" v-bind="item" />
+          <ToDoItem
+            v-for="item in storage.items"
+            :id="item.id"
+            :key="item.id"
+            class="app__item"
+            :date="new Date(item.date)"
+            :text="item.text"
+            :checked="item.checked"
+          />
         </ul>
         <AddToDo />
       </div>
