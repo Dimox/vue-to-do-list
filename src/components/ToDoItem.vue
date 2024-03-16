@@ -20,6 +20,7 @@ import Icon from './Icon.vue'
 import DropdownMenu from './DropdownMenu.vue'
 import { useToDoStorage } from '@/composables/storage'
 import { sortToDos } from '@/utils'
+import { DropdownMenuItem } from '@/types'
 
 const props = defineProps({
   id: {
@@ -44,7 +45,7 @@ const storage = useToDoStorage()
 const checked = ref(props.checked)
 
 const dropdownMenu = ref()
-const dropdownMenuItems = [
+const dropdownMenuItems: DropdownMenuItem[] = [
   { icon: 'edit', label: 'Редактировать', handler: () => {} },
   { icon: 'delete', label: 'Удалить', handler: () => removeToDo() },
 ]

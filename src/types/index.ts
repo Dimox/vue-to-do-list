@@ -17,7 +17,7 @@ export type ToDoOptions = {
 }
 
 export type DropdownMenuItem = {
-  icon?: IconName
+  icon?: `${IconName}`
   label: string
   handler: () => void
 }
