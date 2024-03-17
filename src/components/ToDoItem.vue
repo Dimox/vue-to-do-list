@@ -79,8 +79,11 @@ const removeToDo = () => (storage.value.items = storage.value.items.filter(item 
 
   &__text {
     flex-grow: 1;
+    overflow-wrap: anywhere;
 
     &-inner {
+      white-space: pre-line;
+
       .to-do-item--checked & {
         --color: var(--color-gray-300);
         display: inline;
