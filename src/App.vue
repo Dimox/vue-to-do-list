@@ -4,15 +4,17 @@
       <h1 class="app__title">To-Do List</h1>
       <div class="app__body">
         <ul class="app__items">
-          <ToDoItem
-            v-for="item in storage.items"
-            :id="item.id"
-            :key="item.id"
-            class="app__item"
-            :date="new Date(item.date)"
-            :text="item.text"
-            :checked="item.checked"
-          />
+          <TransitionGroup name="app__items">
+            <ToDoItem
+              v-for="item in storage.items"
+              :id="item.id"
+              :key="item.id"
+              class="app__item"
+              :date="new Date(item.date)"
+              :text="item.text"
+              :checked="item.checked"
+            />
+          </TransitionGroup>
         </ul>
         <AddToDo />
       </div>
@@ -61,7 +63,25 @@ const storage = useToDoStorage()
   }
 
   &__items {
+    position: relative;
     margin-bottom: 1rem;
+
+    &-move,
+    &-enter-active,
+    &-leave-active {
+      transition: 0.35s;
+    }
+
+    &-enter-from,
+    &-leave-to {
+      opacity: 0;
+      transform: translateX(6rem);
+    }
+
+    &-leave-active {
+      position: absolute;
+      inset-inline: 0;
+    }
   }
 
   &__item {
