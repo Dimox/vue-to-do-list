@@ -1,16 +1,14 @@
 <template>
-  <button class="btn" :type="type">
+  <button class="btn" :type="submit ? 'submit' : 'button'">
     <slot />
   </button>
 </template>
 
 <script setup lang="ts">
-import { PropType } from 'vue'
-
 defineProps({
-  type: {
-    type: String as PropType<'button' | 'submit'>,
-    default: 'button',
+  submit: {
+    type: Boolean,
+    default: false,
   },
 })
 </script>

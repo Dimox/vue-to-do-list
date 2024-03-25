@@ -13,7 +13,7 @@
         <kbd>Enter</kbd> - добавить задачу, <kbd>Shift</kbd> + <kbd>Enter</kbd> - перенос строки
       </p>
     </div>
-    <Btn class="add-to-do__btn" type="submit">Добавить</Btn>
+    <Btn class="add-to-do__btn" submit>Добавить</Btn>
   </form>
 </template>
 
