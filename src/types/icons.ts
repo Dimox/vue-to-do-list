@@ -3,5 +3,6 @@
 export enum IconName {
   Dots = "dots",
   Edit = "edit",
-  Delete = "delete"
+  Delete = "delete",
+  Close = "close"
 }
