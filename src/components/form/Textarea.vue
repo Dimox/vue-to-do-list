@@ -49,6 +49,7 @@ const label = computed(() => (props.label ? props.label : props.placeholder))
   }
 
   &__input {
+    --scrollbar-thumb-color: var(--color-indigo-400);
     display: block;
     width: 100%;
     padding: 0.6875rem 1.25rem;
@@ -57,9 +58,11 @@ const label = computed(() => (props.label ? props.label : props.placeholder))
     border: 0.0625rem solid var(--color-gray-300);
     border-radius: 0.375rem;
     transition: 0.25s;
-    transition-property: border-color, box-shadow, border-radius;
+    transition-property: border-color, box-shadow, border-radius, scrollbar-color;
+    scrollbar-color: var(--scrollbar-thumb-color) transparent;
 
     &:focus {
+      --scrollbar-thumb-color: var(--color-indigo-500);
       border-color: var(--color-indigo-500);
       outline: none;
       box-shadow: inset 0 0 0 0.0625rem var(--color-indigo-500);
