@@ -83,6 +83,19 @@ button {
   border: none;
 }
 
+kbd {
+  padding-inline: 0.25rem;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 600;
+  letter-spacing: 0.025rem;
+  background: var(--color-gray-50);
+  border-radius: 0.25rem;
+  box-shadow:
+    rgba(var(--color-gray-800-rgb), 0.15) 0 0 0 0.0625rem,
+    rgba(var(--color-black-rgb), 0.03) 0 0.375rem 0.375rem -0.25rem;
+}
+
 .visually-hidden {
   position: absolute;
   width: 0.0625rem;
