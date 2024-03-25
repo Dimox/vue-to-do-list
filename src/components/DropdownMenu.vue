@@ -4,7 +4,7 @@
       <Btn>Actions</Btn>
     </slot>
     <ul class="dropdown-menu__items">
-      <li v-for="item in items" :key="item.label" class="dropdown-menu__item" @click="item.handler">
+      <li v-for="item in items" :key="item.label" class="dropdown-menu__item" @click="onItemClick(item)">
         <Icon class="dropdown-menu__icon" :name="item.icon" />
         {{ item.label }}
       </li>
@@ -18,6 +18,8 @@ import Btn from './Btn.vue'
 import Icon from './Icon.vue'
 import { DropdownMenuItem } from '@/types'
 
+const emit = defineEmits(['close'])
+
 defineProps({
   open: {
     type: Boolean,
@@ -28,6 +30,11 @@ defineProps({
     default: () => [],
   },
 })
+
+const onItemClick = (item: DropdownMenuItem) => {
+  item.handler()
+  emit('close')
+}
 </script>
 
 <style lang="scss">
