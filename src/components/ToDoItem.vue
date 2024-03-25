@@ -4,20 +4,29 @@
     <div class="to-do-item__text">
       <p class="to-do-item__text-inner">{{ text }}</p>
     </div>
-    <DropdownMenu ref="dropdownMenu" class="to-do-item__dropdown" :open="isDropdownMenuOpen" :items="dropdownMenuItems">
+    <DropdownMenu
+      ref="dropdownMenu"
+      class="to-do-item__dropdown"
+      :open="isDropdownMenuOpen"
+      :items="dropdownMenuItems"
+      @close="isDropdownMenuOpen = false"
+    >
       <button class="to-do-item__dropdown-btn" type="button" @click="toggleDropdownMenu">
         <Icon name="dots" />
       </button>
     </DropdownMenu>
+    <Dialog :open="isEditToDoOpen" :component="dialogComponent" :data="dialogData" @close="isEditToDoOpen = false" />
   </li>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, shallowRef, toRefs } from 'vue'
 import { onClickOutside } from '@vueuse/core'
 import Checkbox from './form/Checkbox.vue'
 import Icon from './Icon.vue'
 import DropdownMenu from './DropdownMenu.vue'
+import Dialog from './Dialog.vue'
+import EditToDoDialog from './EditToDoDialog.vue'
 import { useToDoStorage } from '@/composables/storage'
 import { sortToDos } from '@/utils'
 import { DropdownMenuItem } from '@/types'
@@ -42,12 +51,12 @@ const props = defineProps({
 })
 
 const storage = useToDoStorage()
-const checked = ref(props.checked)
+const { id, checked } = toRefs(props)
 
 const dropdownMenu = ref()
 const dropdownMenuItems: DropdownMenuItem[] = [
-  { icon: 'edit', label: 'Редактировать', handler: () => {} },
-  { icon: 'delete', label: 'Удалить', handler: () => removeToDo() },
+  { icon: 'edit', label: 'Редактировать', handler: () => editToDo() },
+  { icon: 'delete', label: 'Удалить', handler: () => deleteToDo() },
 ]
 
 const isDropdownMenuOpen = ref(false)
@@ -64,7 +73,12 @@ const onChange = () => {
   storage.value.items = sortToDos(storage.value.items)
 }
 
-const removeToDo = () => (storage.value.items = storage.value.items.filter(item => item.id !== props.id))
+const dialogComponent = shallowRef(EditToDoDialog)
+const dialogData = storage.value.items.find(item => item.id === id.value)
+const isEditToDoOpen = ref(false)
+
+const editToDo = () => (isEditToDoOpen.value = true)
+const deleteToDo = () => (storage.value.items = storage.value.items.filter(item => item.id !== props.id))
 </script>
 
 <style lang="scss">
