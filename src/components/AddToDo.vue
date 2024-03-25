@@ -10,7 +10,7 @@
         @keyup.enter.exact="addToDo"
       />
       <p class="add-to-do__hint">
-        <strong>Enter</strong> - добавить задачу, <strong>Shift + Enter</strong> - перенос строки
+        <kbd>Enter</kbd> - добавить задачу, <kbd>Shift</kbd> + <kbd>Enter</kbd> - перенос строки
       </p>
     </div>
     <Btn class="add-to-do__btn" type="submit">Добавить</Btn>
@@ -64,12 +64,9 @@ onMounted(() => {
 
   &__hint {
     position: absolute;
-    top: calc(100% + 0.0625rem);
-    width: 100%;
-    padding: 0.25rem 0.75rem;
+    top: calc(100% + 0.3125rem);
+    left: 0;
     font-size: 0.875rem;
-    background: var(--color-gray-100);
-    border-radius: 0.25rem;
     opacity: 0;
     transition: opacity 0.25s;
   }
