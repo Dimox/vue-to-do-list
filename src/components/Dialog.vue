@@ -1,15 +1,30 @@
 <template>
   <Teleport to="body">
     <Transition name="dialog" @after-enter="onAfterEnter">
-      <div v-if="open" class="dialog" @mousedown.self="$emit('close')">
-        <component :is="component" :data="data" class="dialog__component" @close="$emit('close')" />
+      <div
+        v-if="open"
+        ref="dialog"
+        class="dialog"
+        tabindex="0"
+        @mousedown.self="$emit('close')"
+        @keydown.esc="$emit('close')"
+      >
+        <component
+          :is="component"
+          :data="data"
+          class="dialog__component"
+          @close="$emit('close')"
+          @confirm="$emit('confirm')"
+        />
       </div>
     </Transition>
   </Teleport>
 </template>
 
 <script setup lang="ts">
-defineEmits(['close'])
+import { ref } from 'vue'
+
+defineEmits(['close', 'confirm'])
 
 defineProps({
   open: {
@@ -26,9 +41,15 @@ defineProps({
   },
 })
 
+const dialog = ref<HTMLDivElement | null>(null)
+
 const onAfterEnter = () => {
   const textarea = document.querySelector('.edit-to-do-dialog .textarea__input') as HTMLTextAreaElement
-  textarea?.focus()
+  if (textarea) {
+    textarea.focus()
+  } else {
+    dialog.value?.focus()
+  }
 }
 </script>
 
