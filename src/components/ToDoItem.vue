@@ -26,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-import { Component, ref, shallowRef, toRefs } from 'vue'
+import { Component, ref, shallowRef } from 'vue'
 import { onClickOutside } from '@vueuse/core'
 import Checkbox from './form/Checkbox.vue'
 import Icon from './Icon.vue'
@@ -58,7 +58,7 @@ const props = defineProps({
 })
 
 const storage = useToDoStorage()
-const { id, checked } = toRefs(props)
+const checked = ref(props.checked)
 
 const dropdownMenu = ref()
 const dropdownMenuItems: DropdownMenuItem[] = [
@@ -82,7 +82,7 @@ const onChange = () => {
 
 const isDialogOpen = ref(false)
 const dialogComponent = shallowRef<Component>()
-const dialogData = storage.value.items.find(item => item.id === id.value)
+const dialogData = storage.value.items.find(item => item.id === props.id)
 
 const onClickEdit = () => {
   dialogComponent.value = EditToDoDialog
