@@ -82,7 +82,8 @@ const saveToDo = async () => {
     margin-right: -0.625rem;
     padding: 0.375rem;
     border-radius: 0.375rem;
-    transition: background 0.25s;
+    transition: 0.25s;
+    transition-property: background, box-shadow;
 
     &:hover {
       background: var(--color-gray-100);
