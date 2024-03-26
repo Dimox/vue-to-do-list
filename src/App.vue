@@ -3,19 +3,17 @@
     <main class="app__main">
       <h1 class="app__title">To-Do List</h1>
       <div class="app__body">
-        <ul class="app__items">
-          <TransitionGroup name="app__items">
-            <ToDoItem
-              v-for="item in storage.items"
-              :id="item.id"
-              :key="item.id"
-              class="app__item"
-              :date="new Date(item.date)"
-              :text="item.text"
-              :checked="item.checked"
-            />
-          </TransitionGroup>
-        </ul>
+        <TransitionGroup class="app__items" tag="ul" name="app__item">
+          <ToDoItem
+            v-for="item in storage.items"
+            :id="item.id"
+            :key="item.id"
+            class="app__item"
+            :date="new Date(item.date)"
+            :text="item.text"
+            :checked="item.checked"
+          />
+        </TransitionGroup>
         <AddToDo />
       </div>
     </main>
@@ -63,13 +61,28 @@ const storage = useToDoStorage()
   }
 
   &__items {
-    position: relative;
     margin-bottom: 1rem;
+  }
+
+  &__item {
+    padding-block: 1rem 1.0625rem;
+
+    &:not(:first-child) {
+      background: linear-gradient(
+          90deg,
+          #0000,
+          #0000 2.25rem,
+          rgba(var(--color-gray-800-rgb), 0.12) 2.25rem,
+          rgba(var(--color-gray-800-rgb), 0.12)
+        )
+        no-repeat 0 0 / 100% 0.0625rem;
+    }
 
     &-move,
     &-enter-active,
     &-leave-active {
       transition: 0.35s;
+      transition-property: opacity, transform;
     }
 
     &-enter-from,
@@ -80,22 +93,7 @@ const storage = useToDoStorage()
 
     &-leave-active {
       position: absolute;
-      inset-inline: 0;
-    }
-  }
-
-  &__item {
-    padding-block: 1rem 1.0625rem;
-
-    &:not(:last-child) {
-      background: linear-gradient(
-          90deg,
-          #0000,
-          #0000 2.25rem,
-          rgba(var(--color-gray-800-rgb), 0.12) 2.25rem,
-          rgba(var(--color-gray-800-rgb), 0.12)
-        )
-        no-repeat 0 100% / 100% 0.0625rem;
+      z-index: 1;
     }
   }
 }
