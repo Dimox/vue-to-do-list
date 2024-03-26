@@ -15,18 +15,25 @@
         <Icon name="dots" />
       </button>
     </DropdownMenu>
-    <Dialog :open="isEditToDoOpen" :component="dialogComponent" :data="dialogData" @close="isEditToDoOpen = false" />
+    <Dialog
+      :open="isDialogOpen"
+      :component="dialogComponent"
+      :data="dialogData"
+      @close="isDialogOpen = false"
+      @confirm="deleteToDo"
+    />
   </li>
 </template>
 
 <script setup lang="ts">
-import { ref, shallowRef, toRefs } from 'vue'
+import { Component, ref, shallowRef, toRefs } from 'vue'
 import { onClickOutside } from '@vueuse/core'
 import Checkbox from './form/Checkbox.vue'
 import Icon from './Icon.vue'
 import DropdownMenu from './DropdownMenu.vue'
 import Dialog from './Dialog.vue'
 import EditToDoDialog from './EditToDoDialog.vue'
+import ConfirmDialog from './ConfirmDialog.vue'
 import { useToDoStorage } from '@/composables/storage'
 import { sortToDos } from '@/utils'
 import { DropdownMenuItem } from '@/types'
@@ -55,8 +62,8 @@ const { id, checked } = toRefs(props)
 
 const dropdownMenu = ref()
 const dropdownMenuItems: DropdownMenuItem[] = [
-  { icon: 'edit', label: 'Редактировать', handler: () => editToDo() },
-  { icon: 'delete', label: 'Удалить', handler: () => deleteToDo() },
+  { icon: 'edit', label: 'Редактировать', handler: () => onClickEdit() },
+  { icon: 'delete', label: 'Удалить', handler: () => onClickDelete() },
 ]
 
 const isDropdownMenuOpen = ref(false)
@@ -73,12 +80,26 @@ const onChange = () => {
   storage.value.items = sortToDos(storage.value.items)
 }
 
-const dialogComponent = shallowRef(EditToDoDialog)
+const isDialogOpen = ref(false)
+const dialogComponent = shallowRef<Component>()
 const dialogData = storage.value.items.find(item => item.id === id.value)
-const isEditToDoOpen = ref(false)
 
-const editToDo = () => (isEditToDoOpen.value = true)
-const deleteToDo = () => (storage.value.items = storage.value.items.filter(item => item.id !== props.id))
+const onClickEdit = () => {
+  dialogComponent.value = EditToDoDialog
+  isDialogOpen.value = true
+}
+
+const onClickDelete = () => {
+  dialogComponent.value = ConfirmDialog
+  isDialogOpen.value = true
+}
+
+const deleteToDo = () => {
+  isDialogOpen.value = false
+  setTimeout(() => {
+    storage.value.items = storage.value.items.filter(item => item.id !== props.id)
+  }, 200)
+}
 </script>
 
 <style lang="scss">
