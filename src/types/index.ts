@@ -21,3 +21,9 @@ export type DropdownMenuItem = {
   label: string
   handler: () => void
 }
+
+export enum ButtonType {
+  Primary = 'primary',
+  Secondary = 'secondary',
+  Alert = 'alert',
+}
