@@ -26,7 +26,7 @@
 </template>
 
 <script setup lang="ts">
-import { Component, ref, shallowRef } from 'vue'
+import { Component, ref, shallowRef, watch } from 'vue'
 import { onClickOutside } from '@vueuse/core'
 import Checkbox from './form/Checkbox.vue'
 import Icon from './Icon.vue'
@@ -59,6 +59,7 @@ const props = defineProps({
 
 const storage = useToDoStorage()
 const checked = ref(props.checked)
+watch(props, () => (checked.value = props.checked))
 
 const dropdownMenu = ref()
 const dropdownMenuItems: DropdownMenuItem[] = [
@@ -82,16 +83,22 @@ const onChange = () => {
 
 const isDialogOpen = ref(false)
 const dialogComponent = shallowRef<Component>()
-const dialogData = storage.value.items.find(item => item.id === props.id)
+const dialogData = ref()
 
 const onClickEdit = () => {
   dialogComponent.value = EditToDoDialog
   isDialogOpen.value = true
+  dialogData.value = storage.value.items.find(item => item.id === props.id)
 }
 
 const onClickDelete = () => {
   dialogComponent.value = ConfirmDialog
   isDialogOpen.value = true
+  dialogData.value = {
+    title: 'Вы уверены?',
+    message: 'Задача будет удалена безвозвратно.',
+    action: 'Удалить',
+  }
 }
 
 const deleteToDo = () => {
