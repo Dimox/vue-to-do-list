@@ -48,23 +48,23 @@ defineProps({
 
   &--secondary {
     --accent-color: var(--color-gray-400);
-    box-shadow: 0 0 0 0.125rem var(--accent-color);
+    box-shadow: inset 0 0 0 0.125rem var(--accent-color);
 
     &:hover {
-      --accent-color: rgba(var(--color-gray-800-rgb), 0.7);
+      --accent-color: var(--color-gray-500);
       color: var(--color-white);
       background: var(--accent-color);
     }
 
     &:active {
-      --accent-color: rgba(var(--color-gray-800-rgb), 0.6);
+      --accent-color: var(--color-gray-400);
     }
 
     &:focus-visible {
       outline: none;
       box-shadow:
-        0 0 0 0.125rem var(--accent-color),
-        0 0 0 0.375rem var(--color-gray-300);
+        inset 0 0 0 0.125rem var(--accent-color),
+        0 0 0 0.25rem var(--color-gray-300);
     }
   }
 
