@@ -2,6 +2,7 @@
   <div class="app">
     <main class="app__main">
       <h1 class="app__title">To-Do List</h1>
+      <Actions class="app__actions" />
       <div class="app__body">
         <TransitionGroup class="app__items" tag="ul" name="app__item">
           <ToDoItem
@@ -22,6 +23,7 @@
 
 <script setup lang="ts">
 import { useToDoStorage } from './composables/storage'
+import Actions from './components/Actions.vue'
 import ToDoItem from './components/ToDoItem.vue'
 import AddToDo from './components/AddToDo.vue'
 
@@ -53,7 +55,12 @@ const storage = useToDoStorage()
     padding: 1rem 2rem;
     font-size: 1.625rem;
     font-weight: bold;
-    border-bottom: 0.0625rem solid var(--color-gray-300);
+  }
+
+  &__actions {
+    min-height: 3.125rem;
+    padding: 0 2rem;
+    border-block: 0.0625rem solid var(--color-gray-300);
   }
 
   &__body {

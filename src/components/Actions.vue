@@ -1,0 +1,127 @@
+<template>
+  <div class="actions">
+    <Tooltip class="actions__toggle-all" text="Выбрать/снять все">
+      <Checkbox v-model="isAllToDosChecked" @click.prevent="onClickToggleAll" />
+    </Tooltip>
+    <Tooltip v-if="hasChecked()" text="Удалить выполненные задачи">
+      <button class="actions__delete-done" type="button" @click="onClickDeleteDone">
+        <Icon name="delete-done" />
+      </button>
+    </Tooltip>
+    <Dialog
+      :open="isDialogOpen"
+      :component="dialogComponent"
+      :data="dialogData"
+      @close="isDialogOpen = false"
+      @confirm="onConfirm"
+    />
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, watch, shallowRef, Component } from 'vue'
+import { useToDoStorage } from '../composables/storage'
+import Tooltip from './Tooltip.vue'
+import Checkbox from './form/Checkbox.vue'
+import Icon from './Icon.vue'
+import Dialog from './Dialog.vue'
+import ConfirmDialog from './ConfirmDialog.vue'
+
+const storage = useToDoStorage()
+const hasChecked = () => storage.value.items.some(item => item.checked)
+const hasUnchecked = () => storage.value.items.some(item => !item.checked)
+const isAllToDosChecked = ref(!hasUnchecked())
+const isDialogOpen = ref(false)
+const dialogComponent = shallowRef<Component>()
+const dialogData = ref()
+const confirmType = ref('')
+
+const onClickToggleAll = () => {
+  if (isAllToDosChecked.value) {
+    toggleAllToDos()
+  } else {
+    confirmType.value = 'toggle'
+    isDialogOpen.value = true
+    dialogComponent.value = ConfirmDialog
+    dialogData.value = {
+      title: 'Вы уверены?',
+      message: 'Все задачи будут отмечены как выполненные.',
+      action: 'Отметить как выполненные',
+    }
+  }
+}
+
+const onClickDeleteDone = () => {
+  confirmType.value = 'delete'
+  dialogComponent.value = ConfirmDialog
+  isDialogOpen.value = true
+  dialogData.value = {
+    title: 'Вы уверены?',
+    message: 'Все выполненные задачи будут удалены безвозвратно.',
+    action: 'Удалить',
+  }
+}
+
+const toggleAllToDos = () => {
+  isAllToDosChecked.value = !isAllToDosChecked.value
+  storage.value.items.forEach(item => (item.checked = isAllToDosChecked.value))
+}
+
+const onConfirm = () => {
+  if (confirmType.value === 'toggle') {
+    toggleAllToDos()
+  } else if (confirmType.value === 'delete') {
+    storage.value.items = storage.value.items.filter(item => !item.checked)
+  }
+  isDialogOpen.value = false
+}
+
+watch(storage, () => {
+  isAllToDosChecked.value = !hasUnchecked()
+})
+</script>
+
+<style lang="scss">
+.actions {
+  display: flex;
+  align-items: center;
+
+  &__toggle-all {
+    margin-right: auto;
+  }
+
+  &__delete-done {
+    position: relative;
+    z-index: 0;
+    display: block;
+    color: var(--color-gray-400);
+    transition: color 0.25s;
+
+    &::before {
+      position: absolute;
+      inset: -0.625rem;
+      z-index: -1;
+      content: '';
+      background: var(--color-gray-100);
+      border-radius: 50%;
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+
+    &:hover {
+      color: var(--color-gray-800);
+    }
+
+    &:active,
+    &:focus-visible {
+      color: var(--color-gray-800);
+      background: var(--color-gray-100);
+      outline: none;
+
+      &::before {
+        opacity: 1;
+      }
+    }
+  }
+}
+</style>
