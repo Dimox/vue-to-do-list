@@ -43,7 +43,7 @@ const props = defineProps({
     type: String,
     default: null,
   },
-  date: {
+  createdAt: {
     type: Date,
     default: null,
   },
