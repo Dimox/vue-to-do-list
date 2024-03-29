@@ -10,7 +10,7 @@
             :id="item.id"
             :key="item.id"
             class="app__item"
-            :date="new Date(item.date)"
+            :createdAt="new Date(item.createdAt)"
             :text="item.text"
             :checked="item.checked"
           />

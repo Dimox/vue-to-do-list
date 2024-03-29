@@ -8,7 +8,7 @@ export type ToDoList = {
 export type ToDoItem = {
   id: string
   text: string
-  date: Date
+  createdAt: Date
   checked: boolean
 }
 

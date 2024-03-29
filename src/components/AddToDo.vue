@@ -37,7 +37,7 @@ const addToDo = () => {
   if (!textarea.value || !toDo.value) return
   storage.value.items.push({
     id: uniqueId(),
-    date: new Date(),
+    createdAt: new Date(),
     text: toDo.value,
     checked: false,
   })
