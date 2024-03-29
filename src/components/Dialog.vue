@@ -60,6 +60,7 @@ const onAfterEnter = () => {
   z-index: 100;
   display: grid;
   background: rgba(var(--color-gray-800-rgb), 0.3);
+  outline: none;
 
   &-enter-active,
   &-leave-active {
