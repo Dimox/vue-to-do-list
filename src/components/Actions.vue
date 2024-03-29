@@ -1,5 +1,5 @@
 <template>
-  <div class="actions">
+  <div class="actions" v-if="storage.items.length > 0">
     <Tooltip class="actions__toggle-all" text="Выбрать/снять все">
       <Checkbox v-model="isAllToDosChecked" @click.prevent="onClickToggleAll" />
     </Tooltip>

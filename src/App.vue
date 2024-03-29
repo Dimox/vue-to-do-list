@@ -4,7 +4,7 @@
       <h1 class="app__title">To-Do List</h1>
       <Actions class="app__actions" />
       <div class="app__body">
-        <TransitionGroup class="app__items" tag="ul" name="app__item">
+        <TransitionGroup class="app__items" tag="ul" name="app__item" v-if="storage.items.length > 0">
           <ToDoItem
             v-for="item in storage.items"
             :id="item.id"
@@ -52,13 +52,14 @@ const storage = useToDoStorage()
   }
 
   &__title {
-    padding: 1rem 2rem;
+    padding: 1rem 2rem 0;
     font-size: 1.625rem;
     font-weight: bold;
   }
 
   &__actions {
     min-height: 3.125rem;
+    margin-top: 1rem;
     padding: 0 2rem;
     border-block: 0.0625rem solid var(--color-gray-300);
   }
