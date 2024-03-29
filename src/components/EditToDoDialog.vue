@@ -92,7 +92,7 @@ const saveToDo = async () => {
     &:focus-visible {
       background: var(--color-gray-100);
       outline: none;
-      box-shadow: 0 0 0 0.125rem var(--color-indigo-500);
+      box-shadow: 0 0 0 0.25rem var(--color-gray-300);
     }
   }
 
