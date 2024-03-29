@@ -1,33 +1,40 @@
 <template>
   <form class="confirm-dialog">
     <header class="confirm-dialog__header">
-      <h2 class="confirm-dialog__title">Вы уверены?</h2>
+      <h2 class="confirm-dialog__title">{{ title }}</h2>
       <button class="confirm-dialog__close" type="button" @click="$emit('close')">
         <Icon name="close" />
       </button>
     </header>
     <div class="confirm-dialog__body">
-      <p>Задача будет удалена безвозвратно.</p>
+      <p>{{ message }}</p>
     </div>
     <footer class="confirm-dialog__footer">
       <Btn type="secondary" @click="$emit('close')">Отмена</Btn>
-      <Btn type="alert" @click="$emit('confirm')">Удалить</Btn>
+      <Btn type="alert" @click="$emit('confirm')">{{ action }}</Btn>
     </footer>
   </form>
 </template>
 
 <script setup lang="ts">
+import { PropType } from 'vue'
 import Btn from './Btn.vue'
 import Icon from './Icon.vue'
 
 defineEmits(['close', 'confirm'])
 
-defineProps({
+const props = defineProps({
   data: {
-    type: Object,
+    type: Object as PropType<{
+      title: string
+      message: string
+      action: string
+    }>,
     default: () => ({}),
   },
 })
+
+const { title, message, action } = props.data
 </script>
 
 <style lang="scss">
