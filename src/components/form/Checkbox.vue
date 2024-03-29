@@ -39,7 +39,7 @@ const model = defineModel<boolean>()
     transition: opacity 0.25s ease;
   }
 
-  &:hover {
+  &:active {
     &::before {
       opacity: 1;
     }
