@@ -4,13 +4,19 @@
       <h1 class="app__title">To-Do List</h1>
       <Actions class="app__actions" />
       <div class="app__body">
-        <TransitionGroup class="app__items" tag="ul" name="app__item" v-if="storage.items.length > 0">
+        <TransitionGroup
+          v-if="storage.items.length > 0"
+          ref="itemsEl"
+          class="app__items"
+          tag="ul"
+          :name="isDragging ? '' : 'app__item'"
+        >
           <ToDoItem
             v-for="item in storage.items"
             :id="item.id"
             :key="item.id"
             class="app__item"
-            :createdAt="new Date(item.createdAt)"
+            :created-at="new Date(item.createdAt)"
             :text="item.text"
             :checked="item.checked"
           />
@@ -22,12 +28,31 @@
 </template>
 
 <script setup lang="ts">
+import { ref, nextTick } from 'vue'
+import { useSortable } from '@vueuse/integrations/useSortable'
 import { useToDoStorage } from './composables/storage'
 import Actions from './components/Actions.vue'
 import ToDoItem from './components/ToDoItem.vue'
 import AddToDo from './components/AddToDo.vue'
 
 const storage = useToDoStorage()
+const itemsEl = ref()
+const isDragging = ref(false)
+
+useSortable(itemsEl, storage.value.items, {
+  animation: 200,
+  draggable: '.to-do-item:not(.to-do-item--checked)',
+  ghostClass: 'app__item--ghost',
+  onStart: () => (isDragging.value = true),
+  onUpdate: (e: { oldIndex: number; newIndex: number }) => {
+    // https://github.com/vueuse/vueuse/issues/2924
+    const item = storage.value.items.splice(e.oldIndex, 1)[0]
+    nextTick(async () => {
+      await Promise.all(storage.value.items.splice(e.newIndex, 0, item))
+      isDragging.value = false
+    })
+  },
+})
 </script>
 
 <style lang="scss">
@@ -70,12 +95,18 @@ const storage = useToDoStorage()
 
   &__items {
     margin-bottom: 1rem;
+
+    &:has(.sortable-chosen) {
+      .dropdown-menu {
+        opacity: 0;
+      }
+    }
   }
 
   &__item {
     padding-block: 1rem 1.0625rem;
 
-    &:not(:first-child) {
+    &:not(:first-child):not(.sortable-drag) {
       background: linear-gradient(
           90deg,
           #0000,
@@ -84,6 +115,19 @@ const storage = useToDoStorage()
           rgba(var(--color-gray-800-rgb), 0.12)
         )
         no-repeat 0 0 / 100% 0.0625rem;
+    }
+
+    &--ghost {
+      position: relative;
+
+      &::after {
+        position: absolute;
+        inset: 0 -1rem -0.0625rem;
+        pointer-events: none;
+        content: '';
+        border: 0.125rem dashed var(--color-gray-400);
+        border-radius: 0.75rem;
+      }
     }
 
     &-move,
