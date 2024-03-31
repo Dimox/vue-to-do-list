@@ -1,9 +1,7 @@
 <template>
   <li class="to-do-item" :class="{ 'to-do-item--checked': checked }">
     <Checkbox v-model="checked" class="to-do-item__checkbox" @change="onChange" />
-    <div class="to-do-item__text">
-      <p class="to-do-item__text-inner">{{ text }}</p>
-    </div>
+    <div class="to-do-item__text" v-html="sanitizedHtml(text)" />
     <DropdownMenu
       ref="dropdownMenu"
       class="to-do-item__dropdown"
@@ -28,6 +26,8 @@
 <script setup lang="ts">
 import { Component, ref, shallowRef, watch } from 'vue'
 import { onClickOutside } from '@vueuse/core'
+import { marked } from 'marked'
+import DOMPurify from 'dompurify'
 import Checkbox from './form/Checkbox.vue'
 import Icon from './Icon.vue'
 import DropdownMenu from './DropdownMenu.vue'
@@ -60,6 +60,9 @@ const props = defineProps({
 const storage = useToDoStorage()
 const checked = ref(props.checked)
 watch(props, () => (checked.value = props.checked))
+
+const sanitizedHtml = (text: string) => DOMPurify.sanitize(marked.parse(text) as string)
+DOMPurify.addHook('afterSanitizeAttributes', node => 'target' in node && node.setAttribute('target', '_blank'))
 
 const dropdownMenu = ref()
 const dropdownMenuItems: DropdownMenuItem[] = [
@@ -123,19 +126,50 @@ const deleteToDo = () => {
     flex-grow: 1;
     overflow-wrap: anywhere;
 
-    &-inner {
-      white-space: pre-line;
+    .to-do-item--checked & {
+      color: var(--color-gray-300);
+      text-decoration: underline;
+      text-decoration-thickness: 0.0625rem;
+      text-underline-offset: -0.3125rem;
+      transition: color 0.25s;
+      text-decoration-skip-ink: none;
 
-      .to-do-item--checked & {
-        --color: var(--color-gray-300);
-        display: inline;
-        color: var(--color);
-        background: linear-gradient(var(--color), var(--color)) no-repeat 0 56% / 100% 0.0625rem;
-        transition: color 0.25s;
+      a {
+        color: var(--color-indigo-300);
+      }
+    }
 
-        &:hover {
-          color: var(--color-gray-400);
-        }
+    .to-do-item--checked:hover & {
+      color: var(--color-gray-400);
+
+      a {
+        color: var(--color-indigo-400);
+      }
+    }
+
+    * + *,
+    ul,
+    ol {
+      margin-top: 0.75rem;
+    }
+
+    ul,
+    ol {
+      padding: revert;
+    }
+
+    li {
+      list-style: revert;
+    }
+
+    a {
+      color: var(--color-indigo-600);
+      text-decoration: underline;
+      text-underline-offset: 0.125rem;
+      transition: color 0.25s;
+
+      &:hover {
+        text-decoration: none;
       }
     }
   }
