@@ -1,6 +1,6 @@
 {
   "name": "vue-to-do-list",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@vueuse/core": "^10.9.0",
+    "@vueuse/integrations": "^10.9.0",
+    "sortablejs": "^1",
     "vue": "^3.4.21"
   },
   "devDependencies": {
