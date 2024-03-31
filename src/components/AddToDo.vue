@@ -1,8 +1,8 @@
 <template>
-  <form class="add-to-do" @submit.prevent="addToDo">
+  <form class="add-to-do" @submit.prevent="addToDo" @keydown.prevent.ctrl.b="onPressCtrlB">
     <div class="add-to-do__wrapper">
       <Textarea
-        v-model="toDo"
+        v-model="toDoText"
         class="add-to-do__textarea"
         placeholder="Введите новую задачу..."
         @input="onInput"
@@ -21,12 +21,12 @@
 import { onMounted, ref } from 'vue'
 import Textarea from '@/components/form/Textarea.vue'
 import Btn from '@/components/Btn.vue'
-import { textareaAutoHeight, uniqueId, sortToDos } from '@/utils'
+import { textareaAutoHeight, uniqueId, sortToDos, makeSelectedTextBold } from '@/utils'
 import { useToDoStorage } from '@/composables/storage'
 
 const storage = useToDoStorage()
 const textarea = ref<HTMLTextAreaElement>()
-const toDo = ref()
+const toDoText = ref()
 
 const onInput = () => {
   if (!textarea.value) return
@@ -34,17 +34,19 @@ const onInput = () => {
 }
 
 const addToDo = () => {
-  if (!textarea.value || !toDo.value) return
+  if (!textarea.value || !toDoText.value) return
   storage.value.items.push({
     id: uniqueId(),
     createdAt: new Date(),
-    text: toDo.value,
+    text: toDoText.value,
     checked: false,
   })
   storage.value.items = sortToDos(storage.value.items)
-  toDo.value = ''
+  toDoText.value = ''
   textarea.value.style.height = ''
 }
+
+const onPressCtrlB = () => (toDoText.value = makeSelectedTextBold(toDoText.value))
 
 onMounted(() => {
   textarea.value = document.querySelector('.add-to-do textarea') as HTMLTextAreaElement
