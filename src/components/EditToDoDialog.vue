@@ -1,5 +1,5 @@
 <template>
-  <form class="edit-to-do-dialog" @keydown.ctrl.enter="saveToDo">
+  <form class="edit-to-do-dialog" @keydown="handleKeydown">
     <header class="edit-to-do-dialog__header">
       <h2 class="edit-to-do-dialog__title">Редактирование задачи</h2>
       <button class="edit-to-do-dialog__close" type="button" @click="$emit('close')">
@@ -22,6 +22,7 @@ import Textarea from './form/Textarea.vue'
 import Btn from './Btn.vue'
 import Icon from './Icon.vue'
 import { useToDoStorage } from '@/composables/storage'
+import { makeSelectedTextBold } from '@/utils'
 
 const emit = defineEmits(['close'])
 
@@ -47,6 +48,16 @@ const saveToDo = async () => {
     })
   )
   emit('close')
+}
+
+const handleKeydown = (event: KeyboardEvent) => {
+  if (event.ctrlKey && event.code === 'Enter') {
+    saveToDo()
+  }
+  if (event.ctrlKey && event.code === 'KeyB') {
+    event.preventDefault()
+    text.value = makeSelectedTextBold(text.value)
+  }
 }
 </script>
 
