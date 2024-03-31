@@ -16,3 +16,8 @@ export const sortToDos = (items: ToDoItem[]) => {
     return -1
   })
 }
+
+export const makeSelectedTextBold = (text: string) => {
+  const selectedText = window.getSelection()?.toString() ?? ''
+  return text.replace(selectedText, `**${selectedText}**`)
+}
