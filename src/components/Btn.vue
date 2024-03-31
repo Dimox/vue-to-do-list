@@ -24,6 +24,7 @@ defineProps({
 .btn {
   padding: 0.75rem 1.5rem;
   font-weight: 500;
+  text-align: center;
   border-radius: 0.375rem;
   transition: 0.25s;
   transition-property: background, box-shadow, color;

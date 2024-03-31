@@ -77,7 +77,8 @@ const { title, message, action } = props.data
 
   &__footer {
     display: flex;
-    gap: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem 1.5rem;
     align-items: center;
     justify-content: space-between;
     padding: 2rem;

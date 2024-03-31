@@ -53,6 +53,7 @@ const label = computed(() => (props.label ? props.label : props.placeholder))
     display: block;
     width: 100%;
     padding: 0.6875rem 1.25rem;
+    overscroll-behavior: contain;
     font: inherit;
     resize: none;
     border: 0.0625rem solid var(--color-gray-300);

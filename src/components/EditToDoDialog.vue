@@ -7,7 +7,7 @@
       </button>
     </header>
     <div class="edit-to-do-dialog__body">
-      <Textarea v-model="text" rows="5" />
+      <Textarea v-model="text" rows="1" />
     </div>
     <footer class="edit-to-do-dialog__footer">
       <Btn @click="saveToDo">Сохранить</Btn>
@@ -52,7 +52,10 @@ const saveToDo = async () => {
 
 <style lang="scss">
 .edit-to-do-dialog {
+  display: flex;
+  flex-direction: column;
   width: min(37.5rem, 100%);
+  height: min(26.0625rem, 100%);
 
   &__header {
     display: flex;
@@ -67,11 +70,25 @@ const saveToDo = async () => {
   }
 
   &__body {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
     padding: 0 2rem;
+
+    .textarea {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+
+      &__input {
+        flex: 1;
+      }
+    }
   }
 
   &__footer {
     display: flex;
+    flex-wrap: wrap;
     gap: 1.5rem;
     align-items: center;
     justify-content: space-between;

@@ -73,6 +73,8 @@ const onAfterEnter = () => {
   }
 
   &__component {
+    max-width: calc(100% - 2rem);
+    max-height: calc(100% - 2rem);
     margin: auto;
     background: var(--color-white);
     border-radius: 0.75rem;
