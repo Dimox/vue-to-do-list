@@ -17,11 +17,16 @@ defineProps({
     type: Boolean,
     default: false,
   },
+  icon: {
+    type: String,
+    default: null,
+  },
 })
 </script>
 
 <style lang="scss">
 .btn {
+  display: block;
   padding: 0.75rem 1.5rem;
   font-weight: 500;
   text-align: center;
@@ -84,6 +89,39 @@ defineProps({
     &:focus-visible {
       outline: none;
       box-shadow: 0 0 0 0.25rem var(--color-red-300);
+    }
+  }
+
+  &--icon {
+    position: relative;
+    z-index: 0;
+    padding: 0;
+    color: var(--color-gray-400);
+    transition-property: color;
+
+    &::before {
+      position: absolute;
+      inset: -0.5rem;
+      z-index: -1;
+      content: '';
+      background: var(--color-gray-100);
+      border-radius: 50%;
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+
+    &:hover {
+      color: var(--color-gray-800);
+    }
+
+    &:active,
+    &:focus-visible {
+      color: var(--color-gray-800);
+      outline: none;
+
+      &::before {
+        opacity: 1;
+      }
     }
   }
 }

@@ -26,4 +26,5 @@ export enum ButtonType {
   Primary = 'primary',
   Secondary = 'secondary',
   Alert = 'alert',
+  Icon = 'icon',
 }
