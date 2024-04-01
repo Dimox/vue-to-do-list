@@ -1,7 +1,7 @@
 <template>
   <div class="dropdown-menu" :class="{ 'dropdown-menu--open': open }">
     <slot>
-      <Btn>Actions</Btn>
+      <Btn>...</Btn>
     </slot>
     <ul class="dropdown-menu__items">
       <li v-for="item in items" :key="item.label" class="dropdown-menu__item" @click="onItemClick(item)">
