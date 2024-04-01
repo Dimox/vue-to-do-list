@@ -31,7 +31,7 @@ const model = defineModel<boolean>()
 
   &::before {
     position: absolute;
-    inset: -0.75rem;
+    inset: -0.625rem;
     content: '';
     background: var(--color-gray-100);
     border-radius: 50%;
@@ -39,7 +39,8 @@ const model = defineModel<boolean>()
     transition: opacity 0.25s ease;
   }
 
-  &:active {
+  &:active,
+  &:has(:focus-visible) {
     &::before {
       opacity: 1;
     }
@@ -65,13 +66,6 @@ const model = defineModel<boolean>()
     &:focus {
       & + .checkbox__svg {
         stroke: var(--color-indigo-500);
-      }
-    }
-
-    &:focus-visible {
-      & + .checkbox__svg {
-        border-radius: 0.25rem;
-        box-shadow: 0 0 0 0.125rem var(--color-indigo-300);
       }
     }
   }
