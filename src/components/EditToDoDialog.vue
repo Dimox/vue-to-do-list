@@ -1,17 +1,17 @@
 <template>
   <form class="edit-to-do-dialog" @keydown="handleKeydown">
     <header class="edit-to-do-dialog__header">
-      <h2 class="edit-to-do-dialog__title">Редактирование задачи</h2>
-      <button class="edit-to-do-dialog__close" type="button" @click="$emit('close')">
+      <h2 class="edit-to-do-dialog__title">{{ t('editTask') }}</h2>
+      <Btn class="edit-to-do-dialog__close" type="icon" @click="$emit('close')">
         <Icon name="close" />
-      </button>
+      </Btn>
     </header>
     <div class="edit-to-do-dialog__body">
       <Textarea v-model="text" rows="1" />
     </div>
     <footer class="edit-to-do-dialog__footer">
-      <Btn @click="saveToDo">Сохранить</Btn>
-      <p class="edit-to-do-dialog__hint">Нажмите <kbd>Ctrl</kbd> + <kbd>Enter</kbd> для сохранения</p>
+      <Btn class="edit-to-do-dialog__save" @click="saveToDo">{{ t('save') }}</Btn>
+      <p class="edit-to-do-dialog__hint" v-html="tHtml('pressCtrlEnterToSave')" />
     </footer>
   </form>
 </template>
@@ -23,6 +23,7 @@ import Btn from './Btn.vue'
 import Icon from './Icon.vue'
 import { useToDoStorage } from '@/composables/storage'
 import { makeSelectedTextBold } from '@/utils'
+import { t, tHtml } from '@/i18n'
 
 const emit = defineEmits(['close'])
 
@@ -106,21 +107,17 @@ const handleKeydown = (event: KeyboardEvent) => {
     padding: 1.5rem 2rem 2rem;
   }
 
+  &__save {
+    min-width: 6.5rem;
+  }
+
   &__close {
-    margin-right: -0.625rem;
-    padding: 0.375rem;
-    border-radius: 0.375rem;
-    transition: 0.25s;
-    transition-property: background, box-shadow;
+    color: var(--color-gray-800);
 
     &:hover {
-      background: var(--color-gray-100);
-    }
-
-    &:focus-visible {
-      background: var(--color-gray-100);
-      outline: none;
-      box-shadow: 0 0 0 0.25rem var(--color-gray-300);
+      &::before {
+        opacity: 1;
+      }
     }
   }
 
