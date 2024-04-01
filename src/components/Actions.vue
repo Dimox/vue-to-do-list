@@ -1,12 +1,12 @@
 <template>
   <div v-if="storage.items.length > 0" class="actions">
-    <Tooltip class="actions__toggle-all" text="Выбрать/снять все">
+    <Tooltip class="actions__toggle-all" :text="t('selectUnselectAll')">
       <Checkbox v-model="isAllToDosChecked" @click.prevent="onClickToggleAll" />
     </Tooltip>
-    <Tooltip v-if="hasChecked()" text="Удалить выполненные задачи">
-      <button class="actions__delete-done" type="button" @click="onClickDeleteDone">
+    <Tooltip v-if="hasChecked()" :text="t('deleteCompleted')">
+      <Btn class="actions__delete-done" type="icon" @click="onClickDeleteDone">
         <Icon name="delete-done" />
-      </button>
+      </Btn>
     </Tooltip>
     <Dialog
       :open="isDialogOpen"
@@ -20,12 +20,14 @@
 
 <script setup lang="ts">
 import { ref, watch, shallowRef, Component } from 'vue'
-import { useToDoStorage } from '../composables/storage'
 import Tooltip from './Tooltip.vue'
 import Checkbox from './form/Checkbox.vue'
+import Btn from './Btn.vue'
 import Icon from './Icon.vue'
 import Dialog from './Dialog.vue'
 import ConfirmDialog from './ConfirmDialog.vue'
+import { useToDoStorage } from '@/composables/storage'
+import { t } from '@/i18n'
 
 const storage = useToDoStorage()
 const hasChecked = () => storage.value.items.some(item => item.checked)
@@ -44,9 +46,9 @@ const onClickToggleAll = () => {
     isDialogOpen.value = true
     dialogComponent.value = ConfirmDialog
     dialogData.value = {
-      title: 'Вы уверены?',
-      message: 'Все задачи будут отмечены как выполненные.',
-      action: 'Отметить как выполненные',
+      title: t('areYouSure'),
+      message: t('allTasksWillBeMarkedAsCompleted'),
+      action: t('markAsCompleted'),
     }
   }
 }
@@ -56,9 +58,9 @@ const onClickDeleteDone = () => {
   dialogComponent.value = ConfirmDialog
   isDialogOpen.value = true
   dialogData.value = {
-    title: 'Вы уверены?',
-    message: 'Все выполненные задачи будут удалены безвозвратно.',
-    action: 'Удалить',
+    title: t('areYouSure'),
+    message: t('allCompletedWillBeDeleted'),
+    action: t('delete'),
   }
 }
 
@@ -91,37 +93,7 @@ watch(storage, () => {
   }
 
   &__delete-done {
-    position: relative;
-    z-index: 0;
-    display: block;
     color: var(--color-gray-400);
-    transition: color 0.25s;
-
-    &::before {
-      position: absolute;
-      inset: -0.625rem;
-      z-index: -1;
-      content: '';
-      background: var(--color-gray-100);
-      border-radius: 50%;
-      opacity: 0;
-      transition: opacity 0.25s;
-    }
-
-    &:hover {
-      color: var(--color-gray-800);
-    }
-
-    &:active,
-    &:focus-visible {
-      color: var(--color-gray-800);
-      background: var(--color-gray-100);
-      outline: none;
-
-      &::before {
-        opacity: 1;
-      }
-    }
   }
 }
 </style>

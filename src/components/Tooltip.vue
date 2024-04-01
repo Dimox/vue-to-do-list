@@ -21,7 +21,7 @@ defineProps({
 
   &__text {
     position: absolute;
-    bottom: calc(100% + 0.75rem);
+    bottom: calc(100% + 0.5rem);
     left: 50%;
     z-index: 10;
     padding: 0.375rem 0.75rem;
