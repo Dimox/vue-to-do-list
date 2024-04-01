@@ -4,21 +4,22 @@
       <Textarea
         v-model="toDoText"
         class="add-to-do__textarea"
-        placeholder="Введите новую задачу..."
+        :placeholder="t('typeNewTask')"
         @input="onInput"
         @keydown.enter.exact.prevent
         @keyup.enter.exact="addToDo"
       />
       <p class="add-to-do__hint">
-        <kbd>Enter</kbd> - добавить задачу, <kbd>Shift</kbd> + <kbd>Enter</kbd> - перенос строки
+        <kbd>Enter</kbd> - {{ t('addTask') }}, <kbd>Shift</kbd> + <kbd>Enter</kbd> - {{ t('lineBreak') }}
       </p>
     </div>
-    <Btn class="add-to-do__btn" submit>Добавить</Btn>
+    <Btn class="add-to-do__btn" submit>{{ t('add') }}</Btn>
   </form>
 </template>
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
+import { t } from '@/i18n'
 import Textarea from '@/components/form/Textarea.vue'
 import Btn from '@/components/Btn.vue'
 import { textareaAutoHeight, uniqueId, sortToDos, makeSelectedTextBold } from '@/utils'
@@ -75,6 +76,10 @@ onMounted(() => {
 
   &__textarea:has(:focus:not(:placeholder-shown)) + &__hint {
     opacity: 1;
+  }
+
+  &__btn {
+    min-width: 6.5rem;
   }
 }
 </style>
