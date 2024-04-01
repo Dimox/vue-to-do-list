@@ -9,9 +9,9 @@
       :items="dropdownMenuItems"
       @close="isDropdownMenuOpen = false"
     >
-      <button class="to-do-item__dropdown-btn" type="button" @click="toggleDropdownMenu">
+      <Btn class="to-do-item__dropdown-btn" type="icon" @click="toggleDropdownMenu">
         <Icon name="dots" />
-      </button>
+      </Btn>
     </DropdownMenu>
     <Dialog
       :open="isDialogOpen"
@@ -29,6 +29,7 @@ import { onClickOutside } from '@vueuse/core'
 import { marked } from 'marked'
 import DOMPurify from 'dompurify'
 import Checkbox from './form/Checkbox.vue'
+import Btn from './Btn.vue'
 import Icon from './Icon.vue'
 import DropdownMenu from './DropdownMenu.vue'
 import Dialog from './Dialog.vue'
@@ -37,6 +38,7 @@ import ConfirmDialog from './ConfirmDialog.vue'
 import { useToDoStorage } from '@/composables/storage'
 import { sortToDos } from '@/utils'
 import { DropdownMenuItem } from '@/types'
+import { t } from '@/i18n'
 
 const props = defineProps({
   id: {
@@ -66,8 +68,8 @@ DOMPurify.addHook('afterSanitizeAttributes', node => 'target' in node && node.se
 
 const dropdownMenu = ref()
 const dropdownMenuItems: DropdownMenuItem[] = [
-  { icon: 'edit', label: 'Редактировать', handler: () => onClickEdit() },
-  { icon: 'delete', label: 'Удалить', handler: () => onClickDelete() },
+  { icon: 'edit', label: t('edit'), handler: () => onClickEdit() },
+  { icon: 'delete', label: t('delete'), handler: () => onClickDelete() },
 ]
 
 const isDropdownMenuOpen = ref(false)
@@ -98,9 +100,9 @@ const onClickDelete = () => {
   dialogComponent.value = ConfirmDialog
   isDialogOpen.value = true
   dialogData.value = {
-    title: 'Вы уверены?',
-    message: 'Задача будет удалена безвозвратно.',
-    action: 'Удалить',
+    title: t('areYouSure'),
+    message: t('taskWillBeDeletedPermanently'),
+    action: t('delete'),
   }
 }
 
@@ -147,6 +149,10 @@ const deleteToDo = () => {
       }
     }
 
+    p {
+      white-space: pre-line;
+    }
+
     * + *,
     ul,
     ol {
@@ -175,14 +181,11 @@ const deleteToDo = () => {
   }
 
   &__dropdown {
-    margin-block: -0.5rem;
+    margin-top: 0.125rem;
 
     &-btn {
-      padding: 0.5rem;
-      border-radius: 50%;
       opacity: 0;
-      transition: 0.25s;
-      transition-property: opacity, background;
+      transition-property: opacity, color;
 
       .to-do-item:hover &,
       .to-do-item:has(.dropdown-menu--open) & {
