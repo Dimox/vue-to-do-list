@@ -1,28 +1,38 @@
 <template>
   <div class="app">
     <main class="app__main">
-      <h1 class="app__title">To-Do List</h1>
-      <Actions class="app__actions" />
-      <div class="app__body">
-        <TransitionGroup
-          v-if="storage.items.length > 0"
-          ref="itemsEl"
-          class="app__items"
-          tag="ul"
-          :name="isDragging ? '' : 'app__item'"
-        >
-          <ToDoItem
-            v-for="item in storage.items"
-            :id="item.id"
-            :key="item.id"
-            class="app__item"
-            :created-at="new Date(item.createdAt)"
-            :text="item.text"
-            :checked="item.checked"
-          />
-        </TransitionGroup>
-        <AddToDo />
-      </div>
+      <header class="app__header">
+        <h1 class="app__title">To-Do List</h1>
+        <Tooltip :text="t('settings')">
+          <Btn class="app__settings" type="icon" @click="isSettingsOpen = !isSettingsOpen">
+            <Icon name="settings" width="28" height="28" />
+          </Btn>
+        </Tooltip>
+      </header>
+      <Settings v-if="isSettingsOpen" />
+      <template v-else>
+        <Actions class="app__actions" />
+        <div class="app__body">
+          <TransitionGroup
+            v-if="storage.items.length > 0"
+            ref="itemsEl"
+            class="app__items"
+            tag="ul"
+            :name="isDragging ? '' : 'app__item'"
+          >
+            <ToDoItem
+              v-for="item in storage.items"
+              :id="item.id"
+              :key="item.id"
+              class="app__item"
+              :created-at="new Date(item.createdAt)"
+              :text="item.text"
+              :checked="item.checked"
+            />
+          </TransitionGroup>
+          <AddToDo />
+        </div>
+      </template>
     </main>
   </div>
 </template>
@@ -31,13 +41,19 @@
 import { ref, nextTick } from 'vue'
 import { useSortable } from '@vueuse/integrations/useSortable'
 import { useToDoStorage } from './composables/storage'
+import { t } from './i18n'
+import Btn from './components/Btn.vue'
+import Icon from './components/Icon.vue'
 import Actions from './components/Actions.vue'
 import ToDoItem from './components/ToDoItem.vue'
 import AddToDo from './components/AddToDo.vue'
+import Settings from './components/Settings.vue'
+import Tooltip from './components/Tooltip.vue'
 
 const storage = useToDoStorage()
 const itemsEl = ref()
 const isDragging = ref(false)
+const isSettingsOpen = ref(false)
 
 useSortable(itemsEl, storage.value.items, {
   animation: 200,
@@ -76,10 +92,20 @@ useSortable(itemsEl, storage.value.items, {
     }
   }
 
-  &__title {
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     padding: 1rem 2rem 0;
+  }
+
+  &__title {
     font-size: 1.625rem;
     font-weight: bold;
+  }
+
+  &__settings {
+    margin-right: -0.125rem;
   }
 
   &__actions {
