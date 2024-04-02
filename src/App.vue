@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <main class="app__main">
+    <main class="app__main" :class="[isSettingsOpen ? 'app__main--settings' : 'app__main--to-do']">
       <header class="app__header">
         <h1 class="app__title">To-Do List</h1>
         <Tooltip :text="t('settings')">
@@ -90,7 +90,7 @@ useSortable(itemsEl, storage.value.items, {
       rgba(var(--color-black-rgb), var(--spread-shadow)) 0 0.5rem 0.625rem -0.375rem;
     transition: box-shadow 0.25s ease-in-out;
 
-    &::after {
+    &--to-do::after {
       position: sticky;
       bottom: 5.125rem;
       z-index: 1;
