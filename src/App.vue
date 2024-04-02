@@ -30,8 +30,8 @@
               :checked="item.checked"
             />
           </TransitionGroup>
-          <AddToDo />
         </div>
+        <AddToDo class="app__add" />
       </template>
     </main>
   </div>
@@ -77,6 +77,8 @@ useSortable(itemsEl, storage.value.items, {
 
   &__main {
     --spread-shadow: 5%;
+    display: flex;
+    flex-direction: column;
     max-width: 40rem;
     margin-inline: auto;
     background: var(--color-white);
@@ -86,6 +88,16 @@ useSortable(itemsEl, storage.value.items, {
       rgba(var(--color-black-rgb), var(--spread-shadow)) 0 1.25rem 1.5625rem -0.3125rem,
       rgba(var(--color-black-rgb), var(--spread-shadow)) 0 0.5rem 0.625rem -0.375rem;
     transition: box-shadow 0.25s ease-in-out;
+
+    &::after {
+      position: sticky;
+      bottom: 5.125rem;
+      z-index: 1;
+      height: 2rem;
+      margin-bottom: -2rem;
+      content: '';
+      background: var(--color-white);
+    }
 
     &:has(.add-to-do__textarea :focus) {
       --spread-shadow: 15%;
@@ -116,12 +128,10 @@ useSortable(itemsEl, storage.value.items, {
   }
 
   &__body {
-    padding: 1rem 2rem 2rem;
+    padding: 1rem 2rem;
   }
 
   &__items {
-    margin-bottom: 1rem;
-
     &:has(.sortable-chosen) {
       .dropdown-menu {
         opacity: 0;
@@ -173,6 +183,16 @@ useSortable(itemsEl, storage.value.items, {
       position: absolute;
       z-index: 1;
     }
+  }
+
+  &__add {
+    position: sticky;
+    bottom: 0;
+    z-index: 1;
+    order: 1;
+    padding: 0 2rem 2rem;
+    background: var(--color-white);
+    border-radius: 0 0 1.5rem 1.5rem;
   }
 }
 </style>
