@@ -57,6 +57,7 @@ const isSettingsOpen = ref(false)
 
 useSortable(itemsEl, storage.value.items, {
   animation: 200,
+  handle: '.to-do-item__handle',
   draggable: '.to-do-item:not(.to-do-item--checked)',
   ghostClass: 'app__item--ghost',
   onStart: () => (isDragging.value = true),
@@ -132,9 +133,15 @@ useSortable(itemsEl, storage.value.items, {
   }
 
   &__items {
+    margin-left: -2rem;
+
     &:has(.sortable-chosen) {
       .dropdown-menu {
         opacity: 0;
+      }
+
+      .to-do-item__handle {
+        display: none;
       }
     }
   }
@@ -146,8 +153,8 @@ useSortable(itemsEl, storage.value.items, {
       background: linear-gradient(
           90deg,
           #0000,
-          #0000 2.25rem,
-          rgba(var(--color-gray-800-rgb), 0.12) 2.25rem,
+          #0000 4.75rem,
+          rgba(var(--color-gray-800-rgb), 0.12) 4.75rem,
           rgba(var(--color-gray-800-rgb), 0.12)
         )
         no-repeat 0 0 / 100% 0.0625rem;
@@ -158,7 +165,7 @@ useSortable(itemsEl, storage.value.items, {
 
       &::after {
         position: absolute;
-        inset: 0 -1rem -0.0625rem;
+        inset: 0 -1rem -0.0625rem 1rem;
         pointer-events: none;
         content: '';
         border: 0.125rem dashed var(--color-gray-400);
