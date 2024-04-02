@@ -3,6 +3,8 @@
   "version": "2.0.0",
   "type": "module",
   "homepage": "https://github.com/Dimox/vue-to-do-list",
+  "author": "Dimox",
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
