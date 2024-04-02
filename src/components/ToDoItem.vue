@@ -1,5 +1,8 @@
 <template>
   <li class="to-do-item" :class="{ 'to-do-item--checked': checked }">
+    <div class="to-do-item__handle">
+      <Icon name="drag" width="20" height="20" />
+    </div>
     <Checkbox v-model="checked" class="to-do-item__checkbox" @change="onChange" />
     <div class="to-do-item__text" v-html="sanitizedHtml(text)" />
     <DropdownMenu
@@ -116,9 +119,31 @@ const deleteToDo = () => {
 
 <style lang="scss">
 .to-do-item {
+  position: relative;
   display: flex;
   gap: 1rem;
   align-items: flex-start;
+  padding-left: 2rem;
+
+  &__handle {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    width: 2.25rem;
+    padding: 1.1875rem 0 0 0.375rem;
+    color: var(--color-gray-500);
+    cursor: grab;
+    opacity: 0;
+    transition: opacity 0.25s;
+
+    .to-do-item:hover & {
+      opacity: 1;
+    }
+
+    &:active {
+      cursor: grabbing;
+    }
+  }
 
   &__checkbox {
     margin-top: 0.1875rem;

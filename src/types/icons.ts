@@ -6,5 +6,6 @@ export enum IconName {
   Delete = "delete",
   DeleteDone = "delete-done",
   Close = "close",
-  Settings = "settings"
+  Settings = "settings",
+  Drag = "drag"
 }
