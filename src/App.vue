@@ -1,6 +1,6 @@
 <template>
-  <div class="app">
-    <main class="app__main" :class="[isSettingsOpen ? 'app__main--settings' : 'app__main--to-do']">
+  <div class="app" :class="[isSettingsOpen ? 'app--settings' : 'app--to-do']">
+    <main class="app__main">
       <header class="app__header">
         <h1 class="app__title">To-Do List</h1>
         <Tooltip :text="t('settings')">
@@ -9,30 +9,28 @@
           </Btn>
         </Tooltip>
       </header>
-      <Settings v-if="isSettingsOpen" />
-      <template v-else>
+      <div v-show="!isSettingsOpen" class="app__body">
         <Actions class="app__actions" />
-        <div class="app__body">
-          <TransitionGroup
-            v-if="storage.items.length > 0"
-            ref="itemsEl"
-            class="app__items"
-            tag="ul"
-            :name="isDragging ? '' : 'app__item'"
-          >
-            <ToDoItem
-              v-for="item in storage.items"
-              :id="item.id"
-              :key="item.id"
-              class="app__item"
-              :created-at="new Date(item.createdAt)"
-              :text="item.text"
-              :checked="item.checked"
-            />
-          </TransitionGroup>
-        </div>
+        <TransitionGroup
+          v-if="storage.items.length > 0"
+          ref="itemsEl"
+          class="app__items"
+          tag="ul"
+          :name="isDragging ? '' : 'app__item'"
+        >
+          <ToDoItem
+            v-for="item in storage.items"
+            :id="item.id"
+            :key="item.id"
+            class="app__item"
+            :created-at="new Date(item.createdAt)"
+            :text="item.text"
+            :checked="item.checked"
+          />
+        </TransitionGroup>
         <AddToDo class="app__add" />
-      </template>
+      </div>
+      <Settings v-if="isSettingsOpen" />
     </main>
   </div>
 </template>
@@ -78,8 +76,6 @@ useSortable(itemsEl, storage.value.items, {
 
   &__main {
     --spread-shadow: 5%;
-    display: flex;
-    flex-direction: column;
     max-width: 40rem;
     margin-inline: auto;
     background: var(--color-white);
@@ -89,16 +85,6 @@ useSortable(itemsEl, storage.value.items, {
       rgba(var(--color-black-rgb), var(--spread-shadow)) 0 1.25rem 1.5625rem -0.3125rem,
       rgba(var(--color-black-rgb), var(--spread-shadow)) 0 0.5rem 0.625rem -0.375rem;
     transition: box-shadow 0.25s ease-in-out;
-
-    &--to-do::after {
-      position: sticky;
-      bottom: 5.125rem;
-      z-index: 1;
-      height: 2rem;
-      margin-bottom: -2rem;
-      content: '';
-      background: var(--color-white);
-    }
 
     &:has(.add-to-do__textarea :focus) {
       --spread-shadow: 15%;
@@ -121,6 +107,21 @@ useSortable(itemsEl, storage.value.items, {
     margin-right: -0.125rem;
   }
 
+  &__body {
+    display: flex;
+    flex-direction: column;
+
+    .app--to-do &::after {
+      position: sticky;
+      bottom: 5.125rem;
+      z-index: 1;
+      height: 2rem;
+      margin-bottom: -2rem;
+      content: '';
+      background: var(--color-white);
+    }
+  }
+
   &__actions {
     min-height: 3.125rem;
     margin-top: 1rem;
@@ -128,12 +129,9 @@ useSortable(itemsEl, storage.value.items, {
     border-block: 0.0625rem solid var(--color-gray-300);
   }
 
-  &__body {
-    padding: 1rem 2rem;
-  }
-
   &__items {
     margin-left: -2rem;
+    padding: 1rem 2rem;
 
     &:has(.sortable-chosen) {
       .dropdown-menu {
