@@ -1,14 +1,14 @@
 <template>
   <div class="app" :class="[isSettingsOpen ? 'app--settings' : 'app--to-do']">
-    <main class="app__main">
-      <header class="app__header">
-        <h1 class="app__title">To-Do List</h1>
-        <Tooltip :text="t('settings')">
-          <Btn class="app__settings" type="icon" @click="isSettingsOpen = !isSettingsOpen">
-            <Icon name="settings" width="28" height="28" />
-          </Btn>
-        </Tooltip>
-      </header>
+    <header class="app__header">
+      <h1 class="app__title">To-Do List</h1>
+      <Tooltip :text="t('settings')">
+        <Btn class="app__settings" type="icon" @click="isSettingsOpen = !isSettingsOpen">
+          <Icon name="settings" width="28" height="28" />
+        </Btn>
+      </Tooltip>
+    </header>
+    <main>
       <div v-show="!isSettingsOpen" class="app__body">
         <Actions class="app__actions" />
         <TransitionGroup
@@ -72,23 +72,20 @@ useSortable(itemsEl, storage.value.items, {
 
 <style lang="scss">
 .app {
-  padding: 2rem 1rem;
+  --spread-shadow: 5%;
+  max-width: 40rem;
+  margin: 2rem 1rem;
+  margin-inline: auto;
+  background: var(--color-white);
+  border-radius: 0.75rem;
+  box-shadow:
+    rgba(var(--color-gray-800-rgb), 10%) 0 0 0 0.0625rem,
+    rgba(var(--color-black-rgb), var(--spread-shadow)) 0 1.25rem 1.5625rem -0.3125rem,
+    rgba(var(--color-black-rgb), var(--spread-shadow)) 0 0.5rem 0.625rem -0.375rem;
+  transition: box-shadow 0.25s ease-in-out;
 
-  &__main {
-    --spread-shadow: 5%;
-    max-width: 40rem;
-    margin-inline: auto;
-    background: var(--color-white);
-    border-radius: 0.75rem;
-    box-shadow:
-      rgba(var(--color-gray-800-rgb), 10%) 0 0 0 0.0625rem,
-      rgba(var(--color-black-rgb), var(--spread-shadow)) 0 1.25rem 1.5625rem -0.3125rem,
-      rgba(var(--color-black-rgb), var(--spread-shadow)) 0 0.5rem 0.625rem -0.375rem;
-    transition: box-shadow 0.25s ease-in-out;
-
-    &:has(.add-to-do__textarea :focus) {
-      --spread-shadow: 15%;
-    }
+  &:has(.add-to-do__textarea :focus) {
+    --spread-shadow: 15%;
   }
 
   &__header {
