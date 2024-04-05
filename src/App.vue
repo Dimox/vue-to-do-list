@@ -1,37 +1,35 @@
 <template>
-  <div class="app" :class="[isSettingsOpen ? 'app--settings' : 'app--to-do']">
+  <div class="app">
     <header class="app__header">
       <h1 class="app__title">To-Do List</h1>
       <Tooltip :text="t('settings')">
-        <Btn class="app__settings" type="icon" @click="isSettingsOpen = !isSettingsOpen">
+        <Btn class="app__settings" type="icon" @click="isSettingsOpen = true">
           <Icon name="settings" width="28" height="28" />
         </Btn>
       </Tooltip>
     </header>
-    <main>
-      <div v-show="!isSettingsOpen" class="app__body">
-        <Actions class="app__actions" />
-        <TransitionGroup
-          v-if="storage.items.length > 0"
-          ref="itemsEl"
-          class="app__items"
-          tag="ul"
-          :name="isDragging ? '' : 'app__item'"
-        >
-          <ToDoItem
-            v-for="item in storage.items"
-            :id="item.id"
-            :key="item.id"
-            class="app__item"
-            :created-at="new Date(item.createdAt)"
-            :text="item.text"
-            :checked="item.checked"
-          />
-        </TransitionGroup>
-        <AddToDo class="app__add" />
-      </div>
-      <Settings v-if="isSettingsOpen" />
+    <main class="app__body">
+      <Actions class="app__actions" />
+      <TransitionGroup
+        v-if="storage.items.length > 0"
+        ref="itemsEl"
+        class="app__items"
+        tag="ul"
+        :name="isDragging ? '' : 'app__item'"
+      >
+        <ToDoItem
+          v-for="item in storage.items"
+          :id="item.id"
+          :key="item.id"
+          class="app__item"
+          :created-at="new Date(item.createdAt)"
+          :text="item.text"
+          :checked="item.checked"
+        />
+      </TransitionGroup>
+      <AddToDo class="app__add" />
     </main>
+    <Dialog :open="isSettingsOpen" :component="Settings" type="flyout" @close="isSettingsOpen = false" />
   </div>
 </template>
 
@@ -45,6 +43,7 @@ import Icon from './components/Icon.vue'
 import Actions from './components/Actions.vue'
 import ToDoItem from './components/ToDoItem.vue'
 import AddToDo from './components/AddToDo.vue'
+import Dialog from './components/Dialog.vue'
 import Settings from './components/Settings.vue'
 import Tooltip from './components/Tooltip.vue'
 
@@ -73,7 +72,7 @@ useSortable(itemsEl, storage.value.items, {
 <style lang="scss">
 .app {
   --spread-shadow: 5%;
-  max-width: 40rem;
+  width: min(40rem, 100%);
   margin: 2rem 1rem;
   margin-inline: auto;
   background: var(--color-white);
@@ -83,6 +82,11 @@ useSortable(itemsEl, storage.value.items, {
     rgba(var(--color-black-rgb), var(--spread-shadow)) 0 1.25rem 1.5625rem -0.3125rem,
     rgba(var(--color-black-rgb), var(--spread-shadow)) 0 0.5rem 0.625rem -0.375rem;
   transition: box-shadow 0.25s ease-in-out;
+
+  @media (max-width: 40rem) {
+    margin: 0;
+    border-radius: 0;
+  }
 
   &:has(.add-to-do__textarea :focus) {
     --spread-shadow: 15%;
@@ -108,7 +112,7 @@ useSortable(itemsEl, storage.value.items, {
     display: flex;
     flex-direction: column;
 
-    .app--to-do &::after {
+    &::after {
       position: sticky;
       bottom: 5.125rem;
       z-index: 1;
