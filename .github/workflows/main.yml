@@ -1,5 +1,8 @@
-name: 🚀 Deploy to GitHub Pages on push
-on: [push]
+name: 🚀 Deploy to GitHub Pages on push to 'main'
+on:
+  push:
+    branches:
+      - main
 permissions:
   contents: write
 jobs:

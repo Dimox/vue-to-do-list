@@ -1,6 +1,11 @@
 <template>
   <section class="settings">
-    <h3 class="settings__title">{{ t('settings') }}</h3>
+    <header class="settings__header">
+      <h2 class="settings__title">{{ t('settings') }}</h2>
+      <Btn class="settings__close" type="icon" @click="$emit('close')">
+        <Icon name="close" />
+      </Btn>
+    </header>
     <ul class="settings__items">
       <li class="settings__item">
         <div>
@@ -38,9 +43,12 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import Btn from './Btn.vue'
+import Icon from './Icon.vue'
 import { useToDoStorage } from '@/composables/storage'
 import { lang, t } from '@/i18n'
 import langSprite from '@/assets/img/lang.svg'
+
+defineEmits(['close'])
 
 const storage = useToDoStorage()
 const activeLang = ref(lang.value)
@@ -61,18 +69,41 @@ const languages: { id: 'en' | 'ru'; name: string }[] = [
 
 <style lang="scss">
 .settings {
-  margin-top: 1rem;
-  padding: 1.5rem 2rem 2rem;
-  border-top: 0.0625rem solid var(--color-gray-300);
+  display: flex;
+  flex-direction: column;
+  width: min(40rem, 100%);
+  max-width: 100%;
+  max-height: 100%;
+  margin: 0;
+  margin-left: auto;
+  overflow: auto;
+  border-radius: 0;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    border-bottom: 0.0625rem solid var(--color-gray-300);
+  }
 
   &__title {
-    padding-bottom: 0.5rem;
     font-size: 1.5rem;
+  }
+
+  &__close {
+    color: var(--color-gray-800);
+
+    &:hover {
+      &::before {
+        opacity: 1;
+      }
+    }
   }
 
   &__items {
     display: grid;
-    margin-bottom: 1rem;
+    padding: 0.25rem 2rem;
   }
 
   &__item {
@@ -80,7 +111,7 @@ const languages: { id: 'en' | 'ru'; name: string }[] = [
     gap: 1rem;
     align-items: center;
     justify-content: space-between;
-    padding-block: 1rem;
+    padding-block: 1.25rem;
 
     &:not(:last-child) {
       border-bottom: 0.0625rem solid var(--color-gray-200);
@@ -132,6 +163,7 @@ const languages: { id: 'en' | 'ru'; name: string }[] = [
     display: flex;
     gap: 1.5rem;
     align-items: center;
+    padding: 0.25rem 2rem 1.5rem;
   }
 
   &__save {
