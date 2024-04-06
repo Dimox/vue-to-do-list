@@ -88,6 +88,14 @@ const messages = {
     en: 'Settings saved',
     ru: 'Настройки сохранены',
   },
+  applicationWidth: {
+    en: 'Application width in pixels',
+    ru: 'Ширина приложения в пикселях',
+  },
+  expandToFullWidth: {
+    en: '460 - minimum, 100% - expand to full width',
+    ru: '460 - минимум, 100% - растянуть на всю ширину',
+  },
 }
 
 const storage = useToDoStorage()

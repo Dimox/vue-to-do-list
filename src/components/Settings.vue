@@ -30,6 +30,13 @@
           </label>
         </div>
       </li>
+      <li class="settings__item">
+        <div>
+          <p class="settings__caption">{{ t('applicationWidth') }}</p>
+          <p class="settings__description">{{ t('expandToFullWidth') }}</p>
+        </div>
+        <Input v-model="appWidth" class="settings__width" type="text" inputmode="numeric" />
+      </li>
     </ul>
     <footer class="settings__footer">
       <Btn class="settings__save" @click="saveSettings">{{ t('save') }}</Btn>
@@ -44,19 +51,28 @@
 import { ref } from 'vue'
 import Btn from './Btn.vue'
 import Icon from './Icon.vue'
-import { useToDoStorage } from '@/composables/storage'
+import Input from './form/Input.vue'
+import { useToDoStorage, defaultOptions } from '@/composables/storage'
 import { lang, t } from '@/i18n'
 import langSprite from '@/assets/img/lang.svg'
 
 defineEmits(['close'])
 
 const storage = useToDoStorage()
+const appWidth = ref(storage.value.options?.appWidth)
 const activeLang = ref(lang.value)
 const setLang = (lang: 'en' | 'ru') => (activeLang.value = lang)
 const saved = ref(false)
+const minAppWidth = 460
 
 const saveSettings = () => {
-  storage.value.options = { lang: activeLang.value }
+  storage.value.options = {
+    lang: activeLang.value,
+    appWidth:
+      (appWidth.value?.match(/^\d+$/) && Number(appWidth.value) >= minAppWidth) || appWidth.value === '100%'
+        ? appWidth.value
+        : defaultOptions.appWidth,
+  }
   saved.value = true
   setTimeout(() => (saved.value = false), 1500)
 }
@@ -119,11 +135,13 @@ const languages: { id: 'en' | 'ru'; name: string }[] = [
   }
 
   &__caption {
+    margin-bottom: 0.25rem;
     font-weight: 650;
   }
 
   &__description {
     font-size: 0.9375rem;
+    line-height: 1.33;
     color: var(--color-gray-500);
   }
 
@@ -157,6 +175,10 @@ const languages: { id: 'en' | 'ru'; name: string }[] = [
       outline: none;
       box-shadow: 0 0 0 0.25rem var(--color-indigo-300);
     }
+  }
+
+  &__width {
+    width: 7.5rem;
   }
 
   &__footer {

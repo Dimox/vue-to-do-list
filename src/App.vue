@@ -1,5 +1,5 @@
 <template>
-  <div class="app">
+  <div class="app" :class="{ 'app--full-width': width === '100%' }" :style="{ '--width': width }">
     <header class="app__header">
       <h1 class="app__title">To-Do List</h1>
       <Tooltip :text="t('settings')">
@@ -34,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, nextTick } from 'vue'
+import { ref, nextTick, computed } from 'vue'
 import { useSortable } from '@vueuse/integrations/useSortable'
 import { useToDoStorage } from './composables/storage'
 import { t } from './i18n'
@@ -51,6 +51,11 @@ const storage = useToDoStorage()
 const itemsEl = ref()
 const isDragging = ref(false)
 const isSettingsOpen = ref(false)
+const appWidth = computed(() => storage.value.options?.appWidth ?? null)
+const width = computed(() => {
+  if (!appWidth.value) return
+  return appWidth.value === '100%' ? appWidth.value : appWidth.value + 'px'
+})
 
 useSortable(itemsEl, storage.value.items, {
   animation: 200,
@@ -72,7 +77,7 @@ useSortable(itemsEl, storage.value.items, {
 <style lang="scss">
 .app {
   --spread-shadow: 5%;
-  width: min(40rem, 100%);
+  width: min(var(--width, 40rem), 100%);
   margin: 2rem 1rem;
   margin-inline: auto;
   background: var(--color-white);
@@ -88,6 +93,11 @@ useSortable(itemsEl, storage.value.items, {
     border-radius: 0;
   }
 
+  &--full-width {
+    margin: 0;
+    border-radius: 0;
+  }
+
   &:has(.add-to-do__textarea :focus) {
     --spread-shadow: 15%;
   }
@@ -96,6 +106,7 @@ useSortable(itemsEl, storage.value.items, {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-bottom: 1rem;
     padding: 1rem 2rem 0;
   }
 
@@ -125,7 +136,6 @@ useSortable(itemsEl, storage.value.items, {
 
   &__actions {
     min-height: 3.125rem;
-    margin-top: 1rem;
     padding: 0 2rem;
     border-block: 0.0625rem solid var(--color-gray-300);
   }
