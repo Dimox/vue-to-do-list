@@ -1,19 +1,12 @@
 <template>
-  <div class="textarea">
-    <label class="textarea__label" :class="{ 'visually-hidden': !hasLabel }" :for="id">{{ label }}</label>
-    <textarea
-      :id="id"
-      v-model="model"
-      class="textarea__input"
-      :rows="rows"
-      :placeholder="placeholder"
-      v-bind="$attrs"
-    />
+  <div class="input">
+    <label class="input__label" :class="{ 'visually-hidden': !hasLabel }" :for="id">{{ label }}</label>
+    <input :id="id" v-model="model" :type="type" class="input__field" :placeholder="placeholder" v-bind="$attrs" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, PropType } from 'vue'
 import { uniqueId } from '@/utils'
 
 const model = defineModel<string>()
@@ -27,19 +20,19 @@ const props = defineProps({
     type: String,
     default: null,
   },
-  rows: {
-    type: [Number, String],
-    default: 1,
+  type: {
+    type: String as PropType<'text' | 'number'>,
+    default: 'text',
   },
 })
 
-const id = uniqueId('textarea-')
+const id = uniqueId('input-')
 const hasLabel = computed(() => !!props.label)
 const label = computed(() => (props.label ? props.label : props.placeholder))
 </script>
 
 <style lang="scss">
-.textarea {
+.input {
   &__label {
     display: block;
     width: fit-content;
@@ -48,7 +41,7 @@ const label = computed(() => (props.label ? props.label : props.placeholder))
     cursor: pointer;
   }
 
-  &__input {
+  &__field {
     --scrollbar-thumb-color: var(--color-indigo-400);
     display: block;
     width: 100%;

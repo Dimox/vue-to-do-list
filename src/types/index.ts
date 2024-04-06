@@ -14,6 +14,7 @@ export type ToDoItem = {
 
 export type ToDoOptions = {
   lang: 'en' | 'ru'
+  appWidth?: string
 }
 
 export type DropdownMenuItem = {
