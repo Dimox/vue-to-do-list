@@ -53,7 +53,7 @@ defineProps({
   }
 
   &--secondary {
-    --accent-color: var(--color-gray-400);
+    --accent-color: var(--color-gray-300);
     box-shadow: inset 0 0 0 0.125rem var(--accent-color);
 
     &:hover {
