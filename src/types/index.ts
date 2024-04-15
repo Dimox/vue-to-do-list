@@ -13,8 +13,9 @@ export type ToDoItem = {
 }
 
 export type ToDoOptions = {
-  lang: 'en' | 'ru'
-  appWidth?: string
+  lang: Language
+  appWidth: string
+  accentColor: string
 }
 
 export type DropdownMenuItem = {
@@ -29,3 +30,5 @@ export enum ButtonType {
   Alert = 'alert',
   Icon = 'icon',
 }
+
+export type Language = 'en' | 'ru'
