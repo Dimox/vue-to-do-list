@@ -1,5 +1,5 @@
 <template>
-  <div class="app" :class="{ 'app--full-width': width === '100%' }" :style="{ '--width': width }">
+  <div class="app" :class="{ 'app--full-width': width === '100%' }">
     <header class="app__header">
       <h1 class="app__title">To-Do List</h1>
       <Tooltip :text="t('settings')">
@@ -34,7 +34,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, nextTick, computed } from 'vue'
+import { ref, nextTick, computed, watch } from 'vue'
 import { useSortable } from '@vueuse/integrations/useSortable'
 import { useToDoStorage } from './composables/storage'
 import { t } from './i18n'
@@ -51,11 +51,24 @@ const storage = useToDoStorage()
 const itemsEl = ref()
 const isDragging = ref(false)
 const isSettingsOpen = ref(false)
-const appWidth = computed(() => storage.value.options?.appWidth ?? null)
-const width = computed(() => {
-  if (!appWidth.value) return
-  return appWidth.value === '100%' ? appWidth.value : appWidth.value + 'px'
-})
+
+const appWidth = computed(() => storage.value.options?.appWidth)
+const width = computed(() => (appWidth.value === '100%' ? appWidth.value : appWidth.value + 'px'))
+const accentColor = computed(() => storage.value.options?.accentColor)
+
+const setHtmlVars = () => {
+  const styles = {
+    '--app-width': width.value ?? '',
+    '--accent-color': accentColor.value ?? '',
+  }
+  Object.entries(styles).forEach($ => document.documentElement.style.setProperty($[0], $[1]))
+}
+
+setHtmlVars()
+watch(
+  () => storage.value.options,
+  () => setHtmlVars()
+)
 
 useSortable(itemsEl, storage.value.items, {
   animation: 200,
@@ -77,7 +90,7 @@ useSortable(itemsEl, storage.value.items, {
 <style lang="scss">
 .app {
   --spread-shadow: 5%;
-  width: min(var(--width, 40rem), 100%);
+  width: min(var(--app-width, 40rem), 100%);
   margin: 2rem 1rem;
   margin-inline: auto;
   background: var(--color-white);

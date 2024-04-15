@@ -18,7 +18,7 @@
               class="settings__lang-input visually-hidden"
               type="radio"
               name="lang"
-              :checked="language.id == activeLang"
+              :checked="language.id == options.lang"
               @change="setLang(language.id)"
             />
             <span class="settings__lang-inner">
@@ -35,7 +35,14 @@
           <p class="settings__caption">{{ t('applicationWidth') }}</p>
           <p class="settings__description">{{ t('expandToFullWidth') }}</p>
         </div>
-        <Input v-model="appWidth" class="settings__width" type="text" inputmode="numeric" />
+        <Input v-model="options.appWidth" class="settings__width" type="text" inputmode="numeric" />
+      </li>
+      <li class="settings__item">
+        <div>
+          <p class="settings__caption">{{ t('accentColor') }}</p>
+          <p class="settings__description">{{ t('choosePreferredColor') }}</p>
+        </div>
+        <input v-model="options.accentColor" class="settings__color" type="color" />
       </li>
     </ul>
     <footer class="settings__footer">
@@ -43,44 +50,58 @@
       <Transition name="settings__saved">
         <p v-if="saved" class="settings__saved">{{ t('settingsSaved') }}</p>
       </Transition>
+      <Btn class="settings__reset" type="secondary" @click="resetSettings">{{ t('restoreDefaults') }}</Btn>
     </footer>
   </section>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
 import Btn from './Btn.vue'
 import Icon from './Icon.vue'
 import Input from './form/Input.vue'
 import { useToDoStorage, defaultOptions } from '@/composables/storage'
-import { lang, t } from '@/i18n'
+import { t } from '@/i18n'
+import { Language } from '@/types'
 import langSprite from '@/assets/img/lang.svg'
 
 defineEmits(['close'])
 
 const storage = useToDoStorage()
-const appWidth = ref(storage.value.options?.appWidth)
-const activeLang = ref(lang.value)
-const setLang = (lang: 'en' | 'ru') => (activeLang.value = lang)
+const getOption = (key: keyof typeof defaultOptions) => storage.value.options?.[key] ?? defaultOptions[key]
+
+let options = reactive({
+  lang: getOption('lang') as Language,
+  appWidth: getOption('appWidth'),
+  accentColor: getOption('accentColor'),
+})
+
+const MIN_APP_WIDTH = 460
+const setLang = (lang: Language) => (options.lang = lang)
 const saved = ref(false)
-const minAppWidth = 460
+
+const languages: { id: Language; name: string }[] = [
+  { id: 'en', name: 'English' },
+  { id: 'ru', name: 'Русский' },
+]
+
+const isAppWidthValid = () =>
+  (options.appWidth?.match(/^\d+$/) && Number(options.appWidth) >= MIN_APP_WIDTH) || options.appWidth === '100%'
 
 const saveSettings = () => {
   storage.value.options = {
-    lang: activeLang.value,
-    appWidth:
-      (appWidth.value?.match(/^\d+$/) && Number(appWidth.value) >= minAppWidth) || appWidth.value === '100%'
-        ? appWidth.value
-        : defaultOptions.appWidth,
+    lang: options.lang,
+    appWidth: isAppWidthValid() ? options.appWidth : defaultOptions.appWidth,
+    accentColor: options.accentColor,
   }
   saved.value = true
   setTimeout(() => (saved.value = false), 1500)
 }
 
-const languages: { id: 'en' | 'ru'; name: string }[] = [
-  { id: 'en', name: 'English' },
-  { id: 'ru', name: 'Русский' },
-]
+const resetSettings = () => {
+  storage.value.options = defaultOptions
+  options = defaultOptions
+}
 </script>
 
 <style lang="scss">
@@ -168,17 +189,35 @@ const languages: { id: 'en' | 'ru'; name: string }[] = [
     }
 
     &-input:checked ~ &-inner {
-      border-color: var(--color-indigo-500);
+      border-color: var(--color-accent-500);
     }
 
     &-input:checked:focus-visible ~ &-inner {
       outline: none;
-      box-shadow: 0 0 0 0.25rem var(--color-indigo-300);
+      box-shadow: 0 0 0 0.25rem var(--color-accent-300);
     }
   }
 
   &__width {
     width: 7.5rem;
+  }
+
+  &__color {
+    width: 3rem;
+    height: 3rem;
+    padding: 0.125rem;
+    background: none;
+    border: 0.0625rem solid var(--color-gray-300);
+    border-radius: 0.375rem;
+
+    &::-webkit-color-swatch-wrapper {
+      padding: 0;
+    }
+
+    &::-webkit-color-swatch {
+      border: none;
+      border-radius: 0.25rem;
+    }
   }
 
   &__footer {
@@ -202,6 +241,10 @@ const languages: { id: 'en' | 'ru'; name: string }[] = [
     &-leave-to {
       opacity: 0;
     }
+  }
+
+  &__reset {
+    margin-left: auto;
   }
 }
 </style>

@@ -42,7 +42,7 @@ const label = computed(() => (props.label ? props.label : props.placeholder))
   }
 
   &__field {
-    --scrollbar-thumb-color: var(--color-indigo-400);
+    --scrollbar-thumb-color: var(--color-accent-400);
     display: block;
     width: 100%;
     padding: 0.6875rem 1.25rem;
@@ -60,10 +60,10 @@ const label = computed(() => (props.label ? props.label : props.placeholder))
     }
 
     &:focus {
-      --scrollbar-thumb-color: var(--color-indigo-500);
-      border-color: var(--color-indigo-500);
+      --scrollbar-thumb-color: var(--color-accent-500);
+      border-color: var(--color-accent-500);
       outline: none;
-      box-shadow: inset 0 0 0 0.0625rem var(--color-indigo-500);
+      box-shadow: inset 0 0 0 0.0625rem var(--color-accent-500);
     }
   }
 }

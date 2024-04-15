@@ -2,24 +2,24 @@
 :root {
   // https://tailwindcss.com/docs/customizing-colors
 
-  --color-black     : #000000; // stylelint-disable-line color-hex-length
-  --color-white     : #ffffff; // stylelint-disable-line color-hex-length
-  --color-gray-50   : #f9fafb;
-  --color-gray-100  : #f3f4f6;
-  --color-gray-200  : #e5e7eb;
-  --color-gray-300  : #d1d5db;
-  --color-gray-400  : #9ca3af;
-  --color-gray-500  : #6b7280;
-  --color-gray-600  : #4b5563;
-  --color-gray-800  : #1f2937;
-  --color-indigo-300: #a5b4fc;
-  --color-indigo-400: #818cf8;
-  --color-indigo-500: #6366f1;
-  --color-indigo-600: #4f46e5;
-  --color-red-300   : #fca5a5;
-  --color-red-500   : #ef4444;
-  --color-red-600   : #dc2626;
+  --color-white   : #ffffff;  // stylelint-disable-line color-hex-length
+  --color-gray-50 : #f9fafb;
+  --color-gray-100: #f3f4f6;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d1d5db;
+  --color-gray-400: #9ca3af;
+  --color-gray-500: #6b7280;
+  --color-gray-600: #4b5563;
+  --color-gray-800: #1f2937;
+  --color-red-300 : #fca5a5;
+  --color-red-500 : #ef4444;
+  --color-red-600 : #dc2626;
 
   --color-black-rgb   : 0,  0,  0;
   --color-gray-800-rgb: 31, 41, 55;
+
+  --color-accent-600: var(--accent-color, #4f46e5); // indigo-600
+  --color-accent-500: color-mix(in oklab, var(--color-accent-600), var(--color-white) 15%);
+  --color-accent-400: color-mix(in oklab, var(--color-accent-600), var(--color-white) 34%);
+  --color-accent-300: color-mix(in oklab, var(--color-accent-600), var(--color-white) 56%);
 }
