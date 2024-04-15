@@ -4,6 +4,7 @@ import { ToDoList, ToDoOptions } from '@/types'
 export const defaultOptions: ToDoOptions = {
   lang: 'en',
   appWidth: '640',
+  accentColor: '#4f46e5',
 }
 
 export const useToDoStorage = (data?: ToDoList) => {
