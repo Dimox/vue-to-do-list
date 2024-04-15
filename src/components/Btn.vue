@@ -36,19 +36,19 @@ defineProps({
 
   &--primary {
     color: var(--color-white);
-    background: var(--color-indigo-500);
+    background: var(--color-accent-500);
 
     &:hover {
-      background: var(--color-indigo-600);
+      background: var(--color-accent-600);
     }
 
     &:active {
-      background: var(--color-indigo-500);
+      background: var(--color-accent-500);
     }
 
     &:focus-visible {
       outline: none;
-      box-shadow: 0 0 0 0.25rem var(--color-indigo-300);
+      box-shadow: 0 0 0 0.25rem var(--color-accent-300);
     }
   }
 

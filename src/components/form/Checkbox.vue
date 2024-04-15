@@ -49,7 +49,7 @@ const model = defineModel<boolean>()
   &__input {
     &:checked {
       & + .checkbox__svg {
-        stroke: var(--color-indigo-500);
+        stroke: var(--color-accent-500);
       }
 
       & + .checkbox__svg .checkbox__path {
@@ -65,7 +65,7 @@ const model = defineModel<boolean>()
 
     &:focus {
       & + .checkbox__svg {
-        stroke: var(--color-indigo-500);
+        stroke: var(--color-accent-500);
       }
     }
   }
@@ -81,7 +81,7 @@ const model = defineModel<boolean>()
     transition: all 0.2s ease;
 
     .checkbox:hover & {
-      stroke: var(--color-indigo-500);
+      stroke: var(--color-accent-500);
     }
   }
 

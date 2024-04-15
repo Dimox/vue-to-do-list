@@ -77,7 +77,7 @@ const onItemClick = (item: DropdownMenuItem) => {
     cursor: pointer;
 
     &:hover {
-      color: var(--color-indigo-600);
+      color: var(--color-accent-600);
       background: var(--color-gray-100);
 
       .dropdown-menu__icon {

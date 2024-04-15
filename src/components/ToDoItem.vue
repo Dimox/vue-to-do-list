@@ -162,7 +162,7 @@ const deleteToDo = () => {
       text-decoration-skip-ink: none;
 
       a {
-        color: var(--color-indigo-300);
+        color: var(--color-accent-300);
       }
     }
 
@@ -170,7 +170,7 @@ const deleteToDo = () => {
       color: var(--color-gray-400);
 
       a {
-        color: var(--color-indigo-400);
+        color: var(--color-accent-400);
       }
     }
 
@@ -194,7 +194,7 @@ const deleteToDo = () => {
     }
 
     a {
-      color: var(--color-indigo-600);
+      color: var(--color-accent-600);
       text-decoration: underline;
       text-underline-offset: 0.125rem;
       transition: color 0.25s;
