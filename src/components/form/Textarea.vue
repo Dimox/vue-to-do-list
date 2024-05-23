@@ -55,7 +55,9 @@ const label = computed(() => (props.label ? props.label : props.placeholder))
     padding: 0.6875rem 1.25rem;
     overscroll-behavior: contain;
     font: inherit;
+    color: inherit;
     resize: none;
+    background: none;
     border: 0.0625rem solid var(--color-gray-300);
     border-radius: 0.375rem;
     transition: 0.25s;
