@@ -217,7 +217,7 @@ useSortable(itemsEl, storage.value.items, {
   &__add {
     position: sticky;
     bottom: 0;
-    z-index: 1;
+    z-index: 2;
     order: 1;
     padding: 0 2rem 2rem;
     background: var(--color-white);
