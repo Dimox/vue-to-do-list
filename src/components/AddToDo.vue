@@ -65,6 +65,10 @@ onMounted(() => {
     position: relative;
   }
 
+  &__textarea {
+    overflow-x: hidden; // fixes extra row bug in Firefox
+  }
+
   &__hint {
     position: absolute;
     top: calc(100% + 0.3125rem);

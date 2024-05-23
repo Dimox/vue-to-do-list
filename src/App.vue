@@ -136,12 +136,23 @@ useSortable(itemsEl, storage.value.items, {
     display: flex;
     flex-direction: column;
 
+    &::before {
+      position: sticky;
+      bottom: 7.125rem;
+      z-index: 2;
+      order: 1;
+      height: 1rem;
+      margin-bottom: -1rem;
+      content: '';
+      background: linear-gradient(#0000, rgba(var(--color-black-rgb), 0.1));
+    }
+
     &::after {
       position: sticky;
-      bottom: 5.125rem;
-      z-index: 1;
-      height: 2rem;
-      margin-bottom: -2rem;
+      bottom: 5rem;
+      z-index: 3;
+      height: 2.125rem;
+      margin-bottom: -0.125rem;
       content: '';
       background: var(--color-white);
     }
@@ -154,8 +165,8 @@ useSortable(itemsEl, storage.value.items, {
   }
 
   &__items {
-    margin-left: -2rem;
-    padding: 1rem 2rem;
+    margin: 0 0 -1rem -2rem;
+    padding: 1rem 2rem 0;
 
     &:has(.sortable-chosen) {
       .dropdown-menu {
@@ -217,7 +228,7 @@ useSortable(itemsEl, storage.value.items, {
   &__add {
     position: sticky;
     bottom: 0;
-    z-index: 2;
+    z-index: 4;
     order: 1;
     padding: 0 2rem 2rem;
     background: var(--color-white);
