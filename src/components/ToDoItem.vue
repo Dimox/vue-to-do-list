@@ -1,6 +1,6 @@
 <template>
   <li class="to-do-item" :class="{ 'to-do-item--checked': checked }">
-    <div class="to-do-item__handle">
+    <div v-if="!checked" class="to-do-item__handle">
       <Icon name="drag" width="20" height="20" />
     </div>
     <Checkbox v-model="checked" class="to-do-item__checkbox" @change="onChange" />
