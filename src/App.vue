@@ -202,8 +202,8 @@ useSortable(itemsEl, storage.value.items, {
       background: linear-gradient(
           90deg,
           #0000,
-          #0000 4.75rem,
-          rgba(var(--color-gray-800-rgb), 0.12) 4.75rem,
+          #0000 4.25rem,
+          rgba(var(--color-gray-800-rgb), 0.12) 4.25rem,
           rgba(var(--color-gray-800-rgb), 0.12)
         )
         no-repeat 0 0 / 100% 0.0625rem;
