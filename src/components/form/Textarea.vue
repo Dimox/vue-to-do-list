@@ -64,6 +64,11 @@ const label = computed(() => (props.label ? props.label : props.placeholder))
     transition-property: border-color, box-shadow, border-radius, scrollbar-color;
     scrollbar-color: var(--scrollbar-thumb-color) transparent;
 
+    &::placeholder {
+      color: var(--color-gray-500);
+      opacity: 1;
+    }
+
     &:hover {
       border-color: var(--color-gray-400);
     }
