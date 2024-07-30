@@ -3,8 +3,8 @@ body {
   font-family: Nunito, sans-serif;
   font-size: 1.0625rem;
   line-height: 1.5;
-  color: var(--color-gray-800);
-  background: var(--color-gray-50);
+  color: var(--color-text-primary);
+  background: var(--color-bg-secondary);
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
@@ -89,7 +89,7 @@ kbd {
   font-size: inherit;
   font-weight: 600;
   letter-spacing: 0.025rem;
-  background: var(--color-gray-50);
+  background: var(--color-bg-secondary);
   border-radius: 0.25rem;
   box-shadow:
     rgba(var(--color-gray-800-rgb), 0.15) 0 0 0 0.0625rem,

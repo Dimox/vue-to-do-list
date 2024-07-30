@@ -3,6 +3,7 @@ import { ToDoList, ToDoOptions } from '@/types'
 
 export const defaultOptions: ToDoOptions = {
   lang: 'en',
+  colorScheme: 'light',
   appWidth: '640',
   accentColor: '#4f46e5',
 }

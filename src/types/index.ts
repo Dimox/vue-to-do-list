@@ -14,6 +14,7 @@ export type ToDoItem = {
 
 export type ToDoOptions = {
   lang: Language
+  colorScheme: ColorScheme
   appWidth: string
   accentColor: string
 }
@@ -32,3 +33,4 @@ export enum ButtonType {
 }
 
 export type Language = 'en' | 'ru'
+export type ColorScheme = 'light' | 'dark'

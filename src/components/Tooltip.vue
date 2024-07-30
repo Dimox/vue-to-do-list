@@ -16,7 +16,7 @@ defineProps({
 
 <style lang="scss">
 .tooltip {
-  --bg-color: var(--color-gray-600);
+  --bg-color: var(--color-text-secondary);
   position: relative;
 
   &__text {
@@ -26,7 +26,7 @@ defineProps({
     z-index: 10;
     padding: 0.375rem 0.75rem;
     font-size: 0.875rem;
-    color: var(--color-white);
+    color: var(--color-text-senary);
     white-space: nowrap;
     pointer-events: none;
     visibility: hidden;

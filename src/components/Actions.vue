@@ -93,7 +93,7 @@ watch(storage, () => {
   }
 
   &__delete-done {
-    color: var(--color-gray-400);
+    color: var(--color-text-quaternary);
   }
 }
 </style>

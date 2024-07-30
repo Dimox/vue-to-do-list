@@ -131,7 +131,7 @@ const deleteToDo = () => {
     z-index: 1;
     width: 2.25rem;
     padding: 1.1875rem 0 0 0.375rem;
-    color: var(--color-gray-500);
+    color: var(--color-text-tertiary);
     cursor: grab;
     opacity: 0;
     transition: opacity 0.25s;
@@ -154,7 +154,7 @@ const deleteToDo = () => {
     overflow-wrap: anywhere;
 
     .to-do-item--checked & {
-      color: var(--color-gray-300);
+      color: var(--color-text-quinary);
       text-decoration: underline;
       text-decoration-thickness: 0.0625rem;
       text-underline-offset: -0.3125rem;
@@ -167,7 +167,7 @@ const deleteToDo = () => {
     }
 
     .to-do-item--checked:hover & {
-      color: var(--color-gray-400);
+      color: var(--color-text-quaternary);
 
       a {
         color: var(--color-accent-400);
@@ -219,7 +219,7 @@ const deleteToDo = () => {
 
       &:active,
       &:focus-visible {
-        background: var(--color-gray-100);
+        background: var(--color-bg-tertiary);
       }
 
       &:focus-visible {
