@@ -35,15 +35,15 @@ defineProps({
   transition-property: background, box-shadow, color;
 
   &--primary {
-    color: var(--color-text-senary);
-    background: var(--color-accent-500);
+    color: var(--color-accent-contrast, var(--color-text-senary));
+    background: var(--color-accent-600);
 
     &:hover {
-      background: var(--color-accent-600);
+      background: var(--color-accent-500);
     }
 
     &:active {
-      background: var(--color-accent-500);
+      background: var(--color-accent-600);
     }
 
     &:focus-visible {
@@ -75,7 +75,7 @@ defineProps({
   }
 
   &--alert {
-    color: var(--color-text-senary);
+    color: var(--color-red-500-contrast, var(--color-text-senary));
     background: var(--color-red-500);
 
     &:hover {

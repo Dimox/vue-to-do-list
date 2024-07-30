@@ -27,6 +27,7 @@ export const useContrastingTextColor = () => {
     { color: accentColor.value, variable: '--color-accent-contrast' },
     { color: '#f3f4f6', variable: '--color-bg-tertiary-contrast-light' },
     { color: '#45464a', variable: '--color-bg-tertiary-contrast-dark' },
+    { color: '#ef4444', variable: '--color-red-500-contrast' },
   ])
 
   const setCssVar = () => {
