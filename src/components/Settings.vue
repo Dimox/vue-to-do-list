@@ -8,11 +8,9 @@
     </header>
     <ul class="settings__items">
       <li class="settings__item">
-        <div>
-          <p class="settings__caption">{{ t('interfaceLanguage') }}</p>
-          <p class="settings__description">{{ t('choosePreferredLanguage') }}</p>
-        </div>
-        <div class="settings__langs">
+        <p class="settings__caption">{{ t('interfaceLanguage') }}</p>
+        <p class="settings__description">{{ t('choosePreferredLanguage') }}</p>
+        <div class="settings__value settings__value--langs">
           <label v-for="language in languages" :key="language.id" class="settings__lang">
             <input
               class="settings__lang-input visually-hidden"
@@ -31,11 +29,9 @@
         </div>
       </li>
       <li class="settings__item">
-        <div>
-          <p class="settings__caption">{{ t('colorScheme') }}</p>
-          <p class="settings__description">{{ t('choosePreferredColorScheme') }}</p>
-        </div>
-        <div class="settings__color-schemes">
+        <p class="settings__caption">{{ t('colorScheme') }}</p>
+        <p class="settings__description">{{ t('choosePreferredColorScheme') }}</p>
+        <div class="settings__value settings__value--color-schemes">
           <label v-for="scheme in colorSchemes" :key="scheme.value" class="settings__color-scheme">
             <input
               class="settings__color-scheme-input visually-hidden"
@@ -52,18 +48,19 @@
         </div>
       </li>
       <li class="settings__item">
-        <div>
-          <p class="settings__caption">{{ t('applicationWidth') }}</p>
-          <p class="settings__description">{{ t('expandToFullWidth') }}</p>
-        </div>
-        <Input v-model="options.appWidth" class="settings__width" type="text" inputmode="numeric" />
+        <p class="settings__caption">{{ t('applicationWidth') }}</p>
+        <p class="settings__description">{{ t('expandToFullWidth') }}</p>
+        <Input
+          v-model="options.appWidth"
+          class="settings__value settings__value--width"
+          type="text"
+          inputmode="numeric"
+        />
       </li>
       <li class="settings__item">
-        <div>
-          <p class="settings__caption">{{ t('accentColor') }}</p>
-          <p class="settings__description">{{ t('choosePreferredColor') }}</p>
-        </div>
-        <input v-model="options.accentColor" class="settings__color" type="color" />
+        <p class="settings__caption">{{ t('accentColor') }}</p>
+        <p class="settings__description">{{ t('choosePreferredColor') }}</p>
+        <input v-model="options.accentColor" class="settings__value settings__value--color" type="color" />
       </li>
     </ul>
     <footer class="settings__footer">
@@ -170,10 +167,9 @@ const resetSettings = () => {
   }
 
   &__item {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-    justify-content: space-between;
+    display: grid;
+    grid-template: repeat(2, auto) / 1fr auto;
+    gap: 0 1rem;
     padding-block: 1.25rem;
 
     &:not(:last-child) {
@@ -192,10 +188,37 @@ const resetSettings = () => {
     color: var(--color-text-tertiary);
   }
 
-  &__langs,
-  &__color-schemes {
-    display: flex;
-    gap: 1rem;
+  &__value {
+    grid-row: 1 / -1;
+    grid-column: 2;
+
+    &--langs,
+    &--color-schemes {
+      display: flex;
+      gap: 1rem;
+    }
+
+    &--width {
+      width: 7.5rem;
+    }
+
+    &--color {
+      width: 3rem;
+      height: 3rem;
+      padding: 0.125rem;
+      background: none;
+      border: 0.0625rem solid var(--color-border-tertiary);
+      border-radius: 0.375rem;
+
+      &::-webkit-color-swatch-wrapper {
+        padding: 0;
+      }
+
+      &::-webkit-color-swatch {
+        border: none;
+        border-radius: 0.25rem;
+      }
+    }
   }
 
   &__lang,
@@ -227,28 +250,6 @@ const resetSettings = () => {
 
     &:not(:has(:checked)):hover &-inner {
       border-color: var(--color-border-tertiary);
-    }
-  }
-
-  &__width {
-    width: 7.5rem;
-  }
-
-  &__color {
-    width: 3rem;
-    height: 3rem;
-    padding: 0.125rem;
-    background: none;
-    border: 0.0625rem solid var(--color-border-tertiary);
-    border-radius: 0.375rem;
-
-    &::-webkit-color-swatch-wrapper {
-      padding: 0;
-    }
-
-    &::-webkit-color-swatch {
-      border: none;
-      border-radius: 0.25rem;
     }
   }
 
