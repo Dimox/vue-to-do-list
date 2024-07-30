@@ -77,8 +77,13 @@ const onItemClick = (item: DropdownMenuItem) => {
     cursor: pointer;
 
     &:hover {
-      color: var(--color-accent-600);
+      --hover-color: var(--color-bg-tertiary-contrast-light);
+      color: var(--hover-color, var(--color-accent-600));
       background: var(--color-bg-tertiary);
+
+      .dark & {
+        --hover-color: var(--color-bg-tertiary-contrast-dark);
+      }
 
       .dropdown-menu__icon {
         color: inherit;
