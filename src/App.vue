@@ -57,7 +57,7 @@ const appWidth = computed(() => storage.value.options?.appWidth)
 const width = computed(() => (appWidth.value === '100%' ? appWidth.value : appWidth.value + 'px'))
 const accentColor = computed(() => storage.value.options?.accentColor)
 
-const setHtmlVars = () => {
+const setCssVars = () => {
   const styles = {
     '--app-width': width.value ?? '',
     '--accent-color': accentColor.value ?? '',
@@ -70,13 +70,13 @@ const setColorScheme = () => {
   document.documentElement.setAttribute('class', colorScheme.value)
 }
 
-setHtmlVars()
+setCssVars()
 setColorScheme()
 
 watch(
   () => storage.value.options,
   () => {
-    setHtmlVars()
+    setCssVars()
     setColorScheme()
   }
 )
@@ -100,6 +100,7 @@ useSortable(itemsEl, storage.value.items, {
 
 <style lang="scss">
 .app {
+  --border-opacity: 0.1;
   --spread-shadow: 5%;
   width: min(var(--app-width, 40rem), 100%);
   margin: 2rem 1rem;
@@ -107,7 +108,7 @@ useSortable(itemsEl, storage.value.items, {
   background: var(--color-bg-primary);
   border-radius: 0.75rem;
   box-shadow:
-    rgba(var(--color-gray-800-rgb), 10%) 0 0 0 0.0625rem,
+    rgba(var(--color-gray-800-rgb), var(--border-opacity)) 0 0 0 0.0625rem,
     rgba(var(--color-black-rgb), var(--spread-shadow)) 0 1.25rem 1.5625rem -0.3125rem,
     rgba(var(--color-black-rgb), var(--spread-shadow)) 0 0.5rem 0.625rem -0.375rem;
   transition: box-shadow 0.25s ease-in-out;
@@ -115,6 +116,10 @@ useSortable(itemsEl, storage.value.items, {
   @media (max-width: 40rem) {
     margin: 0;
     border-radius: 0;
+  }
+
+  .dark & {
+    --border-opacity: 0.2;
   }
 
   &--full-width {
