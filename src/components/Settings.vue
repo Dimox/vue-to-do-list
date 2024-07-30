@@ -44,7 +44,10 @@
               :checked="scheme.value == options.colorScheme"
               @change="setColorScheme(scheme.value)"
             />
-            <span class="settings__color-scheme-inner">{{ t(scheme.value) }}</span>
+            <span class="settings__color-scheme-inner">
+              <Icon :name="`mode-${scheme.value}`" />
+              {{ t(scheme.value) }}
+            </span>
           </label>
         </div>
       </li>
