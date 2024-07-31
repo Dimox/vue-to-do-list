@@ -15,6 +15,10 @@
   --color-red-500 : #ef4444;
   --color-red-600 : #dc2626;
 
+  --color-dark-800: #292b2f;
+  --color-dark-700: #36393f;
+  --color-dark-400: #b5bac1;
+
   --color-black-rgb   : 0,  0,  0;
   --color-gray-800-rgb: 31, 41, 55;
 
@@ -22,4 +26,41 @@
   --color-accent-500: color-mix(in oklab, var(--color-accent-600), var(--color-white) 15%);
   --color-accent-400: color-mix(in oklab, var(--color-accent-600), var(--color-white) 34%);
   --color-accent-300: color-mix(in oklab, var(--color-accent-600), var(--color-white) 56%);
+
+  --color-text-primary   : var(--color-gray-800);
+  --color-text-secondary : var(--color-gray-600);
+  --color-text-tertiary  : var(--color-gray-500);
+  --color-text-quaternary: var(--color-gray-400);
+  --color-text-quinary   : var(--color-gray-300);
+  --color-text-senary    : var(--color-white);
+
+  --color-bg-primary  : var(--color-white);
+  --color-bg-secondary: var(--color-gray-50);
+  --color-bg-tertiary : var(--color-gray-100);
+
+  --color-border-primary   : var(--color-gray-500);
+  --color-border-secondary : var(--color-gray-400);
+  --color-border-tertiary  : var(--color-gray-300);
+  --color-border-quaternary: var(--color-gray-200);
+}
+
+// prettier-ignore
+.dark {
+  --color-text-primary   : var(--color-dark-400);
+  --color-text-secondary : color-mix(in oklab, var(--color-dark-800), var(--color-white) 65%);
+  --color-text-tertiary  : color-mix(in oklab, var(--color-dark-800), var(--color-white) 55%);
+  --color-text-quaternary: color-mix(in oklab, var(--color-dark-800), var(--color-white) 45%);
+  --color-text-quinary   : color-mix(in oklab, var(--color-dark-800), var(--color-white) 35%);
+  --color-text-senary    : var(--color-dark-700);
+
+  --color-bg-primary  : var(--color-dark-700);
+  --color-bg-secondary: var(--color-dark-800);
+  --color-bg-tertiary : color-mix(in oklab, var(--color-dark-800), var(--color-white) 15%);
+
+  --color-border-primary   : color-mix(in oklab, var(--color-dark-800), var(--color-white) 55%);
+  --color-border-secondary : color-mix(in oklab, var(--color-dark-800), var(--color-white) 45%);
+  --color-border-tertiary  : color-mix(in oklab, var(--color-dark-800), var(--color-white) 35%);
+  --color-border-quaternary: color-mix(in oklab, var(--color-dark-800), var(--color-white) 25%);
+
+  --color-gray-800-rgb: 181, 186, 193;
 }

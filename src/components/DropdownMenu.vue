@@ -49,7 +49,7 @@ const onItemClick = (item: DropdownMenuItem) => {
     width: 14rem;
     padding-block: 0.375rem;
     visibility: hidden;
-    background: var(--color-white);
+    background: var(--color-bg-primary);
     border-radius: 0.375rem;
     box-shadow:
       0 0 0 0.0625rem rgb(0 0 0 / 0.08),
@@ -77,8 +77,13 @@ const onItemClick = (item: DropdownMenuItem) => {
     cursor: pointer;
 
     &:hover {
-      color: var(--color-accent-600);
-      background: var(--color-gray-100);
+      --hover-color: var(--color-bg-tertiary-contrast-light);
+      color: var(--hover-color, var(--color-accent-600));
+      background: var(--color-bg-tertiary);
+
+      .dark & {
+        --hover-color: var(--color-bg-tertiary-contrast-dark);
+      }
 
       .dropdown-menu__icon {
         color: inherit;
@@ -87,7 +92,7 @@ const onItemClick = (item: DropdownMenuItem) => {
   }
 
   &__icon {
-    color: var(--color-gray-400);
+    color: var(--color-text-quaternary);
   }
 }
 </style>

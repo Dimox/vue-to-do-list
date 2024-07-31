@@ -48,9 +48,9 @@ defineProps({
 const dialog = ref<HTMLDivElement | null>(null)
 
 const onAfterEnter = () => {
-  const textarea = document.querySelector('.edit-to-do-dialog .textarea__input') as HTMLTextAreaElement
+  const textarea = document.querySelector('.edit-to-do-dialog .textarea__input')
   if (textarea) {
-    textarea.focus()
+    ;(textarea as HTMLTextAreaElement).focus()
   } else {
     dialog.value?.focus()
   }
@@ -71,7 +71,7 @@ const onAfterEnter = () => {
     max-width: calc(100% - 2rem);
     max-height: calc(100% - 2rem);
     margin: auto;
-    background: var(--color-white);
+    background: var(--color-bg-primary);
     border-radius: 0.75rem;
     box-shadow:
       rgba(var(--color-black-rgb), 0.1) 0 1.25rem 1.5625rem -0.3125rem,

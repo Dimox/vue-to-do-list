@@ -8,11 +8,9 @@
     </header>
     <ul class="settings__items">
       <li class="settings__item">
-        <div>
-          <p class="settings__caption">{{ t('interfaceLanguage') }}</p>
-          <p class="settings__description">{{ t('choosePreferredLanguage') }}</p>
-        </div>
-        <div class="settings__langs">
+        <p class="settings__caption">{{ t('interfaceLanguage') }}</p>
+        <p class="settings__description">{{ t('choosePreferredLanguage') }}</p>
+        <div class="settings__value settings__value--langs">
           <label v-for="language in languages" :key="language.id" class="settings__lang">
             <input
               class="settings__lang-input visually-hidden"
@@ -31,18 +29,38 @@
         </div>
       </li>
       <li class="settings__item">
-        <div>
-          <p class="settings__caption">{{ t('applicationWidth') }}</p>
-          <p class="settings__description">{{ t('expandToFullWidth') }}</p>
+        <p class="settings__caption">{{ t('colorScheme') }}</p>
+        <p class="settings__description">{{ t('choosePreferredColorScheme') }}</p>
+        <div class="settings__value settings__value--color-schemes">
+          <label v-for="scheme in colorSchemes" :key="scheme.value" class="settings__color-scheme">
+            <input
+              class="settings__color-scheme-input visually-hidden"
+              type="radio"
+              name="color-scheme"
+              :checked="scheme.value == options.colorScheme"
+              @change="setColorScheme(scheme.value)"
+            />
+            <span class="settings__color-scheme-inner">
+              <Icon :name="`mode-${scheme.value}`" />
+              {{ t(scheme.value) }}
+            </span>
+          </label>
         </div>
-        <Input v-model="options.appWidth" class="settings__width" type="text" inputmode="numeric" />
       </li>
       <li class="settings__item">
-        <div>
-          <p class="settings__caption">{{ t('accentColor') }}</p>
-          <p class="settings__description">{{ t('choosePreferredColor') }}</p>
-        </div>
-        <input v-model="options.accentColor" class="settings__color" type="color" />
+        <p class="settings__caption">{{ t('applicationWidth') }}</p>
+        <p class="settings__description">{{ t('expandToFullWidth') }}</p>
+        <Input
+          v-model="options.appWidth"
+          class="settings__value settings__value--width"
+          type="text"
+          inputmode="numeric"
+        />
+      </li>
+      <li class="settings__item">
+        <p class="settings__caption">{{ t('accentColor') }}</p>
+        <p class="settings__description">{{ t('choosePreferredColor') }}</p>
+        <input v-model="options.accentColor" class="settings__value settings__value--color" type="color" />
       </li>
     </ul>
     <footer class="settings__footer">
@@ -62,7 +80,7 @@ import Icon from './Icon.vue'
 import Input from './form/Input.vue'
 import { useToDoStorage, defaultOptions } from '@/composables/storage'
 import { t } from '@/i18n'
-import { Language } from '@/types'
+import { Language, ColorScheme } from '@/types'
 import langSprite from '@/assets/img/lang.svg'
 
 defineEmits(['close'])
@@ -72,25 +90,30 @@ const getOption = (key: keyof typeof defaultOptions) => storage.value.options?.[
 
 let options = reactive({
   lang: getOption('lang') as Language,
+  colorScheme: getOption('colorScheme') as ColorScheme,
   appWidth: getOption('appWidth'),
   accentColor: getOption('accentColor'),
 })
 
 const MIN_APP_WIDTH = 460
-const setLang = (lang: Language) => (options.lang = lang)
 const saved = ref(false)
 
 const languages: { id: Language; name: string }[] = [
   { id: 'en', name: 'English' },
   { id: 'ru', name: 'Русский' },
 ]
+const setLang = (lang: Language) => (options.lang = lang)
+
+const colorSchemes: { value: ColorScheme }[] = [{ value: 'light' }, { value: 'dark' }]
+const setColorScheme = (scheme: ColorScheme) => (options.colorScheme = scheme)
 
 const isAppWidthValid = () =>
-  (options.appWidth?.match(/^\d+$/) && Number(options.appWidth) >= MIN_APP_WIDTH) || options.appWidth === '100%'
+  (options.appWidth.match(/^\d+$/) && Number(options.appWidth) >= MIN_APP_WIDTH) ?? options.appWidth === '100%'
 
 const saveSettings = () => {
   storage.value.options = {
     lang: options.lang,
+    colorScheme: options.colorScheme,
     appWidth: isAppWidthValid() ? options.appWidth : defaultOptions.appWidth,
     accentColor: options.accentColor,
   }
@@ -121,7 +144,7 @@ const resetSettings = () => {
     align-items: center;
     justify-content: space-between;
     padding: 1rem 2rem;
-    border-bottom: 0.0625rem solid var(--color-gray-300);
+    border-bottom: 0.0625rem solid var(--color-border-tertiary);
   }
 
   &__title {
@@ -129,7 +152,7 @@ const resetSettings = () => {
   }
 
   &__close {
-    color: var(--color-gray-800);
+    color: var(--color-text-primary);
 
     &:hover {
       &::before {
@@ -144,14 +167,13 @@ const resetSettings = () => {
   }
 
   &__item {
-    display: flex;
-    gap: 1rem;
-    align-items: center;
-    justify-content: space-between;
+    display: grid;
+    grid-template: repeat(2, auto) / 1fr auto;
+    gap: 0 1rem;
     padding-block: 1.25rem;
 
     &:not(:last-child) {
-      border-bottom: 0.0625rem solid var(--color-gray-200);
+      border-bottom: 0.0625rem solid var(--color-border-quaternary);
     }
   }
 
@@ -163,15 +185,44 @@ const resetSettings = () => {
   &__description {
     font-size: 0.9375rem;
     line-height: 1.33;
-    color: var(--color-gray-500);
+    color: var(--color-text-tertiary);
   }
 
-  &__langs {
-    display: flex;
-    gap: 1rem;
+  &__value {
+    grid-row: 1 / -1;
+    grid-column: 2;
+
+    &--langs,
+    &--color-schemes {
+      display: flex;
+      gap: 1rem;
+    }
+
+    &--width {
+      width: 7.5rem;
+    }
+
+    &--color {
+      width: 3rem;
+      height: 3rem;
+      padding: 0.125rem;
+      background: none;
+      border: 0.0625rem solid var(--color-border-tertiary);
+      border-radius: 0.375rem;
+
+      &::-webkit-color-swatch-wrapper {
+        padding: 0;
+      }
+
+      &::-webkit-color-swatch {
+        border: none;
+        border-radius: 0.25rem;
+      }
+    }
   }
 
-  &__lang {
+  &__lang,
+  &__color-scheme {
     display: flex;
     gap: 0.5rem;
     align-items: center;
@@ -181,8 +232,8 @@ const resetSettings = () => {
       display: flex;
       gap: 0.5rem;
       align-items: center;
-      padding: 0.375rem 0.625rem;
-      border: 0.125rem solid var(--color-gray-200);
+      padding: 0.375rem 0.75rem;
+      border: 0.125rem solid var(--color-border-quaternary);
       border-radius: 0.375rem;
       transition: 0.25s;
       transition-property: border-color, box-shadow;
@@ -196,27 +247,9 @@ const resetSettings = () => {
       outline: none;
       box-shadow: 0 0 0 0.25rem var(--color-accent-300);
     }
-  }
 
-  &__width {
-    width: 7.5rem;
-  }
-
-  &__color {
-    width: 3rem;
-    height: 3rem;
-    padding: 0.125rem;
-    background: none;
-    border: 0.0625rem solid var(--color-gray-300);
-    border-radius: 0.375rem;
-
-    &::-webkit-color-swatch-wrapper {
-      padding: 0;
-    }
-
-    &::-webkit-color-swatch {
-      border: none;
-      border-radius: 0.25rem;
+    &:not(:has(:checked)):hover &-inner {
+      border-color: var(--color-border-tertiary);
     }
   }
 

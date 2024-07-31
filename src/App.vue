@@ -52,22 +52,35 @@ const itemsEl = ref()
 const isDragging = ref(false)
 const isSettingsOpen = ref(false)
 
+const colorScheme = computed(() => storage.value.options?.colorScheme)
 const appWidth = computed(() => storage.value.options?.appWidth)
-const width = computed(() => (appWidth.value === '100%' ? appWidth.value : appWidth.value + 'px'))
+const width = computed(() => (appWidth.value === '100%' ? appWidth.value : (appWidth.value ?? '') + 'px'))
 const accentColor = computed(() => storage.value.options?.accentColor)
 
-const setHtmlVars = () => {
+const setCssVars = () => {
   const styles = {
-    '--app-width': width.value ?? '',
+    '--app-width': width.value,
     '--accent-color': accentColor.value ?? '',
   }
-  Object.entries(styles).forEach($ => document.documentElement.style.setProperty($[0], $[1]))
+  Object.entries(styles).forEach($ => {
+    document.documentElement.style.setProperty($[0], $[1])
+  })
 }
 
-setHtmlVars()
+const setColorScheme = () => {
+  if (!colorScheme.value) return
+  document.documentElement.setAttribute('class', colorScheme.value)
+}
+
+setCssVars()
+setColorScheme()
+
 watch(
   () => storage.value.options,
-  () => setHtmlVars()
+  () => {
+    setCssVars()
+    setColorScheme()
+  }
 )
 
 useSortable(itemsEl, storage.value.items, {
@@ -76,10 +89,10 @@ useSortable(itemsEl, storage.value.items, {
   draggable: '.to-do-item:not(.to-do-item--checked)',
   ghostClass: 'app__item--ghost',
   onStart: () => (isDragging.value = true),
-  onUpdate: (e: { oldIndex: number; newIndex: number }) => {
+  onUpdate: async (e: { oldIndex: number; newIndex: number }) => {
     // https://github.com/vueuse/vueuse/issues/2924
     const item = storage.value.items.splice(e.oldIndex, 1)[0]
-    nextTick(async () => {
+    await nextTick(async () => {
       await Promise.all(storage.value.items.splice(e.newIndex, 0, item))
       isDragging.value = false
     })
@@ -89,14 +102,15 @@ useSortable(itemsEl, storage.value.items, {
 
 <style lang="scss">
 .app {
+  --border-opacity: 0.1;
   --spread-shadow: 5%;
   width: min(var(--app-width, 40rem), 100%);
   margin: 2rem 1rem;
   margin-inline: auto;
-  background: var(--color-white);
+  background: var(--color-bg-primary);
   border-radius: 0.75rem;
   box-shadow:
-    rgba(var(--color-gray-800-rgb), 10%) 0 0 0 0.0625rem,
+    rgba(var(--color-gray-800-rgb), var(--border-opacity)) 0 0 0 0.0625rem,
     rgba(var(--color-black-rgb), var(--spread-shadow)) 0 1.25rem 1.5625rem -0.3125rem,
     rgba(var(--color-black-rgb), var(--spread-shadow)) 0 0.5rem 0.625rem -0.375rem;
   transition: box-shadow 0.25s ease-in-out;
@@ -104,6 +118,10 @@ useSortable(itemsEl, storage.value.items, {
   @media (max-width: 40rem) {
     margin: 0;
     border-radius: 0;
+  }
+
+  .dark & {
+    --border-opacity: 0.2;
   }
 
   &--full-width {
@@ -154,14 +172,14 @@ useSortable(itemsEl, storage.value.items, {
       height: 2.125rem;
       margin-bottom: -0.125rem;
       content: '';
-      background: var(--color-white);
+      background: var(--color-bg-primary);
     }
   }
 
   &__actions {
     min-height: 3.125rem;
     padding: 0 2rem;
-    border-block: 0.0625rem solid var(--color-gray-300);
+    border-block: 0.0625rem solid var(--color-border-tertiary);
   }
 
   &__items {
@@ -186,8 +204,8 @@ useSortable(itemsEl, storage.value.items, {
       background: linear-gradient(
           90deg,
           #0000,
-          #0000 4.75rem,
-          rgba(var(--color-gray-800-rgb), 0.12) 4.75rem,
+          #0000 4.25rem,
+          rgba(var(--color-gray-800-rgb), 0.12) 4.25rem,
           rgba(var(--color-gray-800-rgb), 0.12)
         )
         no-repeat 0 0 / 100% 0.0625rem;
@@ -201,7 +219,7 @@ useSortable(itemsEl, storage.value.items, {
         inset: 0 -1rem -0.0625rem 1rem;
         pointer-events: none;
         content: '';
-        border: 0.125rem dashed var(--color-gray-400);
+        border: 0.125rem dashed var(--color-border-secondary);
         border-radius: 0.75rem;
       }
     }
@@ -231,7 +249,7 @@ useSortable(itemsEl, storage.value.items, {
     z-index: 4;
     order: 1;
     padding: 0 2rem 2rem;
-    background: var(--color-white);
+    background: var(--color-bg-primary);
     border-radius: 0 0 1.5rem 1.5rem;
   }
 }

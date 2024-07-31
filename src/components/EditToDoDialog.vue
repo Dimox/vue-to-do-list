@@ -35,7 +35,7 @@ const props = defineProps({
 })
 
 const storage = useToDoStorage()
-const id = props.data.id
+const id = props.data.id as string
 const toDoItem = storage.value.items.find(item => item.id === id)
 const text = ref(toDoItem?.text ?? '')
 
@@ -51,9 +51,9 @@ const saveToDo = async () => {
   emit('close')
 }
 
-const handleKeydown = (event: KeyboardEvent) => {
+const handleKeydown = async (event: KeyboardEvent) => {
   if (event.ctrlKey && event.code === 'Enter') {
-    saveToDo()
+    await saveToDo()
   }
   if (event.ctrlKey && event.code === 'KeyB') {
     event.preventDefault()
@@ -112,7 +112,7 @@ const handleKeydown = (event: KeyboardEvent) => {
   }
 
   &__close {
-    color: var(--color-gray-800);
+    color: var(--color-text-primary);
 
     &:hover {
       &::before {

@@ -35,15 +35,15 @@ defineProps({
   transition-property: background, box-shadow, color;
 
   &--primary {
-    color: var(--color-white);
-    background: var(--color-accent-500);
+    color: var(--color-accent-contrast, var(--color-text-senary));
+    background: var(--color-accent-600);
 
     &:hover {
-      background: var(--color-accent-600);
+      background: var(--color-accent-500);
     }
 
     &:active {
-      background: var(--color-accent-500);
+      background: var(--color-accent-600);
     }
 
     &:focus-visible {
@@ -53,29 +53,29 @@ defineProps({
   }
 
   &--secondary {
-    --accent-color: var(--color-gray-300);
+    --accent-color: var(--color-border-tertiary);
     box-shadow: inset 0 0 0 0.125rem var(--accent-color);
 
     &:hover {
-      --accent-color: var(--color-gray-500);
-      color: var(--color-white);
+      --accent-color: var(--color-border-primary);
+      color: var(--color-text-senary);
       background: var(--accent-color);
     }
 
     &:active {
-      --accent-color: var(--color-gray-400);
+      --accent-color: var(--color-border-secondary);
     }
 
     &:focus-visible {
       outline: none;
       box-shadow:
         inset 0 0 0 0.125rem var(--accent-color),
-        0 0 0 0.25rem var(--color-gray-300);
+        0 0 0 0.25rem var(--color-border-tertiary);
     }
   }
 
   &--alert {
-    color: var(--color-white);
+    color: var(--color-red-500-contrast, var(--color-text-senary));
     background: var(--color-red-500);
 
     &:hover {
@@ -96,7 +96,7 @@ defineProps({
     position: relative;
     z-index: 0;
     padding: 0;
-    color: var(--color-gray-400);
+    color: var(--color-text-quaternary);
     transition-property: color;
 
     &::before {
@@ -104,19 +104,19 @@ defineProps({
       inset: -0.5rem;
       z-index: -1;
       content: '';
-      background: var(--color-gray-100);
+      background: var(--color-bg-tertiary);
       border-radius: 50%;
       opacity: 0;
       transition: opacity 0.25s;
     }
 
     &:hover {
-      color: var(--color-gray-800);
+      color: var(--color-text-primary);
     }
 
     &:active,
     &:focus-visible {
-      color: var(--color-gray-800);
+      color: var(--color-text-primary);
       outline: none;
 
       &::before {

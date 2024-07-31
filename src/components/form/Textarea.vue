@@ -58,14 +58,19 @@ const label = computed(() => (props.label ? props.label : props.placeholder))
     color: inherit;
     resize: none;
     background: none;
-    border: 0.0625rem solid var(--color-gray-300);
+    border: 0.0625rem solid var(--color-border-tertiary);
     border-radius: 0.375rem;
     transition: 0.25s;
     transition-property: border-color, box-shadow, border-radius, scrollbar-color;
     scrollbar-color: var(--scrollbar-thumb-color) transparent;
 
+    &::placeholder {
+      color: var(--color-text-tertiary);
+      opacity: 1;
+    }
+
     &:hover {
-      border-color: var(--color-gray-400);
+      border-color: var(--color-border-secondary);
     }
 
     &:focus {

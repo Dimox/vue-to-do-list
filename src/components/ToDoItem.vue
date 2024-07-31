@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { Component, ref, shallowRef, watch } from 'vue'
+import { Component, h, ref, shallowRef, watch } from 'vue'
 import { onClickOutside } from '@vueuse/core'
 import { marked } from 'marked'
 import DOMPurify from 'dompurify'
@@ -67,12 +67,28 @@ const checked = ref(props.checked)
 watch(props, () => (checked.value = props.checked))
 
 const sanitizedHtml = (text: string) => DOMPurify.sanitize(marked.parse(text) as string)
-DOMPurify.addHook('afterSanitizeAttributes', node => 'target' in node && node.setAttribute('target', '_blank'))
+DOMPurify.addHook('afterSanitizeAttributes', node => {
+  if ('target' in node) {
+    node.setAttribute('target', '_blank')
+  }
+})
 
 const dropdownMenu = ref()
 const dropdownMenuItems: DropdownMenuItem[] = [
-  { icon: 'edit', label: t('edit'), handler: () => onClickEdit() },
-  { icon: 'delete', label: t('delete'), handler: () => onClickDelete() },
+  {
+    icon: 'edit',
+    label: t('edit'),
+    handler: () => {
+      onClickEdit()
+    },
+  },
+  {
+    icon: 'delete',
+    label: t('delete'),
+    handler: () => {
+      onClickDelete()
+    },
+  },
 ]
 
 const isDropdownMenuOpen = ref(false)
@@ -94,13 +110,13 @@ const dialogComponent = shallowRef<Component>()
 const dialogData = ref()
 
 const onClickEdit = () => {
-  dialogComponent.value = EditToDoDialog
+  dialogComponent.value = h(EditToDoDialog)
   isDialogOpen.value = true
   dialogData.value = storage.value.items.find(item => item.id === props.id)
 }
 
 const onClickDelete = () => {
-  dialogComponent.value = ConfirmDialog
+  dialogComponent.value = h(ConfirmDialog)
   isDialogOpen.value = true
   dialogData.value = {
     title: t('areYouSure'),
@@ -131,7 +147,7 @@ const deleteToDo = () => {
     z-index: 1;
     width: 2.25rem;
     padding: 1.1875rem 0 0 0.375rem;
-    color: var(--color-gray-500);
+    color: var(--color-text-tertiary);
     cursor: grab;
     opacity: 0;
     transition: opacity 0.25s;
@@ -154,7 +170,7 @@ const deleteToDo = () => {
     overflow-wrap: anywhere;
 
     .to-do-item--checked & {
-      color: var(--color-gray-300);
+      color: var(--color-text-quinary);
       text-decoration: underline;
       text-decoration-thickness: 0.0625rem;
       text-underline-offset: -0.3125rem;
@@ -167,7 +183,7 @@ const deleteToDo = () => {
     }
 
     .to-do-item--checked:hover & {
-      color: var(--color-gray-400);
+      color: var(--color-text-quaternary);
 
       a {
         color: var(--color-accent-400);
@@ -219,7 +235,7 @@ const deleteToDo = () => {
 
       &:active,
       &:focus-visible {
-        background: var(--color-gray-100);
+        background: var(--color-bg-tertiary);
       }
 
       &:focus-visible {

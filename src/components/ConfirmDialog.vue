@@ -55,7 +55,7 @@ const { title, message, action } = props.data
   }
 
   &__close {
-    color: var(--color-gray-800);
+    color: var(--color-text-primary);
 
     &:hover {
       &::before {

@@ -3,15 +3,16 @@ import faviconUrl from '../assets/img/favicon.png'
 import { useToDoStorage } from './storage'
 
 const storage = useToDoStorage()
-const counter = computed(() => storage.value.items?.filter(item => item.checked === false).length)
+const counter = computed(() => storage.value.items.filter(item => !item.checked).length)
 
 export const useFavicon = () => {
   const canvas = document.createElement('canvas')
   canvas.height = 64
   canvas.width = 64
 
-  const context = canvas.getContext('2d') as CanvasRenderingContext2D
+  const context = canvas.getContext('2d')
   const img = new Image()
+  if (!context) return
 
   img.src = faviconUrl
   img.onload = () => {
@@ -33,12 +34,10 @@ export const useFavicon = () => {
 
       context.fillStyle = '#ffffff'
       context.font = 'bold 34px sans-serif'
-      context.fillText(`${counter.value}`, fontX, 57)
+      context.fillText(String(counter.value), fontX, 57)
     }
 
-    let link = document.querySelector('link[rel="icon"]') as HTMLLinkElement
-    if (link) link.remove()
-    link = document.createElement('link')
+    const link = document.createElement('link')
     link.rel = 'icon'
     link.href = canvas.toDataURL()
     document.querySelector('head')?.appendChild(link)

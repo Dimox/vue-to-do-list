@@ -33,7 +33,7 @@ const model = defineModel<boolean>()
     position: absolute;
     inset: -0.625rem;
     content: '';
-    background: var(--color-gray-100);
+    background: var(--color-bg-tertiary);
     border-radius: 50%;
     opacity: 0;
     transition: opacity 0.25s ease;
@@ -74,7 +74,7 @@ const model = defineModel<boolean>()
     position: relative;
     z-index: 1;
     fill: none;
-    stroke: var(--color-gray-300);
+    stroke: var(--color-border-tertiary);
     stroke-linecap: round;
     stroke-linejoin: round;
     stroke-width: 1.5;

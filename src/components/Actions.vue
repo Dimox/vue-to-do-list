@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, shallowRef, Component } from 'vue'
+import { ref, watch, shallowRef, Component, h } from 'vue'
 import Tooltip from './Tooltip.vue'
 import Checkbox from './form/Checkbox.vue'
 import Btn from './Btn.vue'
@@ -44,7 +44,7 @@ const onClickToggleAll = () => {
   } else {
     confirmType.value = 'toggle'
     isDialogOpen.value = true
-    dialogComponent.value = ConfirmDialog
+    dialogComponent.value = h(ConfirmDialog)
     dialogData.value = {
       title: t('areYouSure'),
       message: t('allTasksWillBeMarkedAsCompleted'),
@@ -55,7 +55,7 @@ const onClickToggleAll = () => {
 
 const onClickDeleteDone = () => {
   confirmType.value = 'delete'
-  dialogComponent.value = ConfirmDialog
+  dialogComponent.value = h(ConfirmDialog)
   isDialogOpen.value = true
   dialogData.value = {
     title: t('areYouSure'),
@@ -93,7 +93,7 @@ watch(storage, () => {
   }
 
   &__delete-done {
-    color: var(--color-gray-400);
+    color: var(--color-text-quaternary);
   }
 }
 </style>

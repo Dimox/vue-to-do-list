@@ -79,6 +79,22 @@ export const messages = {
     en: 'Choose your preferred language',
     ru: 'Выберите предпочитаемый язык',
   },
+  colorScheme: {
+    en: 'Color scheme',
+    ru: 'Цветовая схема',
+  },
+  choosePreferredColorScheme: {
+    en: 'Choose your preferred color scheme',
+    ru: 'Выберите предпочитаемую цветовую схему',
+  },
+  light: {
+    en: 'Light',
+    ru: 'Светлая',
+  },
+  dark: {
+    en: 'Dark',
+    ru: 'Тёмная',
+  },
   settingsSaved: {
     en: 'Settings saved',
     ru: 'Настройки сохранены',
