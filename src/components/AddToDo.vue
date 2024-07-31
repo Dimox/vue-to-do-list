@@ -27,7 +27,7 @@ import { useToDoStorage } from '@/composables/storage'
 
 const storage = useToDoStorage()
 const textarea = ref<HTMLTextAreaElement>()
-const toDoText = ref()
+const toDoText = ref('')
 
 const onInput = () => {
   if (!textarea.value) return
@@ -50,7 +50,10 @@ const addToDo = () => {
 const onPressCtrlB = () => (toDoText.value = makeSelectedTextBold(toDoText.value))
 
 onMounted(() => {
-  textarea.value = document.querySelector('.add-to-do textarea') as HTMLTextAreaElement
+  const textareaEl = document.querySelector('.add-to-do textarea')
+  if (textareaEl) {
+    textarea.value = textareaEl as HTMLTextAreaElement
+  }
 })
 </script>
 

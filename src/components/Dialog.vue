@@ -48,9 +48,9 @@ defineProps({
 const dialog = ref<HTMLDivElement | null>(null)
 
 const onAfterEnter = () => {
-  const textarea = document.querySelector('.edit-to-do-dialog .textarea__input') as HTMLTextAreaElement
+  const textarea = document.querySelector('.edit-to-do-dialog .textarea__input')
   if (textarea) {
-    textarea.focus()
+    ;(textarea as HTMLTextAreaElement).focus()
   } else {
     dialog.value?.focus()
   }

@@ -39,5 +39,7 @@ export const useContrastingTextColor = () => {
   }
 
   setCssVar()
-  watch(accentColor, () => setCssVar())
+  watch(accentColor, () => {
+    setCssVar()
+  })
 }

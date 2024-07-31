@@ -1,7 +1,7 @@
 import fs from 'node:fs'
 
 const sprite = fs.readFileSync('./src/assets/img/sprite.svg', 'utf8')
-const idRegExp = /id=\"([\w-]+)\"/g
+const idRegExp = /id="([\w-]+)"/g
 const iconNames = [...sprite.matchAll(idRegExp)].map($ => $[1])
 
 const kebabToPascalCase = str =>

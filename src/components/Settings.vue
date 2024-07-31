@@ -108,7 +108,7 @@ const colorSchemes: { value: ColorScheme }[] = [{ value: 'light' }, { value: 'da
 const setColorScheme = (scheme: ColorScheme) => (options.colorScheme = scheme)
 
 const isAppWidthValid = () =>
-  (options.appWidth?.match(/^\d+$/) && Number(options.appWidth) >= MIN_APP_WIDTH) || options.appWidth === '100%'
+  (options.appWidth.match(/^\d+$/) && Number(options.appWidth) >= MIN_APP_WIDTH) ?? options.appWidth === '100%'
 
 const saveSettings = () => {
   storage.value.options = {

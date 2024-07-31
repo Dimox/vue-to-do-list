@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { Component, ref, shallowRef, watch } from 'vue'
+import { Component, h, ref, shallowRef, watch } from 'vue'
 import { onClickOutside } from '@vueuse/core'
 import { marked } from 'marked'
 import DOMPurify from 'dompurify'
@@ -67,12 +67,28 @@ const checked = ref(props.checked)
 watch(props, () => (checked.value = props.checked))
 
 const sanitizedHtml = (text: string) => DOMPurify.sanitize(marked.parse(text) as string)
-DOMPurify.addHook('afterSanitizeAttributes', node => 'target' in node && node.setAttribute('target', '_blank'))
+DOMPurify.addHook('afterSanitizeAttributes', node => {
+  if ('target' in node) {
+    node.setAttribute('target', '_blank')
+  }
+})
 
 const dropdownMenu = ref()
 const dropdownMenuItems: DropdownMenuItem[] = [
-  { icon: 'edit', label: t('edit'), handler: () => onClickEdit() },
-  { icon: 'delete', label: t('delete'), handler: () => onClickDelete() },
+  {
+    icon: 'edit',
+    label: t('edit'),
+    handler: () => {
+      onClickEdit()
+    },
+  },
+  {
+    icon: 'delete',
+    label: t('delete'),
+    handler: () => {
+      onClickDelete()
+    },
+  },
 ]
 
 const isDropdownMenuOpen = ref(false)
@@ -94,13 +110,13 @@ const dialogComponent = shallowRef<Component>()
 const dialogData = ref()
 
 const onClickEdit = () => {
-  dialogComponent.value = EditToDoDialog
+  dialogComponent.value = h(EditToDoDialog)
   isDialogOpen.value = true
   dialogData.value = storage.value.items.find(item => item.id === props.id)
 }
 
 const onClickDelete = () => {
-  dialogComponent.value = ConfirmDialog
+  dialogComponent.value = h(ConfirmDialog)
   isDialogOpen.value = true
   dialogData.value = {
     title: t('areYouSure'),

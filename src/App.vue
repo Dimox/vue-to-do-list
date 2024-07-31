@@ -54,15 +54,17 @@ const isSettingsOpen = ref(false)
 
 const colorScheme = computed(() => storage.value.options?.colorScheme)
 const appWidth = computed(() => storage.value.options?.appWidth)
-const width = computed(() => (appWidth.value === '100%' ? appWidth.value : appWidth.value + 'px'))
+const width = computed(() => (appWidth.value === '100%' ? appWidth.value : (appWidth.value ?? '') + 'px'))
 const accentColor = computed(() => storage.value.options?.accentColor)
 
 const setCssVars = () => {
   const styles = {
-    '--app-width': width.value ?? '',
+    '--app-width': width.value,
     '--accent-color': accentColor.value ?? '',
   }
-  Object.entries(styles).forEach($ => document.documentElement.style.setProperty($[0], $[1]))
+  Object.entries(styles).forEach($ => {
+    document.documentElement.style.setProperty($[0], $[1])
+  })
 }
 
 const setColorScheme = () => {
@@ -87,10 +89,10 @@ useSortable(itemsEl, storage.value.items, {
   draggable: '.to-do-item:not(.to-do-item--checked)',
   ghostClass: 'app__item--ghost',
   onStart: () => (isDragging.value = true),
-  onUpdate: (e: { oldIndex: number; newIndex: number }) => {
+  onUpdate: async (e: { oldIndex: number; newIndex: number }) => {
     // https://github.com/vueuse/vueuse/issues/2924
     const item = storage.value.items.splice(e.oldIndex, 1)[0]
-    nextTick(async () => {
+    await nextTick(async () => {
       await Promise.all(storage.value.items.splice(e.newIndex, 0, item))
       isDragging.value = false
     })

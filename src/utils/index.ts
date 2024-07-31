@@ -1,12 +1,12 @@
 import { ToDoItem } from '@/types'
 
-export const uniqueId = (prefix: string = '') =>
+export const uniqueId = (prefix = '') =>
   prefix + String(Date.now().toString(32) + Math.random().toString(16)).replace(/\./g, '')
 
 export const textareaAutoHeight = (el: HTMLTextAreaElement) => {
   const style = window.getComputedStyle(el)
   el.style.height = 'auto'
-  el.style.height = `${el.scrollHeight + parseInt(style.borderTopWidth) + parseInt(style.borderBottomWidth)}px`
+  el.style.height = String(el.scrollHeight + parseInt(style.borderTopWidth) + parseInt(style.borderBottomWidth)) + 'px'
 }
 
 export const sortToDos = (items: ToDoItem[]) => {
