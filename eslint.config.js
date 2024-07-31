@@ -2,7 +2,6 @@ import globals from 'globals'
 import eslint from '@eslint/js'
 import tsEslint from 'typescript-eslint'
 import vueEslintParser from 'vue-eslint-parser'
-import eslintPluginImport from 'eslint-plugin-import'
 import eslintPluginVue from 'eslint-plugin-vue'
 import eslintConfigPrettier from 'eslint-config-prettier'
 
@@ -15,7 +14,6 @@ export default tsEslint.config(
     extends: [...tsEslint.configs.strictTypeChecked, ...tsEslint.configs.stylisticTypeChecked],
     plugins: {
       '@typescript-eslint': tsEslint.plugin,
-      import: eslintPluginImport,
       vue: eslintPluginVue,
     },
     languageOptions: {
@@ -35,7 +33,6 @@ export default tsEslint.config(
       },
     },
     rules: {
-      'import/order': 'error',
       'vue/multi-word-component-names': 'off',
       'vue/no-v-html': 'off',
     },
