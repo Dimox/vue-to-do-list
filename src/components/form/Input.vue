@@ -6,10 +6,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, PropType } from 'vue'
-import { uniqueId } from '@/utils'
-
-const model = defineModel<string>()
+import { computed, PropType, useId } from 'vue'
 
 const props = defineProps({
   label: {
@@ -26,7 +23,8 @@ const props = defineProps({
   },
 })
 
-const id = uniqueId('input-')
+const model = defineModel<string>()
+const id = useId()
 const hasLabel = computed(() => !!props.label)
 const label = computed(() => (props.label ? props.label : props.placeholder))
 </script>
