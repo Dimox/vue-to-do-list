@@ -1,6 +1,6 @@
-@import 'utils/variables';
+@use 'utils/variables';
 
-@import 'vendor/modern-normalize';
+@use 'vendor/modern-normalize';
 
-@import 'base/fonts';
-@import 'base/general';
+@use 'base/fonts';
+@use 'base/general';
