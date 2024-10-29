@@ -6,12 +6,9 @@
 </template>
 
 <script setup lang="ts">
-defineProps({
-  text: {
-    type: String,
-    default: null,
-  },
-})
+defineProps<{
+  text?: string
+}>()
 </script>
 
 <style lang="scss">

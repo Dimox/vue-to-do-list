@@ -8,10 +8,10 @@
   "rules": {
     "at-rule-empty-line-before": ["always", {
       "ignore": ["first-nested", "after-comment"],
-      "ignoreAtRules": ["import", "if", "else", "for", "return"]
+      "ignoreAtRules": ["use", "if", "else", "for", "return"]
     }],
     "at-rule-no-unknown": [true, {
-      "ignoreAtRules": ["mixin", "include", "for"]
+      "ignoreAtRules": ["mixin", "include", "for", "use"]
     }],
     "color-hex-length": "short",
     "color-named": "never",

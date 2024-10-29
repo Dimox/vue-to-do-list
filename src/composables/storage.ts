@@ -1,5 +1,5 @@
 import { useStorage } from '@vueuse/core'
-import { ToDoList, ToDoOptions } from '@/types'
+import type { ToDoList, ToDoOptions } from '@/types'
 
 export const defaultOptions: ToDoOptions = {
   lang: 'en',

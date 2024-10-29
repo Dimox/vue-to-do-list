@@ -18,11 +18,11 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, useId } from 'vue'
 import { t } from '@/i18n'
 import Textarea from '@/components/form/Textarea.vue'
 import Btn from '@/components/Btn.vue'
-import { textareaAutoHeight, uniqueId, sortToDos, makeSelectedTextBold } from '@/utils'
+import { textareaAutoHeight, sortToDos, makeSelectedTextBold } from '@/utils'
 import { useToDoStorage } from '@/composables/storage'
 
 const storage = useToDoStorage()
@@ -37,7 +37,7 @@ const onInput = () => {
 const addToDo = () => {
   if (!textarea.value || !toDoText.value) return
   storage.value.items.push({
-    id: uniqueId(),
+    id: useId(),
     createdAt: new Date(),
     text: toDoText.value,
     checked: false,

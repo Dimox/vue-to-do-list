@@ -5,24 +5,19 @@
 </template>
 
 <script setup lang="ts">
-import { computed, PropType } from 'vue'
+import { computed } from 'vue'
 import { IconName } from '@/types/icons'
 import spriteUrl from '@/assets/img/sprite.svg?url'
 
-const props = defineProps({
-  name: {
-    type: String as PropType<`${IconName}`>,
-    default: '',
-  },
-  width: {
-    type: [String, Number],
-    default: 24,
-  },
-  height: {
-    type: [String, Number],
-    default: 24,
-  },
-})
+const {
+  name = '',
+  width = 24,
+  height = 24,
+} = defineProps<{
+  name?: `${IconName}`
+  width?: string | number
+  height?: string | number
+}>()
 
-const iconUrl = computed(() => `${spriteUrl}#${props.name}`)
+const iconUrl = computed(() => `${spriteUrl}#${name}`)
 </script>

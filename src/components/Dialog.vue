@@ -22,28 +22,17 @@
 </template>
 
 <script setup lang="ts">
-import { ref, PropType } from 'vue'
+import { ref } from 'vue'
+import type { Component } from 'vue'
 
 defineEmits(['close', 'confirm'])
 
-defineProps({
-  open: {
-    type: Boolean,
-    default: false,
-  },
-  component: {
-    type: Object,
-    default: null,
-  },
-  data: {
-    type: Object,
-    default: () => ({}),
-  },
-  type: {
-    type: String as PropType<'modal' | 'flyout'>,
-    default: 'modal',
-  },
-})
+const { type = 'modal' } = defineProps<{
+  open: boolean
+  component?: Component
+  data?: object
+  type?: 'modal' | 'flyout'
+}>()
 
 const dialog = ref<HTMLDivElement | null>(null)
 

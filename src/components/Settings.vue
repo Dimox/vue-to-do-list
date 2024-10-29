@@ -80,7 +80,7 @@ import Icon from './Icon.vue'
 import Input from './form/Input.vue'
 import { useToDoStorage, defaultOptions } from '@/composables/storage'
 import { t } from '@/i18n'
-import { Language, ColorScheme } from '@/types'
+import type { Language, ColorScheme } from '@/types'
 import langSprite from '@/assets/img/lang.svg'
 
 defineEmits(['close'])
@@ -108,7 +108,7 @@ const colorSchemes: { value: ColorScheme }[] = [{ value: 'light' }, { value: 'da
 const setColorScheme = (scheme: ColorScheme) => (options.colorScheme = scheme)
 
 const isAppWidthValid = () =>
-  (options.appWidth.match(/^\d+$/) && Number(options.appWidth) >= MIN_APP_WIDTH) ?? options.appWidth === '100%'
+  (/^\d+$/.exec(options.appWidth) && Number(options.appWidth) >= MIN_APP_WIDTH) ?? options.appWidth === '100%'
 
 const saveSettings = () => {
   storage.value.options = {

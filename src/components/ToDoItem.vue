@@ -27,7 +27,7 @@
 </template>
 
 <script setup lang="ts">
-import { Component, h, ref, shallowRef, watch } from 'vue'
+import { Component, h, ref, shallowRef, watchEffect } from 'vue'
 import { onClickOutside } from '@vueuse/core'
 import { marked } from 'marked'
 import DOMPurify from 'dompurify'
@@ -40,31 +40,19 @@ import EditToDoDialog from './EditToDoDialog.vue'
 import ConfirmDialog from './ConfirmDialog.vue'
 import { useToDoStorage } from '@/composables/storage'
 import { sortToDos } from '@/utils'
-import { DropdownMenuItem } from '@/types'
+import type { DropdownMenuItem } from '@/types'
 import { t } from '@/i18n'
 
-const props = defineProps({
-  id: {
-    type: String,
-    default: null,
-  },
-  createdAt: {
-    type: Date,
-    default: null,
-  },
-  text: {
-    type: String,
-    default: null,
-  },
-  checked: {
-    type: Boolean,
-    default: false,
-  },
-})
+const { id, checked: checkedValue } = defineProps<{
+  id: string
+  createdAt: Date
+  text: string
+  checked: boolean
+}>()
 
 const storage = useToDoStorage()
-const checked = ref(props.checked)
-watch(props, () => (checked.value = props.checked))
+const checked = ref(checkedValue)
+watchEffect(() => (checked.value = checkedValue))
 
 const sanitizedHtml = (text: string) => DOMPurify.sanitize(marked.parse(text) as string)
 DOMPurify.addHook('afterSanitizeAttributes', node => {
@@ -97,7 +85,7 @@ onClickOutside(dropdownMenu, () => (isDropdownMenuOpen.value = false))
 
 const onChange = () => {
   storage.value.items.map(item => {
-    if (item.id === props.id) {
+    if (item.id === id) {
       item.checked = checked.value
     }
     return item
@@ -112,7 +100,7 @@ const dialogData = ref()
 const onClickEdit = () => {
   dialogComponent.value = h(EditToDoDialog)
   isDialogOpen.value = true
-  dialogData.value = storage.value.items.find(item => item.id === props.id)
+  dialogData.value = storage.value.items.find(item => item.id === id)
 }
 
 const onClickDelete = () => {
@@ -128,7 +116,7 @@ const onClickDelete = () => {
 const deleteToDo = () => {
   isDialogOpen.value = false
   setTimeout(() => {
-    storage.value.items = storage.value.items.filter(item => item.id !== props.id)
+    storage.value.items = storage.value.items.filter(item => item.id !== id)
   }, 200)
 }
 </script>

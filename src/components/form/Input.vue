@@ -6,29 +6,22 @@
 </template>
 
 <script setup lang="ts">
-import { computed, PropType } from 'vue'
-import { uniqueId } from '@/utils'
+import { computed, useId } from 'vue'
+
+const {
+  label: labelValue,
+  placeholder,
+  type = 'text',
+} = defineProps<{
+  label?: string
+  placeholder?: string
+  type?: 'text' | 'number'
+}>()
 
 const model = defineModel<string>()
-
-const props = defineProps({
-  label: {
-    type: String,
-    default: null,
-  },
-  placeholder: {
-    type: String,
-    default: null,
-  },
-  type: {
-    type: String as PropType<'text' | 'number'>,
-    default: 'text',
-  },
-})
-
-const id = uniqueId('input-')
-const hasLabel = computed(() => !!props.label)
-const label = computed(() => (props.label ? props.label : props.placeholder))
+const id = useId()
+const hasLabel = computed(() => !!labelValue)
+const label = computed(() => (labelValue ? labelValue : placeholder))
 </script>
 
 <style lang="scss">

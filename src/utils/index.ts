@@ -1,7 +1,4 @@
-import { ToDoItem } from '@/types'
-
-export const uniqueId = (prefix = '') =>
-  prefix + String(Date.now().toString(32) + Math.random().toString(16)).replace(/\./g, '')
+import type { ToDoItem } from '@/types'
 
 export const textareaAutoHeight = (el: HTMLTextAreaElement) => {
   const style = window.getComputedStyle(el)
