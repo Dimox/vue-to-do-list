@@ -1,4 +1,4 @@
-import { ToDoItem } from '@/types'
+import type { ToDoItem } from '@/types'
 
 export const textareaAutoHeight = (el: HTMLTextAreaElement) => {
   const style = window.getComputedStyle(el)

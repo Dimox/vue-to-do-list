@@ -17,25 +17,21 @@
 </template>
 
 <script setup lang="ts">
-import { PropType } from 'vue'
 import Btn from './Btn.vue'
 import Icon from './Icon.vue'
 import { t } from '@/i18n'
 
 defineEmits(['close', 'confirm'])
 
-const props = defineProps({
+const { data } = defineProps<{
   data: {
-    type: Object as PropType<{
-      title: string
-      message: string
-      action: string
-    }>,
-    default: () => ({}),
-  },
-})
+    title: string
+    message: string
+    action: string
+  }
+}>()
 
-const { title, message, action } = props.data
+const { title, message, action } = data
 </script>
 
 <style lang="scss">

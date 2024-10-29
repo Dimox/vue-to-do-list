@@ -5,23 +5,13 @@
 </template>
 
 <script setup lang="ts">
-import { PropType } from 'vue'
-import { ButtonType } from '@/types'
+import type { ButtonType } from '@/types'
 
-defineProps({
-  type: {
-    type: String as PropType<`${ButtonType}`>,
-    default: 'primary',
-  },
-  submit: {
-    type: Boolean,
-    default: false,
-  },
-  icon: {
-    type: String,
-    default: null,
-  },
-})
+const { type = 'primary' } = defineProps<{
+  type?: `${ButtonType}`
+  submit?: boolean
+  icon?: string
+}>()
 </script>
 
 <style lang="scss">

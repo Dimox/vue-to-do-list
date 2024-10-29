@@ -13,23 +13,16 @@
 </template>
 
 <script setup lang="ts">
-import { PropType } from 'vue'
 import Btn from './Btn.vue'
 import Icon from './Icon.vue'
-import { DropdownMenuItem } from '@/types'
+import type { DropdownMenuItem } from '@/types'
 
 const emit = defineEmits(['close'])
 
-defineProps({
-  open: {
-    type: Boolean,
-    default: false,
-  },
-  items: {
-    type: Array as PropType<DropdownMenuItem[]>,
-    default: () => [],
-  },
-})
+defineProps<{
+  open: boolean
+  items: DropdownMenuItem[]
+}>()
 
 const onItemClick = (item: DropdownMenuItem) => {
   item.handler()

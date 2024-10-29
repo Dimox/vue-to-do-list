@@ -15,25 +15,20 @@
 <script setup lang="ts">
 import { computed, useId } from 'vue'
 
-const props = defineProps({
-  label: {
-    type: String,
-    default: null,
-  },
-  placeholder: {
-    type: String,
-    default: null,
-  },
-  rows: {
-    type: [Number, String],
-    default: 1,
-  },
-})
+const {
+  label: labelValue,
+  placeholder,
+  rows = 1,
+} = defineProps<{
+  label?: string
+  placeholder?: string
+  rows?: number | string
+}>()
 
 const model = defineModel<string>()
 const id = useId()
-const hasLabel = computed(() => !!props.label)
-const label = computed(() => (props.label ? props.label : props.placeholder))
+const hasLabel = computed(() => !!labelValue)
+const label = computed(() => (labelValue ? labelValue : placeholder))
 </script>
 
 <style lang="scss">

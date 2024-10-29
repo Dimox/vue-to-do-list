@@ -27,15 +27,14 @@ import { t, tHtml } from '@/i18n'
 
 const emit = defineEmits(['close'])
 
-const props = defineProps({
+const { data } = defineProps<{
   data: {
-    type: Object,
-    default: () => ({}),
-  },
-})
+    id: string
+  }
+}>()
 
 const storage = useToDoStorage()
-const id = props.data.id as string
+const id = data.id
 const toDoItem = storage.value.items.find(item => item.id === id)
 const text = ref(toDoItem?.text ?? '')
 
