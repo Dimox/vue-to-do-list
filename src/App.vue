@@ -148,6 +148,11 @@ useSortable(itemsEl, storage.value.items, {
 
   &__settings {
     margin-right: -0.125rem;
+    transition-property: transform, color;
+
+    &:hover {
+      transform: rotate(135deg);
+    }
   }
 
   &__body {
