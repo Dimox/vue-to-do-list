@@ -3,32 +3,49 @@
     <label class="textarea__label" :class="{ 'visually-hidden': !hasLabel }" :for="id">{{ label }}</label>
     <textarea
       :id="id"
+      ref="textarea"
       v-model="model"
       class="textarea__input"
       :rows="rows"
       :placeholder="placeholder"
-      v-bind="$attrs"
+      v-bind="{ ...$attrs, class: undefined }"
+      @input="onInput"
     />
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, useId } from 'vue'
+import { computed, useId, useTemplateRef } from 'vue'
 
 const {
   label: labelValue,
   placeholder,
   rows = 1,
+  autoHeight,
 } = defineProps<{
   label?: string
   placeholder?: string
   rows?: number | string
+  autoHeight?: boolean
 }>()
 
 const model = defineModel<string>()
 const id = useId()
+const textarea = useTemplateRef<HTMLTextAreaElement>('textarea')
 const hasLabel = computed(() => !!labelValue)
 const label = computed(() => (labelValue ? labelValue : placeholder))
+
+const onInput = () => {
+  if (!textarea.value || !autoHeight) return
+  const el = textarea.value
+  const style = window.getComputedStyle(el)
+  el.style.height = 'auto'
+  el.style.height = String(el.scrollHeight + parseInt(style.borderTopWidth) + parseInt(style.borderBottomWidth)) + 'px'
+}
+
+const resetHeight = () => textarea.value && (textarea.value.style.height = '')
+
+defineExpose({ resetHeight })
 </script>
 
 <style lang="scss">
