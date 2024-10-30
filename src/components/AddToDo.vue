@@ -2,15 +2,17 @@
   <form class="add-to-do" @submit.prevent="addToDo" @keydown.prevent.ctrl.b="onPressCtrlB">
     <div class="add-to-do__wrapper">
       <Textarea
+        ref="textarea"
         v-model="toDoText"
         class="add-to-do__textarea"
         :placeholder="t('typeNewTask')"
-        @input="onInput"
+        auto-height
         @keydown.enter.exact.prevent
         @keyup.enter.exact="addToDo"
       />
       <p class="add-to-do__hint">
-        <kbd>Enter</kbd> - {{ t('addTask') }}, <kbd>Shift</kbd> + <kbd>Enter</kbd> - {{ t('lineBreak') }}
+        <kbd>Enter</kbd> - {{ t('addTask') }}, <kbd>Shift</kbd> + <kbd>Enter</kbd> -
+        {{ t('lineBreak') }}
       </p>
     </div>
     <Btn class="add-to-do__btn" submit>{{ t('add') }}</Btn>
@@ -18,43 +20,32 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, useId } from 'vue'
+import { ref, useTemplateRef } from 'vue'
 import { t } from '@/i18n'
 import Textarea from '@/components/form/Textarea.vue'
 import Btn from '@/components/Btn.vue'
-import { textareaAutoHeight, sortToDos, makeSelectedTextBold } from '@/utils'
+import { sortToDos, makeSelectedTextBold } from '@/utils'
 import { useToDoStorage } from '@/composables/storage'
 
 const storage = useToDoStorage()
-const textarea = ref<HTMLTextAreaElement>()
+const textarea = useTemplateRef('textarea')
 const toDoText = ref('')
 
-const onInput = () => {
-  if (!textarea.value) return
-  textareaAutoHeight(textarea.value)
-}
-
 const addToDo = () => {
-  if (!textarea.value || !toDoText.value) return
+  if (!toDoText.value) return
   storage.value.items.push({
-    id: useId(),
+    id: Date.now().toString(),
     createdAt: new Date(),
     text: toDoText.value,
     checked: false,
   })
   storage.value.items = sortToDos(storage.value.items)
   toDoText.value = ''
-  textarea.value.style.height = ''
+  // eslint-disable-next-line
+  textarea.value?.resetHeight()
 }
 
 const onPressCtrlB = () => (toDoText.value = makeSelectedTextBold(toDoText.value))
-
-onMounted(() => {
-  const textareaEl = document.querySelector('.add-to-do textarea')
-  if (textareaEl) {
-    textarea.value = textareaEl as HTMLTextAreaElement
-  }
-})
 </script>
 
 <style lang="scss">

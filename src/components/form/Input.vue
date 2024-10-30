@@ -1,7 +1,14 @@
 <template>
   <div class="input">
     <label class="input__label" :class="{ 'visually-hidden': !hasLabel }" :for="id">{{ label }}</label>
-    <input :id="id" v-model="model" :type="type" class="input__field" :placeholder="placeholder" v-bind="$attrs" />
+    <input
+      :id="id"
+      v-model="model"
+      :type="type"
+      class="input__field"
+      :placeholder="placeholder"
+      v-bind="{ ...$attrs, class: undefined }"
+    />
   </div>
 </template>
 
