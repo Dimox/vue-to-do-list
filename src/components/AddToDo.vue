@@ -18,7 +18,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, useId } from 'vue'
+import { onMounted, ref } from 'vue'
 import { t } from '@/i18n'
 import Textarea from '@/components/form/Textarea.vue'
 import Btn from '@/components/Btn.vue'
@@ -37,7 +37,7 @@ const onInput = () => {
 const addToDo = () => {
   if (!textarea.value || !toDoText.value) return
   storage.value.items.push({
-    id: useId(),
+    id: Date.now().toString(),
     createdAt: new Date(),
     text: toDoText.value,
     checked: false,
