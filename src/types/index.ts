@@ -2,7 +2,7 @@ import { IconName } from './icons'
 
 export interface ToDoList {
   items: ToDoItem[]
-  options?: ToDoOptions
+  options: ToDoOptions
 }
 
 export interface ToDoItem {
@@ -13,7 +13,7 @@ export interface ToDoItem {
 }
 
 export interface ToDoOptions {
-  lang: Language
+  lang: LanguageCode
   colorScheme: ColorScheme
   appWidth: string
   accentColor: string
@@ -32,5 +32,10 @@ export enum ButtonType {
   Icon = 'icon',
 }
 
-export type Language = 'en' | 'ru'
-export type ColorScheme = 'light' | 'dark'
+export interface Language {
+  code: LanguageCode
+  name: string
+}
+
+export type LanguageCode = 'en' | 'ru'
+export type ColorScheme = 'auto' | 'light' | 'dark'

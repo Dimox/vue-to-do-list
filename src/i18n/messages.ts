@@ -87,6 +87,10 @@ export const messages = {
     en: 'Choose your preferred color scheme',
     ru: 'Выберите предпочитаемую цветовую схему',
   },
+  auto: {
+    en: 'Auto',
+    ru: 'Авто',
+  },
   light: {
     en: 'Light',
     ru: 'Светлая',
@@ -104,8 +108,8 @@ export const messages = {
     ru: 'Ширина приложения в пикселях',
   },
   expandToFullWidth: {
-    en: '460 - minimum, 100% - expand to full width',
-    ru: '460 - минимум, 100% - растянуть на всю ширину',
+    en: '460 - minimum',
+    ru: '460 - минимум',
   },
   accentColor: {
     en: 'Accent color',

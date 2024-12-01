@@ -11,41 +11,27 @@
         <p class="settings__caption">{{ t('interfaceLanguage') }}</p>
         <p class="settings__description">{{ t('choosePreferredLanguage') }}</p>
         <div class="settings__value settings__value--langs">
-          <label v-for="language in languages" :key="language.id" class="settings__lang">
+          <label v-for="language in languages" :key="language.code" class="settings__lang">
             <input
               class="settings__lang-input visually-hidden"
               type="radio"
               name="lang"
-              :checked="language.id == options.lang"
-              @change="setLang(language.id)"
+              :checked="language.code == options.lang"
+              @change="setLanguage(language.code)"
             />
             <span class="settings__lang-inner">
               <svg width="24" height="24">
-                <use :xlink:href="`${langSprite}#${language.id}`" />
+                <use :xlink:href="`${langSprite}#${language.code}`" />
               </svg>
               {{ language.name }}
             </span>
           </label>
         </div>
       </li>
-      <li class="settings__item">
+      <li class="settings__item settings__item--column">
         <p class="settings__caption">{{ t('colorScheme') }}</p>
         <p class="settings__description">{{ t('choosePreferredColorScheme') }}</p>
-        <div class="settings__value settings__value--color-schemes">
-          <label v-for="scheme in colorSchemes" :key="scheme.value" class="settings__color-scheme">
-            <input
-              class="settings__color-scheme-input visually-hidden"
-              type="radio"
-              name="color-scheme"
-              :checked="scheme.value == options.colorScheme"
-              @change="setColorScheme(scheme.value)"
-            />
-            <span class="settings__color-scheme-inner">
-              <Icon :name="`mode-${scheme.value}`" />
-              {{ t(scheme.value) }}
-            </span>
-          </label>
-        </div>
+        <ColorSchemeRadio v-model="options.colorScheme" class="settings__color-scheme" />
       </li>
       <li class="settings__item">
         <p class="settings__caption">{{ t('applicationWidth') }}</p>
@@ -53,7 +39,7 @@
         <Input
           v-model="options.appWidth"
           class="settings__value settings__value--width"
-          type="text"
+          type="number"
           inputmode="numeric"
         />
       </li>
@@ -64,67 +50,49 @@
       </li>
     </ul>
     <footer class="settings__footer">
-      <Btn class="settings__save" @click="saveSettings">{{ t('save') }}</Btn>
-      <Transition name="settings__saved">
-        <p v-if="saved" class="settings__saved">{{ t('settingsSaved') }}</p>
-      </Transition>
       <Btn class="settings__reset" type="secondary" @click="resetSettings">{{ t('restoreDefaults') }}</Btn>
     </footer>
   </section>
 </template>
 
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { computed, watch } from 'vue'
 import Btn from './Btn.vue'
 import Icon from './Icon.vue'
 import Input from './form/Input.vue'
+import ColorSchemeRadio from './ColorSchemeRadio.vue'
 import { useToDoStorage, defaultOptions } from '@/composables/storage'
 import { t } from '@/i18n'
-import type { Language, ColorScheme } from '@/types'
-import langSprite from '@/assets/img/lang.svg'
+import type { Language, LanguageCode } from '@/types'
+import langSprite from '@/assets/img/lang.svg?url'
+import { APP_MIN_WIDTH } from '@/utils/constants'
+import { debounce } from '@/utils'
 
-defineEmits(['close'])
+defineEmits<{
+  close: []
+}>()
 
 const storage = useToDoStorage()
-const getOption = (key: keyof typeof defaultOptions) => storage.value.options?.[key] ?? defaultOptions[key]
+const APP_MIN_WIDTH = 460
+const options = computed(() => storage.value.options)
 
-let options = reactive({
-  lang: getOption('lang') as Language,
-  colorScheme: getOption('colorScheme') as ColorScheme,
-  appWidth: getOption('appWidth'),
-  accentColor: getOption('accentColor'),
-})
-
-const MIN_APP_WIDTH = 460
-const saved = ref(false)
-
-const languages: { id: Language; name: string }[] = [
-  { id: 'en', name: 'English' },
-  { id: 'ru', name: 'Русский' },
-]
-const setLang = (lang: Language) => (options.lang = lang)
-
-const colorSchemes: { value: ColorScheme }[] = [{ value: 'light' }, { value: 'dark' }]
-const setColorScheme = (scheme: ColorScheme) => (options.colorScheme = scheme)
-
-const isAppWidthValid = () =>
-  (/^\d+$/.exec(options.appWidth) && Number(options.appWidth) >= MIN_APP_WIDTH) ?? options.appWidth === '100%'
-
-const saveSettings = () => {
-  storage.value.options = {
-    lang: options.lang,
-    colorScheme: options.colorScheme,
-    appWidth: isAppWidthValid() ? options.appWidth : defaultOptions.appWidth,
-    accentColor: options.accentColor,
-  }
-  saved.value = true
-  setTimeout(() => (saved.value = false), 1500)
+const updateAppWidth = () => {
+  if (Number(storage.value.options.appWidth) >= APP_MIN_WIDTH) return
+  storage.value.options.appWidth = defaultOptions.appWidth
 }
+
+const languages: Language[] = [
+  { code: 'en', name: 'English' },
+  { code: 'ru', name: 'Русский' },
+]
+
+const setLanguage = (lang: LanguageCode) => (storage.value.options.lang = lang)
 
 const resetSettings = () => {
-  storage.value.options = defaultOptions
-  options = defaultOptions
+  storage.value.options = structuredClone(defaultOptions)
 }
+
+watch(() => storage.value.options, debounce(updateAppWidth), { deep: true })
 </script>
 
 <style lang="scss">
@@ -175,6 +143,10 @@ const resetSettings = () => {
     &:not(:last-child) {
       border-bottom: 0.0625rem solid var(--color-border-quaternary);
     }
+
+    &--column {
+      grid-template: auto / auto;
+    }
   }
 
   &__caption {
@@ -192,14 +164,23 @@ const resetSettings = () => {
     grid-row: 1 / -1;
     grid-column: 2;
 
-    &--langs,
-    &--color-schemes {
+    &--langs {
       display: flex;
       gap: 1rem;
     }
 
     &--width {
-      width: 7.5rem;
+      width: 6rem;
+
+      input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+        margin: 0;
+        -webkit-appearance: none;
+      }
+
+      input[type='number'] {
+        -moz-appearance: textfield;
+      }
     }
 
     &--color {
@@ -221,8 +202,7 @@ const resetSettings = () => {
     }
   }
 
-  &__lang,
-  &__color-scheme {
+  &__lang {
     display: flex;
     gap: 0.5rem;
     align-items: center;
@@ -253,6 +233,10 @@ const resetSettings = () => {
     }
   }
 
+  &__color-scheme {
+    margin-block: 1.25rem 0.25rem;
+  }
+
   &__footer {
     display: flex;
     gap: 1.5rem;
@@ -262,18 +246,6 @@ const resetSettings = () => {
 
   &__save {
     min-width: 6.5rem;
-  }
-
-  &__saved {
-    &-enter-active,
-    &-leave-active {
-      transition: opacity 0.5s ease;
-    }
-
-    &-enter-from,
-    &-leave-to {
-      opacity: 0;
-    }
   }
 
   &__reset {

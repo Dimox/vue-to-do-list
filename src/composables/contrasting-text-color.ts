@@ -21,7 +21,7 @@ const getContrastYIQ = (hex: string) => {
 
 export const useContrastingTextColor = () => {
   const storage = useToDoStorage()
-  const accentColor = computed(() => storage.value.options?.accentColor)
+  const accentColor = computed(() => storage.value.options.accentColor)
 
   const colors = computed(() => [
     { color: accentColor.value, variable: '--color-accent-contrast' },

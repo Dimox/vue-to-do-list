@@ -19,14 +19,16 @@
   --color-dark-700: #36393f;
   --color-dark-400: #b5bac1;
 
-  --color-black-rgb   : 0,  0,  0;
-  --color-gray-800-rgb: 31, 41, 55;
+  --color-black-rgb: 0,  0,  0;
 
   --color-accent-600: var(--accent-color, #4f46e5); // indigo-600
   --color-accent-500: color-mix(in oklab, var(--color-accent-600), var(--color-white) 15%);
   --color-accent-400: color-mix(in oklab, var(--color-accent-600), var(--color-white) 34%);
   --color-accent-300: color-mix(in oklab, var(--color-accent-600), var(--color-white) 56%);
+}
 
+// prettier-ignore
+.light {
   --color-text-primary   : var(--color-gray-800);
   --color-text-secondary : var(--color-gray-600);
   --color-text-tertiary  : var(--color-gray-500);
@@ -42,6 +44,8 @@
   --color-border-secondary : var(--color-gray-400);
   --color-border-tertiary  : var(--color-gray-300);
   --color-border-quaternary: var(--color-gray-200);
+
+  --color-gray-800-rgb: 31, 41, 55;
 }
 
 // prettier-ignore
