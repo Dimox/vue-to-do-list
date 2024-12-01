@@ -13,3 +13,13 @@ export const makeSelectedTextBold = (text: string) => {
   if (!selectedText) return text
   return text.replace(selectedText, `**${selectedText}**`)
 }
+
+export const debounce = <T extends (...args: unknown[]) => unknown>(func: T, timeout = 700) => {
+  let timer: NodeJS.Timeout
+  return (...args: Parameters<T>) => {
+    clearTimeout(timer)
+    timer = setTimeout(() => {
+      func.apply(this, args)
+    }, timeout)
+  }
+}
