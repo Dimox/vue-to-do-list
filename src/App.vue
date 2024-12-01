@@ -1,5 +1,5 @@
 <template>
-  <div class="app" :class="{ 'app--full-width': width === '100%' }">
+  <div class="app">
     <header class="app__header">
       <h1 class="app__title">To-Do List</h1>
       <Tooltip :text="t('settings')">
@@ -52,15 +52,14 @@ const itemsEl = ref()
 const isDragging = ref(false)
 const isSettingsOpen = ref(false)
 
-const colorScheme = computed(() => storage.value.options?.colorScheme)
-const appWidth = computed(() => storage.value.options?.appWidth)
-const width = computed(() => (appWidth.value === '100%' ? appWidth.value : (appWidth.value ?? '') + 'px'))
-const accentColor = computed(() => storage.value.options?.accentColor)
+const colorScheme = computed(() => storage.value.options.colorScheme)
+const appWidth = computed(() => storage.value.options.appWidth + 'px')
+const accentColor = computed(() => storage.value.options.accentColor)
 
 const setCssVars = () => {
   const styles = {
-    '--app-width': width.value,
-    '--accent-color': accentColor.value ?? '',
+    '--app-width': appWidth.value,
+    '--accent-color': accentColor.value,
   }
   Object.entries(styles).forEach($ => {
     document.documentElement.style.setProperty($[0], $[1])
@@ -68,8 +67,13 @@ const setCssVars = () => {
 }
 
 const setColorScheme = () => {
-  if (!colorScheme.value) return
-  document.documentElement.setAttribute('class', colorScheme.value)
+  const scheme =
+    colorScheme.value === 'auto'
+      ? window.matchMedia('(prefers-color-scheme: light)').matches
+        ? 'light'
+        : 'dark'
+      : colorScheme.value
+  document.documentElement.setAttribute('class', scheme)
 }
 
 setCssVars()
@@ -82,6 +86,8 @@ watch(
     setColorScheme()
   }
 )
+
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', setColorScheme)
 
 useSortable(itemsEl, storage.value.items, {
   animation: 200,
@@ -104,9 +110,9 @@ useSortable(itemsEl, storage.value.items, {
 .app {
   --border-opacity: 0.1;
   --spread-shadow: 5%;
-  width: min(var(--app-width, 40rem), 100%);
-  margin: 2rem 1rem;
-  margin-inline: auto;
+  --min-margin-inline: 2rem;
+  margin-block: 2rem;
+  margin-inline: max(var(--min-margin-inline), 50% - var(--app-width) / 2);
   background: var(--color-bg-primary);
   border-radius: 0.75rem;
   box-shadow:
@@ -122,11 +128,6 @@ useSortable(itemsEl, storage.value.items, {
 
   .dark & {
     --border-opacity: 0.2;
-  }
-
-  &--full-width {
-    margin: 0;
-    border-radius: 0;
   }
 
   &:has(.add-to-do__textarea :focus) {
