@@ -65,7 +65,6 @@ import { useToDoStorage, defaultOptions } from '@/composables/storage'
 import { t } from '@/i18n'
 import type { Language, LanguageCode } from '@/types'
 import langSprite from '@/assets/img/lang.svg?url'
-import { APP_MIN_WIDTH } from '@/utils/constants'
 import { debounce } from '@/utils'
 
 defineEmits<{
