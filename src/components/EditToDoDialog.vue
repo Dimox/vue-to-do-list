@@ -21,7 +21,7 @@ import { ref } from 'vue'
 import Textarea from './form/Textarea.vue'
 import Btn from './Btn.vue'
 import Icon from './Icon.vue'
-import { useToDoStorage } from '@/composables/storage'
+import { useToDoStorage } from '@/composables/useToDoStorage'
 import { makeSelectedTextBold } from '@/utils'
 import { t, tHtml } from '@/i18n'
 

@@ -1,6 +1,6 @@
 import { computed, watch } from 'vue'
 import faviconUrl from '../assets/img/favicon.png'
-import { useToDoStorage } from './storage'
+import { useToDoStorage } from './useToDoStorage'
 
 const storage = useToDoStorage()
 const counter = computed(() => storage.value.items.filter(item => !item.checked).length)

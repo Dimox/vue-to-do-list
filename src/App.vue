@@ -36,7 +36,7 @@
 <script setup lang="ts">
 import { ref, nextTick, computed, watch } from 'vue'
 import { useSortable } from '@vueuse/integrations/useSortable'
-import { useToDoStorage } from './composables/storage'
+import { useToDoStorage } from './composables/useToDoStorage'
 import { t } from './i18n'
 import Btn from './components/Btn.vue'
 import Icon from './components/Icon.vue'

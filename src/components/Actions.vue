@@ -26,7 +26,7 @@ import Btn from './Btn.vue'
 import Icon from './Icon.vue'
 import Dialog from './Dialog.vue'
 import ConfirmDialog from './ConfirmDialog.vue'
-import { useToDoStorage } from '@/composables/storage'
+import { useToDoStorage } from '@/composables/useToDoStorage'
 import { t } from '@/i18n'
 
 const storage = useToDoStorage()

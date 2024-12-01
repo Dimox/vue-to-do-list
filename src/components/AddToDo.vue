@@ -25,7 +25,7 @@ import { t } from '@/i18n'
 import Textarea from '@/components/form/Textarea.vue'
 import Btn from '@/components/Btn.vue'
 import { sortToDos, makeSelectedTextBold } from '@/utils'
-import { useToDoStorage } from '@/composables/storage'
+import { useToDoStorage } from '@/composables/useToDoStorage'
 
 const storage = useToDoStorage()
 const textarea = useTemplateRef('textarea')

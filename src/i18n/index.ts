@@ -2,7 +2,7 @@ import { computed, watch } from 'vue'
 import { marked } from 'marked'
 import DOMPurify from 'dompurify'
 import { messages } from './messages'
-import { useToDoStorage } from '@/composables/storage'
+import { useToDoStorage } from '@/composables/useToDoStorage'
 
 const storage = useToDoStorage()
 const lang = computed(() => storage.value.options.lang)
