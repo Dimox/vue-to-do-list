@@ -1,5 +1,5 @@
 import { watch, computed } from 'vue'
-import { useToDoStorage } from '@/composables/storage'
+import { useToDoStorage } from '@/composables/useToDoStorage'
 
 const hexToRgb = (hex: string) => {
   let cleanedHex = hex.replace(/^#/, '')

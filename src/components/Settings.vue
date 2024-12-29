@@ -16,7 +16,7 @@
               class="settings__lang-input visually-hidden"
               type="radio"
               name="lang"
-              :checked="language.code == options.lang"
+              :checked="language.code == toDoOptions.lang"
               @change="setLanguage(language.code)"
             />
             <span class="settings__lang-inner">
@@ -31,13 +31,13 @@
       <li class="settings__item settings__item--column">
         <p class="settings__caption">{{ t('colorScheme') }}</p>
         <p class="settings__description">{{ t('choosePreferredColorScheme') }}</p>
-        <ColorSchemeRadio v-model="options.colorScheme" class="settings__color-scheme" />
+        <ColorSchemeRadio v-model="toDoOptions.colorScheme" class="settings__color-scheme" />
       </li>
       <li class="settings__item">
         <p class="settings__caption">{{ t('applicationWidth') }}</p>
         <p class="settings__description">{{ t('expandToFullWidth') }}</p>
         <Input
-          v-model="options.appWidth"
+          v-model="toDoOptions.appWidth"
           class="settings__value settings__value--width"
           type="number"
           inputmode="numeric"
@@ -46,7 +46,7 @@
       <li class="settings__item">
         <p class="settings__caption">{{ t('accentColor') }}</p>
         <p class="settings__description">{{ t('choosePreferredColor') }}</p>
-        <input v-model="options.accentColor" class="settings__value settings__value--color" type="color" />
+        <input v-model="toDoOptions.accentColor" class="settings__value settings__value--color" type="color" />
       </li>
     </ul>
     <footer class="settings__footer">
@@ -56,12 +56,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed, watch } from 'vue'
+import { watch } from 'vue'
 import Btn from './Btn.vue'
 import Icon from './Icon.vue'
 import Input from './form/Input.vue'
 import ColorSchemeRadio from './ColorSchemeRadio.vue'
-import { useToDoStorage, defaultOptions } from '@/composables/storage'
+import { defaultOptions } from '@/composables/useToDoStorage'
+import { useToDo } from '@/composables/useToDo'
 import { t } from '@/i18n'
 import type { Language, LanguageCode } from '@/types'
 import langSprite from '@/assets/img/lang.svg?url'
@@ -71,13 +72,14 @@ defineEmits<{
   close: []
 }>()
 
-const storage = useToDoStorage()
 const APP_MIN_WIDTH = 460
-const options = computed(() => storage.value.options)
+const { toDoOptions, updateToDoOptions } = useToDo()
 
 const updateAppWidth = () => {
-  if (Number(storage.value.options.appWidth) >= APP_MIN_WIDTH) return
-  storage.value.options.appWidth = defaultOptions.appWidth
+  if (Number(toDoOptions.value.appWidth) >= APP_MIN_WIDTH) return
+
+  const options = { ...toDoOptions.value, appWidth: defaultOptions.appWidth }
+  updateToDoOptions(options)
 }
 
 const languages: Language[] = [
@@ -85,13 +87,13 @@ const languages: Language[] = [
   { code: 'ru', name: 'Русский' },
 ]
 
-const setLanguage = (lang: LanguageCode) => (storage.value.options.lang = lang)
+const setLanguage = (lang: LanguageCode) => (toDoOptions.value.lang = lang)
 
 const resetSettings = () => {
-  storage.value.options = structuredClone(defaultOptions)
+  updateToDoOptions(structuredClone(defaultOptions))
 }
 
-watch(() => storage.value.options, debounce(updateAppWidth), { deep: true })
+watch(toDoOptions, debounce(updateAppWidth), { deep: true })
 </script>
 
 <style lang="scss">

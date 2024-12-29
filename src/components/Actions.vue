@@ -1,9 +1,9 @@
 <template>
-  <div v-if="storage.items.length > 0" class="actions">
+  <div v-if="toDoItems.length > 0" class="actions">
     <Tooltip class="actions__toggle-all" :text="t('selectUnselectAll')">
       <Checkbox v-model="isAllToDosChecked" @click.prevent="onClickToggleAll" />
     </Tooltip>
-    <Tooltip v-if="hasChecked()" :text="t('deleteCompleted')">
+    <Tooltip v-if="hasChecked" :text="t('deleteCompleted')">
       <Btn class="actions__delete-done" type="icon" @click="onClickDeleteDone">
         <Icon name="delete-done" />
       </Btn>
@@ -19,20 +19,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, shallowRef, Component, h } from 'vue'
+import { ref, shallowRef, Component, h, computed, watchEffect } from 'vue'
 import Tooltip from './Tooltip.vue'
 import Checkbox from './form/Checkbox.vue'
 import Btn from './Btn.vue'
 import Icon from './Icon.vue'
 import Dialog from './Dialog.vue'
 import ConfirmDialog from './ConfirmDialog.vue'
-import { useToDoStorage } from '@/composables/storage'
+import { useToDo } from '@/composables/useToDo'
 import { t } from '@/i18n'
 
-const storage = useToDoStorage()
-const hasChecked = () => storage.value.items.some(item => item.checked)
-const hasUnchecked = () => storage.value.items.some(item => !item.checked)
-const isAllToDosChecked = ref(!hasUnchecked())
+const { toDoItems, updateToDoItems } = useToDo()
+const hasChecked = computed(() => toDoItems.value.some(item => item.checked))
+const hasUnchecked = computed(() => toDoItems.value.some(item => !item.checked))
+const isAllToDosChecked = ref(!hasUnchecked.value)
 const isDialogOpen = ref(false)
 const dialogComponent = shallowRef<Component>()
 const dialogData = ref()
@@ -66,20 +66,26 @@ const onClickDeleteDone = () => {
 
 const toggleAllToDos = () => {
   isAllToDosChecked.value = !isAllToDosChecked.value
-  storage.value.items.forEach(item => (item.checked = isAllToDosChecked.value))
+
+  const items = toDoItems.value.map(item => {
+    item.checked = isAllToDosChecked.value
+    return item
+  })
+  updateToDoItems(items)
 }
 
 const onConfirm = () => {
   if (confirmType.value === 'toggle') {
     toggleAllToDos()
   } else if (confirmType.value === 'delete') {
-    storage.value.items = storage.value.items.filter(item => !item.checked)
+    const items = toDoItems.value.filter(item => !item.checked)
+    updateToDoItems(items)
   }
   isDialogOpen.value = false
 }
 
-watch(storage, () => {
-  isAllToDosChecked.value = !hasUnchecked()
+watchEffect(() => {
+  isAllToDosChecked.value = !hasUnchecked.value
 })
 </script>
 

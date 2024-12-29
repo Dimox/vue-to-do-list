@@ -1,7 +1,7 @@
 import { Component, createApp } from 'vue'
 import App from './App.vue'
-import { useFavicon } from '@/composables/favicon'
-import { useContrastingTextColor } from '@/composables/contrasting-text-color'
+import { useFavicon } from '@/composables/useFavicon'
+import { useContrastingTextColor } from '@/composables/useContrastingTextColor'
 import { setHtmlLang } from '@/i18n'
 import '@/assets/scss/main.scss'
 

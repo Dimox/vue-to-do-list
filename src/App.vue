@@ -10,15 +10,9 @@
     </header>
     <main class="app__body">
       <Actions class="app__actions" />
-      <TransitionGroup
-        v-if="storage.items.length > 0"
-        ref="itemsEl"
-        class="app__items"
-        tag="ul"
-        :name="isDragging ? '' : 'app__item'"
-      >
+      <TransitionGroup ref="itemsEl" class="app__items" tag="ul" :name="isDragging ? '' : 'app__item'">
         <ToDoItem
-          v-for="item in storage.items"
+          v-for="item in toDoItems"
           :id="item.id"
           :key="item.id"
           class="app__item"
@@ -36,7 +30,7 @@
 <script setup lang="ts">
 import { ref, nextTick, computed, watch } from 'vue'
 import { useSortable } from '@vueuse/integrations/useSortable'
-import { useToDoStorage } from './composables/storage'
+import { useToDo } from './composables/useToDo'
 import { t } from './i18n'
 import Btn from './components/Btn.vue'
 import Icon from './components/Icon.vue'
@@ -47,14 +41,14 @@ import Dialog from './components/Dialog.vue'
 import Settings from './components/Settings.vue'
 import Tooltip from './components/Tooltip.vue'
 
-const storage = useToDoStorage()
+const { toDoItems, toDoOptions } = useToDo()
 const itemsEl = ref()
 const isDragging = ref(false)
 const isSettingsOpen = ref(false)
 
-const colorScheme = computed(() => storage.value.options.colorScheme)
-const appWidth = computed(() => storage.value.options.appWidth + 'px')
-const accentColor = computed(() => storage.value.options.accentColor)
+const colorScheme = computed(() => toDoOptions.value.colorScheme)
+const appWidth = computed(() => toDoOptions.value.appWidth + 'px')
+const accentColor = computed(() => toDoOptions.value.accentColor)
 
 const setCssVars = () => {
   const styles = {
@@ -79,17 +73,14 @@ const setColorScheme = () => {
 setCssVars()
 setColorScheme()
 
-watch(
-  () => storage.value.options,
-  () => {
-    setCssVars()
-    setColorScheme()
-  }
-)
+watch(toDoOptions, () => {
+  setCssVars()
+  setColorScheme()
+})
 
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', setColorScheme)
 
-useSortable(itemsEl, storage.value.items, {
+useSortable(itemsEl, toDoItems, {
   animation: 200,
   handle: '.to-do-item__handle',
   draggable: '.to-do-item:not(.to-do-item--checked)',
@@ -97,9 +88,9 @@ useSortable(itemsEl, storage.value.items, {
   onStart: () => (isDragging.value = true),
   onUpdate: async (e: { oldIndex: number; newIndex: number }) => {
     // https://github.com/vueuse/vueuse/issues/2924
-    const item = storage.value.items.splice(e.oldIndex, 1)[0]
+    const item = toDoItems.value.splice(e.oldIndex, 1)[0]
     await nextTick(async () => {
-      await Promise.all(storage.value.items.splice(e.newIndex, 0, item))
+      await Promise.all(toDoItems.value.splice(e.newIndex, 0, item))
       isDragging.value = false
     })
   },
