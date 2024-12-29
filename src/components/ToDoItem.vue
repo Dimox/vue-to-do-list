@@ -38,8 +38,7 @@ import DropdownMenu from './DropdownMenu.vue'
 import Dialog from './Dialog.vue'
 import EditToDoDialog from './EditToDoDialog.vue'
 import ConfirmDialog from './ConfirmDialog.vue'
-import { useToDoStorage } from '@/composables/useToDoStorage'
-import { sortToDos } from '@/utils'
+import { useToDo } from '@/composables/useToDo'
 import type { DropdownMenuItem } from '@/types'
 import { t } from '@/i18n'
 
@@ -50,7 +49,8 @@ const { id, checked: checkedValue } = defineProps<{
   checked: boolean
 }>()
 
-const storage = useToDoStorage()
+const { toDoItems, getToDoItem, updateToDoItem, deleteToDoItem } = useToDo()
+const toDoItem = getToDoItem(id)
 const checked = ref(checkedValue)
 watchEffect(() => (checked.value = checkedValue))
 
@@ -84,13 +84,9 @@ const toggleDropdownMenu = () => (isDropdownMenuOpen.value = !isDropdownMenuOpen
 onClickOutside(dropdownMenu, () => (isDropdownMenuOpen.value = false))
 
 const onChange = () => {
-  storage.value.items.map(item => {
-    if (item.id === id) {
-      item.checked = checked.value
-    }
-    return item
-  })
-  storage.value.items = sortToDos(storage.value.items)
+  if (!toDoItem) return
+  toDoItem.checked = checked.value
+  updateToDoItem(id, toDoItem)
 }
 
 const isDialogOpen = ref(false)
@@ -100,7 +96,7 @@ const dialogData = ref()
 const onClickEdit = () => {
   dialogComponent.value = h(EditToDoDialog)
   isDialogOpen.value = true
-  dialogData.value = storage.value.items.find(item => item.id === id)
+  dialogData.value = toDoItems.value.find(item => item.id === id)
 }
 
 const onClickDelete = () => {
@@ -116,7 +112,7 @@ const onClickDelete = () => {
 const deleteToDo = () => {
   isDialogOpen.value = false
   setTimeout(() => {
-    storage.value.items = storage.value.items.filter(item => item.id !== id)
+    deleteToDoItem(id)
   }, 200)
 }
 </script>

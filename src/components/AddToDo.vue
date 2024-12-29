@@ -24,22 +24,21 @@ import { ref, useTemplateRef } from 'vue'
 import { t } from '@/i18n'
 import Textarea from '@/components/form/Textarea.vue'
 import Btn from '@/components/Btn.vue'
-import { sortToDos, makeSelectedTextBold } from '@/utils'
-import { useToDoStorage } from '@/composables/useToDoStorage'
+import { makeSelectedTextBold } from '@/utils'
+import { useToDo } from '@/composables/useToDo'
 
-const storage = useToDoStorage()
+const { addToDoItem } = useToDo()
 const textarea = useTemplateRef('textarea')
 const toDoText = ref('')
 
 const addToDo = () => {
   if (!toDoText.value) return
-  storage.value.items.push({
+  addToDoItem({
     id: Date.now().toString(),
     createdAt: new Date(),
     text: toDoText.value,
     checked: false,
   })
-  storage.value.items = sortToDos(storage.value.items)
   toDoText.value = ''
   // eslint-disable-next-line
   textarea.value?.resetHeight()

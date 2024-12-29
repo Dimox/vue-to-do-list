@@ -17,11 +17,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { nextTick, ref } from 'vue'
 import Textarea from './form/Textarea.vue'
 import Btn from './Btn.vue'
 import Icon from './Icon.vue'
-import { useToDoStorage } from '@/composables/useToDoStorage'
+import { useToDo } from '@/composables/useToDo'
 import { makeSelectedTextBold } from '@/utils'
 import { t, tHtml } from '@/i18n'
 
@@ -33,20 +33,16 @@ const { data } = defineProps<{
   }
 }>()
 
-const storage = useToDoStorage()
+const { getToDoItem, updateToDoItem } = useToDo()
 const id = data.id
-const toDoItem = storage.value.items.find(item => item.id === id)
+const toDoItem = getToDoItem(id)
 const text = ref(toDoItem?.text ?? '')
 
 const saveToDo = async () => {
-  await Promise.all(
-    storage.value.items.map(item => {
-      if (item.id === id) {
-        item.text = text.value
-      }
-      return item
-    })
-  )
+  if (!toDoItem) return
+  toDoItem.text = text.value
+  updateToDoItem(id, toDoItem)
+  await nextTick()
   emit('close')
 }
 
