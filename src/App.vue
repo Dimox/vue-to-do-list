@@ -19,6 +19,7 @@
           :created-at="new Date(item.createdAt)"
           :text="item.text"
           :checked="item.checked"
+          :pinned="item.pinned"
         />
       </TransitionGroup>
       <AddToDo class="app__add" />

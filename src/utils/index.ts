@@ -2,9 +2,13 @@ import type { ToDoItem } from '@/types'
 
 export const sortToDos = (items: ToDoItem[]) => {
   return items.sort((a, b) => {
-    if (a.checked === b.checked) return 0
-    if (a.checked) return 1
-    return -1
+    if (a.checked && !b.checked) return 1
+    if (!a.checked && b.checked) return -1
+
+    if (!a.checked && a.pinned && !b.pinned) return -1
+    if (!a.checked && !a.pinned && b.pinned) return 1
+
+    return 0
   })
 }
 

@@ -4,10 +4,17 @@
       <Btn>...</Btn>
     </slot>
     <ul class="dropdown-menu__items">
-      <li v-for="item in items" :key="item.label" class="dropdown-menu__item" @click="onItemClick(item)">
-        <Icon class="dropdown-menu__icon" :name="item.icon" />
-        {{ item.label }}
-      </li>
+      <template v-for="item in items" :key="item.label">
+        <li
+          v-if="!item.hidden"
+          class="dropdown-menu__item"
+          :class="{ 'dropdown-menu__item--delete': item.delete }"
+          @click="onItemClick(item)"
+        >
+          <Icon class="dropdown-menu__icon" :name="item.icon" />
+          {{ item.label }}
+        </li>
+      </template>
     </ul>
   </div>
 </template>
@@ -74,6 +81,14 @@ const onItemClick = (item: DropdownMenuItem) => {
 
       .dropdown-menu__icon {
         color: inherit;
+      }
+    }
+
+    &--delete {
+      color: var(--color-red-500);
+
+      .dropdown-menu__icon {
+        color: var(--color-red-400);
       }
     }
   }

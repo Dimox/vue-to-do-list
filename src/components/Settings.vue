@@ -200,6 +200,11 @@ watch(toDoOptions, debounce(updateAppWidth), { deep: true })
         border: none;
         border-radius: 0.25rem;
       }
+
+      &::-moz-color-swatch {
+        border: none;
+        border-radius: 0.25rem;
+      }
     }
   }
 

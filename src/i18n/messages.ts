@@ -47,6 +47,14 @@ export const messages = {
     en: 'Cancel',
     ru: 'Отмена',
   },
+  pin: {
+    en: 'Pin',
+    ru: 'Закрепить',
+  },
+  unpin: {
+    en: 'Unpin',
+    ru: 'Открепить',
+  },
   edit: {
     en: 'Edit',
     ru: 'Редактировать',

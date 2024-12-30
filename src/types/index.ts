@@ -10,6 +10,7 @@ export interface ToDoItem {
   text: string
   createdAt: Date
   checked: boolean
+  pinned: boolean
 }
 
 export interface ToDoOptions {
@@ -23,6 +24,8 @@ export interface DropdownMenuItem {
   icon?: `${IconName}`
   label: string
   handler: () => void
+  delete?: boolean
+  hidden?: boolean
 }
 
 export enum ButtonType {
