@@ -6,8 +6,8 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import { IconName } from '@/types/icons'
 import spriteUrl from '@/assets/img/sprite.svg?url'
+import { IconName } from '@/types/icons'
 
 const {
   name = '',

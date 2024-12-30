@@ -29,18 +29,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref, nextTick, computed, watch } from 'vue'
 import { useSortable } from '@vueuse/integrations/useSortable'
+import { ref, nextTick, computed, watch } from 'vue'
+import Actions from './components/Actions.vue'
+import AddToDo from './components/AddToDo.vue'
+import Btn from './components/Btn.vue'
+import Dialog from './components/Dialog.vue'
+import Icon from './components/Icon.vue'
+import Settings from './components/Settings.vue'
+import ToDoItem from './components/ToDoItem.vue'
+import Tooltip from './components/Tooltip.vue'
 import { useToDo } from './composables/useToDo'
 import { t } from './i18n'
-import Btn from './components/Btn.vue'
-import Icon from './components/Icon.vue'
-import Actions from './components/Actions.vue'
-import ToDoItem from './components/ToDoItem.vue'
-import AddToDo from './components/AddToDo.vue'
-import Dialog from './components/Dialog.vue'
-import Settings from './components/Settings.vue'
-import Tooltip from './components/Tooltip.vue'
 
 const { toDoItems, toDoOptions } = useToDo()
 const itemsEl = ref()

@@ -35,7 +35,16 @@ export default tsEslint.config(
       },
     },
     rules: {
-      'import/order': 'error',
+      'import/order': [
+        'error',
+        {
+          'newlines-between': 'never',
+          alphabetize: {
+            order: 'asc',
+            caseInsensitive: true,
+          },
+        },
+      ],
       'vue/multi-word-component-names': 'off',
       'vue/no-v-html': 'off',
     },

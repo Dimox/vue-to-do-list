@@ -58,14 +58,14 @@
 <script setup lang="ts">
 import { watch } from 'vue'
 import Btn from './Btn.vue'
-import Icon from './Icon.vue'
-import Input from './form/Input.vue'
 import ColorSchemeRadio from './ColorSchemeRadio.vue'
-import { defaultOptions } from '@/composables/useToDoStorage'
+import Input from './form/Input.vue'
+import Icon from './Icon.vue'
+import langSprite from '@/assets/img/lang.svg?url'
 import { useToDo } from '@/composables/useToDo'
+import { defaultOptions } from '@/composables/useToDoStorage'
 import { t } from '@/i18n'
 import type { Language, LanguageCode } from '@/types'
-import langSprite from '@/assets/img/lang.svg?url'
 import { debounce } from '@/utils'
 
 defineEmits<{

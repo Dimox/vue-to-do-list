@@ -18,12 +18,12 @@
 
 <script setup lang="ts">
 import { nextTick, ref } from 'vue'
-import Textarea from './form/Textarea.vue'
 import Btn from './Btn.vue'
+import Textarea from './form/Textarea.vue'
 import Icon from './Icon.vue'
 import { useToDo } from '@/composables/useToDo'
-import { makeSelectedTextBold } from '@/utils'
 import { t, tHtml } from '@/i18n'
+import { makeSelectedTextBold } from '@/utils'
 
 const emit = defineEmits(['close'])
 

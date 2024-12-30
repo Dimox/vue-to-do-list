@@ -28,20 +28,20 @@
 </template>
 
 <script setup lang="ts">
-import { Component, computed, h, ref, shallowRef, watchEffect } from 'vue'
 import { onClickOutside } from '@vueuse/core'
-import { marked } from 'marked'
 import DOMPurify from 'dompurify'
-import Checkbox from './form/Checkbox.vue'
+import { marked } from 'marked'
+import { Component, computed, h, ref, shallowRef, watchEffect } from 'vue'
 import Btn from './Btn.vue'
-import Icon from './Icon.vue'
-import DropdownMenu from './DropdownMenu.vue'
-import Dialog from './Dialog.vue'
-import EditToDoDialog from './EditToDoDialog.vue'
 import ConfirmDialog from './ConfirmDialog.vue'
+import Dialog from './Dialog.vue'
+import DropdownMenu from './DropdownMenu.vue'
+import EditToDoDialog from './EditToDoDialog.vue'
+import Checkbox from './form/Checkbox.vue'
+import Icon from './Icon.vue'
 import { useToDo } from '@/composables/useToDo'
-import type { DropdownMenuItem } from '@/types'
 import { t } from '@/i18n'
+import type { DropdownMenuItem } from '@/types'
 
 const { id, checked, pinned } = defineProps<{
   id: string
