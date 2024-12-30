@@ -25,7 +25,7 @@ const { type = 'primary' } = defineProps<{
   transition-property: background, box-shadow, color;
 
   &--primary {
-    color: var(--color-accent-contrast, var(--color-text-senary));
+    color: lch(from var(--color-accent-600) calc((70 - l) * infinity) 0 0);
     background: var(--color-accent-600);
 
     &:hover {
@@ -65,7 +65,7 @@ const { type = 'primary' } = defineProps<{
   }
 
   &--alert {
-    color: var(--color-red-500-contrast, var(--color-text-senary));
+    color: lch(from var(--color-red-500) calc((70 - l) * infinity) 0 0);
     background: var(--color-red-500);
 
     &:hover {
