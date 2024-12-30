@@ -26,11 +26,4 @@ export default defineConfig({
   build: {
     assetsInlineLimit: 0,
   },
-  css: {
-    preprocessorOptions: {
-      scss: {
-        api: 'modern-compiler',
-      },
-    },
-  },
 })
