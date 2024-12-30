@@ -20,12 +20,12 @@
 
 <script setup lang="ts">
 import { ref, shallowRef, Component, h, computed, watchEffect } from 'vue'
-import Tooltip from './Tooltip.vue'
-import Checkbox from './form/Checkbox.vue'
 import Btn from './Btn.vue'
-import Icon from './Icon.vue'
-import Dialog from './Dialog.vue'
 import ConfirmDialog from './ConfirmDialog.vue'
+import Dialog from './Dialog.vue'
+import Checkbox from './form/Checkbox.vue'
+import Icon from './Icon.vue'
+import Tooltip from './Tooltip.vue'
 import { useToDo } from '@/composables/useToDo'
 import { t } from '@/i18n'
 

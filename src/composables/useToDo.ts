@@ -1,7 +1,7 @@
 import { computed } from 'vue'
 import { useToDoStorage } from './useToDoStorage'
-import { sortToDos } from '@/utils'
 import type { ToDoItem, ToDoOptions } from '@/types'
+import { sortToDos } from '@/utils'
 
 export const useToDo = () => {
   const storage = useToDoStorage()

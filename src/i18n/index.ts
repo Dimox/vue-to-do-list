@@ -1,6 +1,6 @@
-import { computed, watch } from 'vue'
-import { marked } from 'marked'
 import DOMPurify from 'dompurify'
+import { marked } from 'marked'
+import { computed, watch } from 'vue'
 import { messages } from './messages'
 import { useToDoStorage } from '@/composables/useToDoStorage'
 

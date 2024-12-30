@@ -21,11 +21,11 @@
 
 <script setup lang="ts">
 import { ref, useTemplateRef } from 'vue'
-import { t } from '@/i18n'
-import Textarea from '@/components/form/Textarea.vue'
 import Btn from '@/components/Btn.vue'
-import { makeSelectedTextBold } from '@/utils'
+import Textarea from '@/components/form/Textarea.vue'
 import { useToDo } from '@/composables/useToDo'
+import { t } from '@/i18n'
+import { makeSelectedTextBold } from '@/utils'
 
 const { addToDoItem } = useToDo()
 const textarea = useTemplateRef('textarea')
