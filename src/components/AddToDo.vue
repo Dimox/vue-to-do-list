@@ -38,6 +38,7 @@ const addToDo = () => {
     createdAt: new Date(),
     text: toDoText.value,
     checked: false,
+    pinned: false,
   })
   toDoText.value = ''
   // eslint-disable-next-line
