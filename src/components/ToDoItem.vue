@@ -1,9 +1,10 @@
 <template>
-  <li class="to-do-item" :class="{ 'to-do-item--checked': checked }">
-    <div v-if="!checked" class="to-do-item__handle">
+  <li class="to-do-item" :class="{ 'to-do-item--checked': isChecked }">
+    <div v-if="!isChecked && !isPinned" class="to-do-item__handle">
       <Icon name="drag" width="20" height="20" />
     </div>
-    <Checkbox v-model="checked" class="to-do-item__checkbox" @change="onChange" />
+    <Icon v-if="isPinned && !isChecked" class="to-do-item__pinned" name="pin" />
+    <Checkbox v-model="isChecked" class="to-do-item__checkbox" @change="toggleChecked" />
     <div class="to-do-item__text" v-html="sanitizedHtml(text)" />
     <DropdownMenu
       ref="dropdownMenu"
@@ -27,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-import { Component, h, ref, shallowRef, watchEffect } from 'vue'
+import { Component, computed, h, ref, shallowRef, watchEffect } from 'vue'
 import { onClickOutside } from '@vueuse/core'
 import { marked } from 'marked'
 import DOMPurify from 'dompurify'
@@ -42,27 +43,45 @@ import { useToDo } from '@/composables/useToDo'
 import type { DropdownMenuItem } from '@/types'
 import { t } from '@/i18n'
 
-const { id, checked: checkedValue } = defineProps<{
+const { id, checked, pinned } = defineProps<{
   id: string
   createdAt: Date
   text: string
   checked: boolean
+  pinned: boolean
 }>()
 
 const { toDoItems, getToDoItem, updateToDoItem, deleteToDoItem } = useToDo()
-const toDoItem = getToDoItem(id)
-const checked = ref(checkedValue)
-watchEffect(() => (checked.value = checkedValue))
+const isChecked = ref(checked)
+const isPinned = computed(() => pinned)
+
+const isDialogOpen = ref(false)
+const dialogComponent = shallowRef<Component>()
+const dialogData = ref()
+
+const dropdownMenu = ref()
+const isDropdownMenuOpen = ref(false)
+const toggleDropdownMenu = () => (isDropdownMenuOpen.value = !isDropdownMenuOpen.value)
 
 const sanitizedHtml = (text: string) => DOMPurify.sanitize(marked.parse(text) as string)
+
+watchEffect(() => (isChecked.value = checked))
+
 DOMPurify.addHook('afterSanitizeAttributes', node => {
   if ('target' in node) {
     node.setAttribute('target', '_blank')
   }
 })
 
-const dropdownMenu = ref()
-const dropdownMenuItems: DropdownMenuItem[] = [
+const dropdownMenuItems = computed<DropdownMenuItem[]>(() => [
+  {
+    icon: isPinned.value ? 'unpin' : 'pin',
+    label: isPinned.value ? t('unpin') : t('pin'),
+    handler: () => {
+      togglePinned()
+    },
+    hidden: isChecked.value,
+  },
   {
     icon: 'edit',
     label: t('edit'),
@@ -76,22 +95,25 @@ const dropdownMenuItems: DropdownMenuItem[] = [
     handler: () => {
       onClickDelete()
     },
+    delete: true,
   },
-]
+])
 
-const isDropdownMenuOpen = ref(false)
-const toggleDropdownMenu = () => (isDropdownMenuOpen.value = !isDropdownMenuOpen.value)
 onClickOutside(dropdownMenu, () => (isDropdownMenuOpen.value = false))
 
-const onChange = () => {
+const toggleChecked = () => {
+  const toDoItem = getToDoItem(id)
   if (!toDoItem) return
-  toDoItem.checked = checked.value
+  toDoItem.checked = isChecked.value
   updateToDoItem(id, toDoItem)
 }
 
-const isDialogOpen = ref(false)
-const dialogComponent = shallowRef<Component>()
-const dialogData = ref()
+const togglePinned = () => {
+  const toDoItem = getToDoItem(id)
+  if (!toDoItem) return
+  toDoItem.pinned = !toDoItem.pinned
+  updateToDoItem(id, toDoItem)
+}
 
 const onClickEdit = () => {
   dialogComponent.value = h(EditToDoDialog)
@@ -142,6 +164,18 @@ const deleteToDo = () => {
 
     &:active {
       cursor: grabbing;
+    }
+  }
+
+  &__pinned {
+    --icon-bg-color: var(--color-accent-300);
+    position: absolute;
+    inset: 1rem 0 0 -0.8125rem;
+    color: var(--color-accent-500);
+    transform: scaleX(-1);
+
+    .dark & {
+      --icon-bg-color: var(--color-bg-primary);
     }
   }
 
