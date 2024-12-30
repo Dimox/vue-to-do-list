@@ -10,7 +10,7 @@ export interface ToDoItem {
   text: string
   createdAt: Date
   checked: boolean
-  pinned?: boolean
+  pinned: boolean
 }
 
 export interface ToDoOptions {
