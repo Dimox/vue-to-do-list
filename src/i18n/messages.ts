@@ -131,4 +131,29 @@ export const messages = {
     en: 'Restore defaults',
     ru: 'Сбросить настройки',
   },
+  fillWithTestData: {
+    en: 'Fill with test data',
+    ru: 'Заполнить тестовыми данными',
+  },
+}
+
+export const testData = {
+  en: [
+    '🛒 **Buy groceries** - Milk, eggs, and bread',
+    "📞 *Call Mom* - Remind her about the doctor's appointment",
+    '📚 [Read the documentation](https://www.markdownguide.org/basic-syntax/) - Learn Markdown syntax',
+    '🗓️ **Schedule a meeting** - Discuss Q1 goals with the team',
+    '📖 Start a new book - ***"The Great Gatsby"*** by F. Scott Fitzgerald',
+    '✈️ Plan a trip - Research flights to Paris for summer vacation',
+    '🎵 **Listen to music** - Create a playlist with your favorite songs',
+  ],
+  ru: [
+    '🛒 **Купить продукты** - Молоко, яйца и хлеб',
+    '📞 *Позвонить маме* - Напомнить про визит к врачу',
+    '📚 [Прочитать документацию](https://www.markdownguide.org/basic-syntax/) - Изучить синтаксис Markdown',
+    '🗓️ **Запланировать встречу** - Обсудить цели на первый квартал с командой',
+    '📖 Начать новую книгу - ***«Великий Гэтсби»*** Ф. Скотта Фицджеральда',
+    '✈️ Спланировать путешествие - Найти билеты в Париж на лето',
+    '🎵 **Послушать музыку** - Создать плейлист с любимыми треками',
+  ],
 }

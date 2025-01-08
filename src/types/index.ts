@@ -18,6 +18,7 @@ export interface ToDoOptions {
   colorScheme: ColorScheme
   appWidth: string
   accentColor: string
+  isFirstLaunch: boolean
 }
 
 export interface DropdownMenuItem {

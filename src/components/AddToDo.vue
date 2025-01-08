@@ -27,7 +27,7 @@ import { useToDo } from '@/composables/useToDo'
 import { t } from '@/i18n'
 import { makeSelectedTextBold } from '@/utils'
 
-const { addToDoItem } = useToDo()
+const { addToDoItem, toDoOptions, updateToDoOptions } = useToDo()
 const textarea = useTemplateRef('textarea')
 const toDoText = ref('')
 
@@ -41,6 +41,11 @@ const addToDo = () => {
     pinned: false,
   })
   toDoText.value = ''
+
+  const options = toDoOptions.value
+  options.isFirstLaunch = false
+  updateToDoOptions(options)
+
   // eslint-disable-next-line
   textarea.value?.resetHeight()
 }

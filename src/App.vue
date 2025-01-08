@@ -1,30 +1,33 @@
 <template>
   <div class="app">
-    <header class="app__header">
-      <h1 class="app__title">To-Do List</h1>
-      <Tooltip :text="t('settings')">
-        <Btn class="app__settings" type="icon" @click="isSettingsOpen = true">
-          <Icon name="settings" width="28" height="28" />
-        </Btn>
-      </Tooltip>
-    </header>
-    <main class="app__body">
-      <Actions class="app__actions" />
-      <TransitionGroup ref="itemsEl" class="app__items" tag="ul" :name="isDragging ? '' : 'app__item'">
-        <ToDoItem
-          v-for="item in toDoItems"
-          :id="item.id"
-          :key="item.id"
-          class="app__item"
-          :created-at="new Date(item.createdAt)"
-          :text="item.text"
-          :checked="item.checked"
-          :pinned="item.pinned"
-        />
-      </TransitionGroup>
-      <AddToDo class="app__add" />
-    </main>
-    <Dialog :open="isSettingsOpen" :component="Settings" type="flyout" @close="isSettingsOpen = false" />
+    <div class="app__container">
+      <header class="app__header">
+        <h1 class="app__title">To-Do List</h1>
+        <Tooltip :text="t('settings')">
+          <Btn class="app__settings" type="icon" @click="isSettingsOpen = true">
+            <Icon name="settings" width="28" height="28" />
+          </Btn>
+        </Tooltip>
+      </header>
+      <main class="app__body">
+        <Actions class="app__actions" />
+        <TransitionGroup ref="itemsEl" class="app__items" tag="ul" :name="isDragging ? '' : 'app__item'">
+          <ToDoItem
+            v-for="item in toDoItems"
+            :id="item.id"
+            :key="item.id"
+            class="app__item"
+            :created-at="new Date(item.createdAt)"
+            :text="item.text"
+            :checked="item.checked"
+            :pinned="item.pinned"
+          />
+        </TransitionGroup>
+        <AddToDo class="app__add" />
+      </main>
+      <Dialog :open="isSettingsOpen" :component="Settings" type="flyout" @close="isSettingsOpen = false" />
+    </div>
+    <Btn v-if="isFirstLaunch" class="app__test-data" @click="addTestData">{{ t('fillWithTestData') }}</Btn>
   </div>
 </template>
 
@@ -40,9 +43,10 @@ import Settings from './components/Settings.vue'
 import ToDoItem from './components/ToDoItem.vue'
 import Tooltip from './components/Tooltip.vue'
 import { useToDo } from './composables/useToDo'
-import { t } from './i18n'
+import { t, lang } from './i18n'
+import { testData } from './i18n/messages'
 
-const { toDoItems, toDoOptions } = useToDo()
+const { toDoItems, updateToDoItems, toDoOptions, updateToDoOptions } = useToDo()
 const itemsEl = ref()
 const isDragging = ref(false)
 const isSettingsOpen = ref(false)
@@ -50,6 +54,7 @@ const isSettingsOpen = ref(false)
 const colorScheme = computed(() => toDoOptions.value.colorScheme)
 const appWidth = computed(() => toDoOptions.value.appWidth + 'px')
 const accentColor = computed(() => toDoOptions.value.accentColor)
+const isFirstLaunch = computed(() => toDoOptions.value.isFirstLaunch)
 
 const setCssVars = () => {
   const styles = {
@@ -96,34 +101,51 @@ useSortable(itemsEl, toDoItems, {
     })
   },
 })
+
+const addTestData = () => {
+  const items = testData[lang.value].map(item => ({
+    id: (Date.now() * Math.random()).toString(),
+    createdAt: new Date(),
+    text: item,
+    checked: false,
+    pinned: false,
+  }))
+  updateToDoItems(items)
+
+  const options = toDoOptions.value
+  options.isFirstLaunch = false
+  updateToDoOptions(options)
+}
 </script>
 
 <style lang="scss">
 .app {
-  --border-opacity: 0.1;
-  --spread-shadow: 5%;
-  --min-margin-inline: 2rem;
-  margin-block: 2rem;
-  margin-inline: max(var(--min-margin-inline), 50% - var(--app-width) / 2);
-  background: var(--color-bg-primary);
-  border-radius: 0.75rem;
-  box-shadow:
-    rgba(var(--color-gray-800-rgb), var(--border-opacity)) 0 0 0 0.0625rem,
-    rgba(var(--color-black-rgb), var(--spread-shadow)) 0 1.25rem 1.5625rem -0.3125rem,
-    rgba(var(--color-black-rgb), var(--spread-shadow)) 0 0.5rem 0.625rem -0.375rem;
-  transition: box-shadow 0.25s ease-in-out;
+  &__container {
+    --border-opacity: 0.1;
+    --spread-shadow: 5%;
+    --min-margin-inline: 2rem;
+    margin-block: 2rem;
+    margin-inline: max(var(--min-margin-inline), 50% - var(--app-width) / 2);
+    background: var(--color-bg-primary);
+    border-radius: 0.75rem;
+    box-shadow:
+      rgba(var(--color-gray-800-rgb), var(--border-opacity)) 0 0 0 0.0625rem,
+      rgba(var(--color-black-rgb), var(--spread-shadow)) 0 1.25rem 1.5625rem -0.3125rem,
+      rgba(var(--color-black-rgb), var(--spread-shadow)) 0 0.5rem 0.625rem -0.375rem;
+    transition: box-shadow 0.25s ease-in-out;
 
-  @media (max-width: 40rem) {
-    margin: 0;
-    border-radius: 0;
-  }
+    @media (max-width: 40rem) {
+      margin: 0;
+      border-radius: 0;
+    }
 
-  .dark & {
-    --border-opacity: 0.2;
-  }
+    .dark & {
+      --border-opacity: 0.2;
+    }
 
-  &:has(.add-to-do__textarea :focus) {
-    --spread-shadow: 15%;
+    &:has(.add-to-do__textarea :focus) {
+      --spread-shadow: 15%;
+    }
   }
 
   &__header {
@@ -249,6 +271,10 @@ useSortable(itemsEl, toDoItems, {
     padding: 0 2rem 2rem;
     background: var(--color-bg-primary);
     border-radius: 0 0 1.5rem 1.5rem;
+  }
+
+  &__test-data {
+    margin-inline: auto;
   }
 }
 </style>

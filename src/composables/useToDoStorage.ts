@@ -6,6 +6,7 @@ export const defaultOptions: ToDoOptions = {
   colorScheme: 'auto',
   appWidth: '640',
   accentColor: '#4f46e5',
+  isFirstLaunch: true,
 }
 
 export const useToDoStorage = () => {
