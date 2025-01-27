@@ -47,7 +47,7 @@ const saveToDo = async () => {
 }
 
 const handleKeydown = async (event: KeyboardEvent) => {
-  if (event.ctrlKey && event.code === 'Enter') {
+  if (event.ctrlKey && event.key === 'Enter') {
     await saveToDo()
   }
   if (event.ctrlKey && event.code === 'KeyB') {
