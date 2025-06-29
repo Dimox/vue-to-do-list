@@ -1,5 +1,5 @@
 <template>
-  <form class="add-to-do" @submit.prevent="addToDo" @keydown.prevent.ctrl.b="onPressCtrlB">
+  <form class="add-to-do" @submit.prevent="addToDo" @keydown="onPressCtrlB">
     <div class="add-to-do__wrapper">
       <Textarea
         ref="textarea"
@@ -46,11 +46,17 @@ const addToDo = () => {
   options.isFirstLaunch = false
   updateToDoOptions(options)
 
-  // eslint-disable-next-line
-  textarea.value?.resetHeight()
+  if (textarea.value && 'resetHeight' in textarea.value) {
+    textarea.value.resetHeight()
+  }
 }
 
-const onPressCtrlB = () => (toDoText.value = makeSelectedTextBold(toDoText.value))
+const onPressCtrlB = (event: KeyboardEvent) => {
+  if (event.ctrlKey && event.code === 'KeyB') {
+    event.preventDefault()
+    toDoText.value = makeSelectedTextBold(toDoText.value)
+  }
+}
 </script>
 
 <style lang="scss">
